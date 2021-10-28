@@ -27,8 +27,9 @@ public class CalcLogic {
 	}
 
 	private void calculate(Operation operation) {
-		if (this.operationLog.length() > 0) {
-			switch (activeOperation) {
+
+		if (this.activeOperation != null) {
+			switch (this.activeOperation) {
 			case ADDITION:
 				this.operationResult += formatedNumber();
 				break;
@@ -43,6 +44,14 @@ public class CalcLogic {
 				break;
 			}
 			this.operationLog.append(formatedNumber());
+		} else {
+			if (this.interfaceText.length() != 0) {
+				this.operationResult = formatedNumber();
+			}
+			this.operationLog.append(this.getOperationResult());
+
+		}
+		if (operation != null) {
 			switch (operation) {
 			case ADDITION:
 				this.operationLog.append(" + ");
@@ -60,42 +69,24 @@ public class CalcLogic {
 				this.operationLog.append(" UD ");
 				break;
 			}
-		} else {
-			if (this.interfaceText.length() != 0) {
-				this.operationResult = formatedNumber();
-			}
-			switch (operation) {
-			case ADDITION:
-				this.operationLog.append(this.operationResult + " + ");
-				break;
-			case SUBTRACTION:
-				this.operationLog.append(this.operationResult + " - ");
-				break;
-			case MULTIPLICATION:
-				this.operationLog.append(this.operationResult + " * ");
-				break;
-			case DEVISION:
-				this.operationLog.append(this.operationResult + " / ");
-				break;
-			default:
-				this.operationLog.append(this.operationResult + " UD ");
-				break;
-			}
+			this.activeOperation = operation;
+			this.interfaceText.setLength(0);
 		}
-		this.activeOperation = operation;
-		this.interfaceText.setLength(0);
 	}
 
 	public void TypeIn(String input) {
 		if (input == ".") {
 			if (this.interfaceText.indexOf(".") == -1) {
+				if (this.interfaceText.length() == 0) {
+					this.interfaceText.append("0");
+				}
 				this.interfaceText.append(input);
 				return;
 			}
 			return;
 		}
 		if (input == "0") {
-			if ((this.interfaceText.indexOf(".") != -1) || (Double.parseDouble(this.getCurrentInput()) != 0)) {
+			if ((this.interfaceText.indexOf(".") != -1) || this.getCurrentInput() != "0") {
 				this.interfaceText.append(input);
 				return;
 			}
@@ -127,9 +118,8 @@ public class CalcLogic {
 	}
 
 	public void Delete() {
-		if (this.interfaceText.length() > 1) {
-			this.interfaceText.setLength(interfaceText.length() - 1);
-		} else {
+		this.interfaceText.setLength(interfaceText.length() - 1);
+		if (this.interfaceText.length() == 0) {
 			this.interfaceText.append("0");
 		}
 	}

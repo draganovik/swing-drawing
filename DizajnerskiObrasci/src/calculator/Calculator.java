@@ -342,6 +342,7 @@ public class Calculator {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Calculator.TypeIn(".");
+				txtInterface.setText(Calculator.getCurrentInput());
 			}
 		});
 		GridBagConstraints gbc_btnNumber_Comma = new GridBagConstraints();
