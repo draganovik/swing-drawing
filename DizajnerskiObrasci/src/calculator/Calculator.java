@@ -35,6 +35,7 @@ public class Calculator {
 			}
 		});
 	}
+
 	private JButton btnNumber_0;
 	private JButton btnNumber_1;
 	private JButton btnNumber_2;
@@ -53,18 +54,74 @@ public class Calculator {
 	private JButton btnOperation_Subtraction;
 	private JButton btnSpecial_Clear;
 	private JButton btnSpecial_Delete;
-	private CalcLogic Calculator;
+	private Operator Calculator;
 	private JFrame frmIt;
 	private JPanel panel;
 	private JTextField txtInterface;
 
 	private JTextField txtOperationLog;
+	private StringBuilder consoleValue;
 
 	/**
 	 * Create the application.
 	 */
 	public Calculator() {
+		Calculator = new Operator();
+		consoleValue = new StringBuilder();
 		initialize();
+	}
+
+	private void TypeIn(String input) {
+		consoleValue.setLength(0);
+		consoleValue.append(txtInterface.getText());
+		switch (input) {
+		case "0": {
+			if (!consoleValue.toString().equals("0")) {
+				consoleValue.append(input);
+			}
+			break;
+		}
+		case ".": {
+			if (this.consoleValue.indexOf(".") == -1) {
+				if (this.consoleValue.length() == 0) {
+					this.consoleValue.append("0");
+				}
+				this.consoleValue.append(input);
+				break;
+			}
+			break;
+		}
+		default:
+			if (consoleValue.toString().equals("0") || consoleValue.toString().equals(Calculator.getValueFormatted())) {
+				consoleValue.setLength(0);
+				consoleValue.append(input);
+				break;
+			}
+			consoleValue.append(input);
+			break;
+		}
+		txtInterface.setText(consoleValue.toString());
+	}
+
+	private void Clear() {
+		txtInterface.setText("0");
+		txtOperationLog.setText("");
+		Calculator.Clear();
+	}
+
+	private void DeleteChar() {
+		if (!txtInterface.getText().equals(Calculator.getValueFormatted())) {
+			consoleValue.setLength(0);
+			consoleValue.append(txtInterface.getText());
+			if (consoleValue.length() > 1) {
+				consoleValue.setLength(consoleValue.length() - 1);
+				txtInterface.setText(consoleValue.toString());
+			} else {
+				txtInterface.setText("0");
+			}
+		} else {
+			Clear();
+		}
 	}
 
 	/**
@@ -113,8 +170,7 @@ public class Calculator {
 		btnNumber_0.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("0");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("0");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_0 = new GridBagConstraints();
@@ -128,8 +184,7 @@ public class Calculator {
 		btnNumber_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("1");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("1");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_1 = new GridBagConstraints();
@@ -142,8 +197,7 @@ public class Calculator {
 		btnNumber_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("2");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("2");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_2 = new GridBagConstraints();
@@ -156,8 +210,7 @@ public class Calculator {
 		btnNumber_3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("3");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("3");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_3 = new GridBagConstraints();
@@ -170,8 +223,7 @@ public class Calculator {
 		btnNumber_4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("4");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("4");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_4 = new GridBagConstraints();
@@ -184,8 +236,7 @@ public class Calculator {
 		btnNumber_5.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("5");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("5");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_5 = new GridBagConstraints();
@@ -198,8 +249,7 @@ public class Calculator {
 		btnNumber_6.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("6");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("6");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_6 = new GridBagConstraints();
@@ -212,8 +262,7 @@ public class Calculator {
 		btnNumber_7.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("7");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("7");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_7 = new GridBagConstraints();
@@ -226,8 +275,7 @@ public class Calculator {
 		btnNumber_8.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("8");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("8");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_8 = new GridBagConstraints();
@@ -240,8 +288,7 @@ public class Calculator {
 		btnNumber_9.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn("9");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn("9");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_9 = new GridBagConstraints();
@@ -254,9 +301,7 @@ public class Calculator {
 		btnSpecial_Clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Clear();
-				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getCurrentInput());
+				Clear();
 			}
 		});
 		GridBagConstraints gbc_btnSpecial_Clear = new GridBagConstraints();
@@ -269,8 +314,7 @@ public class Calculator {
 		btnSpecial_Delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Delete();
-				txtInterface.setText(Calculator.getCurrentInput());
+				DeleteChar();
 			}
 		});
 		GridBagConstraints gbc_btnSpecial_Delete = new GridBagConstraints();
@@ -281,10 +325,11 @@ public class Calculator {
 
 		btnOperation_Devision = new JButton("/");
 		btnOperation_Devision.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Devide();
+				Calculator.Devide(Double.parseDouble(txtInterface.getText()));
 				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getOperationResult());
+				txtInterface.setText(Calculator.getValueFormatted());
 			}
 		});
 		GridBagConstraints gbc_btnOperation_Devision = new GridBagConstraints();
@@ -295,10 +340,11 @@ public class Calculator {
 
 		btnOperation_Multiplication = new JButton("X");
 		btnOperation_Multiplication.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Multiply();;
+				Calculator.Multiply(Double.parseDouble(txtInterface.getText()));
 				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getOperationResult());
+				txtInterface.setText(Calculator.getValueFormatted());
 			}
 		});
 		GridBagConstraints gbc_btnOperation_Multiplication = new GridBagConstraints();
@@ -309,10 +355,11 @@ public class Calculator {
 
 		btnOperation_Subtraction = new JButton("-");
 		btnOperation_Subtraction.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Subtract();
+				Calculator.Subtract(Double.parseDouble(txtInterface.getText()));
 				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getOperationResult());
+				txtInterface.setText(Calculator.getValueFormatted());
 			}
 		});
 		GridBagConstraints gbc_btnOperation_Subtraction = new GridBagConstraints();
@@ -325,9 +372,9 @@ public class Calculator {
 		btnOperation_Addition.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Add();
+				Calculator.Add(Double.parseDouble(txtInterface.getText()));
 				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getOperationResult());
+				txtInterface.setText(Calculator.getValueFormatted());
 
 			}
 		});
@@ -341,8 +388,7 @@ public class Calculator {
 		btnNumber_Comma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.TypeIn(".");
-				txtInterface.setText(Calculator.getCurrentInput());
+				TypeIn(".");
 			}
 		});
 		GridBagConstraints gbc_btnNumber_Comma = new GridBagConstraints();
@@ -355,9 +401,9 @@ public class Calculator {
 		btnOperation_Equals.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Calculator.Equalize();
+				Calculator.Conclude(Double.parseDouble(txtInterface.getText()));
 				txtOperationLog.setText(Calculator.getOperationLog());
-				txtInterface.setText(Calculator.getOperationResult());
+				txtInterface.setText(Calculator.getValueFormatted());
 			}
 		});
 		GridBagConstraints gbc_btnOperation_Equals = new GridBagConstraints();
@@ -367,7 +413,7 @@ public class Calculator {
 		gbc_btnOperation_Equals.gridy = 3;
 		panel.add(btnOperation_Equals, gbc_btnOperation_Equals);
 
-		Calculator = new CalcLogic();
+		Calculator = new Operator();
 	}
 
 }
