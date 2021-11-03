@@ -20,37 +20,32 @@ public class Operator {
 		if (state == OperatorState.UNSET) {
 			currentValue = number;
 			operationLog.setLength(0);
-			operationLog.append(dfInterface.format(number));
 
 		} else {
 			switch (state) {
 			case ADDITION:
 				currentValue += number;
-				operationLog.append("+" + dfInterface.format(number));
 				break;
 			case SUBTRACTION:
 				currentValue -= number;
-				operationLog.append("-" + dfInterface.format(number));
 				break;
 			case MULTIPLICATION:
 				currentValue *= number;
-				operationLog.append("*" + dfInterface.format(number));
 				break;
 			case DEVISION:
 				currentValue /= number;
-				operationLog.append("/" + dfInterface.format(number));
+				
 				break;
 			default:
 				break;
 			}
 		}
+		operationLog.append(dfInterface.format(number));
 	}
 
 	public void Add(double number) {
 		CalculatePrevious(number);
-		if (state == OperatorState.UNSET) {
-			operationLog.append("+");
-		}
+		operationLog.append("+");
 		state = OperatorState.ADDITION;
 	}
 
@@ -69,25 +64,19 @@ public class Operator {
 
 	public void Devide(double number) {
 		CalculatePrevious(number);
-		if (state == OperatorState.UNSET) {
-			operationLog.append("/");
-		}
+		operationLog.append("/");
 		state = OperatorState.DEVISION;
 	}
 
 	public void Multiply(double number) {
 		CalculatePrevious(number);
-		if (state == OperatorState.UNSET) {
-			operationLog.append("*");
-		}
+		operationLog.append("*");
 		state = OperatorState.MULTIPLICATION;
 	}
 
 	public void Subtract(double number) {
 		CalculatePrevious(number);
-		if (state == OperatorState.UNSET) {
-			operationLog.append("-");
-		}
+		operationLog.append("-");
 		state = OperatorState.SUBTRACTION;
 	}
 
