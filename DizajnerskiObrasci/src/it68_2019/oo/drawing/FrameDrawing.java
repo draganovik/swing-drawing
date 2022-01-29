@@ -129,8 +129,7 @@ public class FrameDrawing extends JFrame {
 						pnlDrawing.updateShape(modal.line);
 					}
 				} else if (pnlDrawing.getSelectedShape() instanceof Rectangle) {
-					DlgManageRectangle modal = new DlgManageRectangle((Rectangle) pnlDrawing.getSelectedShape(),
-							true);
+					DlgManageRectangle modal = new DlgManageRectangle((Rectangle) pnlDrawing.getSelectedShape(), true);
 					ShowDialog(modal);
 					if (modal.IsSuccessful) {
 						pnlDrawing.updateShape(modal.rectangle);
