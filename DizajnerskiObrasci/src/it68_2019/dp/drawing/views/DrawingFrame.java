@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import it68_2019.dp.drawing.controllers.DrawingController;
+import javax.swing.JTabbedPane;
+import java.awt.event.MouseMotionAdapter;
 
 public class DrawingFrame extends JFrame {
 	private JPanel contentPane;
@@ -21,6 +23,8 @@ public class DrawingFrame extends JFrame {
 	private ToolbarView toolbar;
 	private LogPanelView logPanel;
 	private DrawingController controller;
+	private JTabbedPane tabbedPane;
+	private LayersPanelView layersPanel;
 
 	private void setupFrame() {
 		setTitle("Draganović Mladen - IT68/2019");
@@ -35,10 +39,24 @@ public class DrawingFrame extends JFrame {
 
 	private void setupDrawingView() {
 		view = new DrawingView();
+		view.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				controller.mouseDragged(e);
+			}
+		});
 		view.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controller.mouseClicked(e);
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				controller.mousePressed(e);
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				controller.mouseReleased(e);
 			}
 		});
 		contentPane.add(view, BorderLayout.CENTER);
@@ -48,10 +66,18 @@ public class DrawingFrame extends JFrame {
 		toolbar = new ToolbarView();
 		contentPane.add(toolbar, BorderLayout.WEST);
 	}
-	
-	private void setupLogPanelView() {
-		logPanel = new LogPanelView();
-		contentPane.add(logPanel, BorderLayout.EAST);
+
+	private void setupTabPanelsView() {
+		{
+			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+			contentPane.add(tabbedPane, BorderLayout.EAST);
+			{
+				layersPanel = new LayersPanelView();
+				tabbedPane.addTab("Object Layers", null, layersPanel, null);
+			}
+			logPanel = new LogPanelView();
+			tabbedPane.addTab("Log History", null, logPanel, null);
+		}
 	}
 
 	public DrawingFrame() {
@@ -59,7 +85,7 @@ public class DrawingFrame extends JFrame {
 		setupFrame();
 		setupDrawingView();
 		setupToolbarView();
-		setupLogPanelView();
+		setupTabPanelsView();
 	}
 
 	public DrawingView getView() {

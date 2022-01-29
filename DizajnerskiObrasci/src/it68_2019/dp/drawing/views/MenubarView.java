@@ -9,6 +9,7 @@ import javax.swing.JRadioButtonMenuItem;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
 
 public class MenubarView extends JMenuBar {
 
@@ -16,6 +17,11 @@ public class MenubarView extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = -4578066578067109451L;
+	private JMenuItem mntmLoad;
+	private JMenuItem mntmSave;
+	private JMenu menu_1;
+	private JMenuItem mntmImport;
+	private JMenuItem mntmExport;
 
 	/**
 	 * Create the panel.
@@ -35,22 +41,31 @@ public class MenubarView extends JMenuBar {
 		add(menu);
 
 		// a group of JMenuItems
-		menuItem = new JMenuItem("A text-only menu item", KeyEvent.VK_T);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-		menu.add(menuItem);
+		mntmLoad = new JMenuItem("Open", KeyEvent.VK_T);
+		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
+		mntmLoad.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+		menu.add(mntmLoad);
 
-		menuItem = new JMenuItem("Both text and icon");
-		menuItem.setMnemonic(KeyEvent.VK_B);
-		menu.add(menuItem);
-
-		menuItem = new JMenuItem("text");
-		menuItem.setMnemonic(KeyEvent.VK_D);
-		menu.add(menuItem);
+		mntmSave = new JMenuItem("Save");
+		mntmSave.setMnemonic(KeyEvent.VK_B);
+		menu.add(mntmSave);
 
 		// a group of radio button menu items
 		menu.addSeparator();
 		ButtonGroup group = new ButtonGroup();
+		submenu = new JMenu("Log file");
+		submenu.setMnemonic(KeyEvent.VK_S);
+		
+				mntmImport = new JMenuItem("Import");
+				mntmImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+				submenu.add(mntmImport);
+				
+						mntmExport = new JMenuItem("Export");
+						submenu.add(mntmExport);
+						menu.add(submenu);
+		
+				// a submenu
+				menu.addSeparator();
 		rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
 		rbMenuItem.setSelected(true);
 		rbMenuItem.setMnemonic(KeyEvent.VK_R);
@@ -72,28 +87,45 @@ public class MenubarView extends JMenuBar {
 		cbMenuItem.setMnemonic(KeyEvent.VK_H);
 		menu.add(cbMenuItem);
 
-		// a submenu
-		menu.addSeparator();
-		submenu = new JMenu("A submenu");
-		submenu.setMnemonic(KeyEvent.VK_S);
-
-		menuItem = new JMenuItem("An item in the submenu");
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
-		submenu.add(menuItem);
-
-		menuItem = new JMenuItem("Another item");
-		submenu.add(menuItem);
-		menu.add(submenu);
-
 		// Build second menu in the menu bar.
-		menu = new JMenu("Edit");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
-		add(menu);
+		menu_1 = new JMenu("Edit");
+		menu_1.setMnemonic(KeyEvent.VK_N);
+		menu_1.getAccessibleContext().setAccessibleDescription("This menu does nothing");
+		add(menu_1);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Undo");
+		menu_1.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Redo");
+		menu_1.add(mntmNewMenuItem_1);
+		
+		JSeparator separator = new JSeparator();
+		menu_1.add(separator);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Clear canvas");
+		menu_1.add(mntmNewMenuItem_2);
 		
 		menu = new JMenu("Window");
 		menu.setMnemonic(KeyEvent.VK_N);
 		menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
+		
+		JMenu mnNewMenu = new JMenu("Object");
+		add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Move up");
+		mnNewMenu.add(mntmNewMenuItem_6);
+		
+		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Move down");
+		mnNewMenu.add(mntmNewMenuItem_7);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnNewMenu.add(separator_1);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Bring to front");
+		mnNewMenu.add(mntmNewMenuItem_4);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Move to back");
+		mnNewMenu.add(mntmNewMenuItem_5);
 		add(menu);
 
 	}
