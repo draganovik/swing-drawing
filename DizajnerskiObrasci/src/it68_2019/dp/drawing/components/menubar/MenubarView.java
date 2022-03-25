@@ -1,4 +1,4 @@
-package it68_2019.dp.drawing.views;
+package it68_2019.dp.drawing.components.menubar;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;

@@ -3,6 +3,8 @@ package it68_2019.dp.drawing.models.geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import it68_2019.dp.drawing.models.geometry.Point;
+
 public class Rectangle extends SurfaceShape {
 	private Point upperLeftPoint;
 	private int width;
@@ -122,6 +124,28 @@ public class Rectangle extends SurfaceShape {
 	@Override
 	public String toString() {
 		return "Upper left point=" + this.upperLeftPoint + ", width=" + width + ", height=" + height;
+	}
+
+	@Override
+	public void setStartPoint(Point point) {
+		this.upperLeftPoint = point;
+		
+	}
+
+	@Override
+	public void setEndPoint(Point point) {
+		System.out.println(upperLeftPoint.compareTo(point));
+		
+		Point pressedPoint = new Point(upperLeftPoint.getX(), upperLeftPoint.getY());
+		Point ulPoint = new Point(Math.min(pressedPoint.getX(), point.getX()),
+				Math.min(pressedPoint.getY(), point.getY()));
+		
+		width = pressedPoint.getX() - ulPoint.getX();
+		height = pressedPoint.getY() - ulPoint.getY();
+		
+		upperLeftPoint = ulPoint;
+		
+		
 	}
 
 }

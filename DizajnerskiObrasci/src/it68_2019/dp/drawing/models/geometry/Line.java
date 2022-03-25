@@ -10,9 +10,7 @@ public class Line extends Shape {
 	public double length() {
 		return startPoint.distanceOf(endPoint);
 	}
-
-	public Line() {
-	}
+	public Line() {};
 
 	public Line(Point startPoint, Point endPoint) {
 		this.startPoint = startPoint;
@@ -85,6 +83,7 @@ public class Line extends Shape {
 		return startPoint;
 	}
 
+	@Override
 	public void setStartPoint(Point startPoint) {
 		this.startPoint = startPoint;
 	}
@@ -93,6 +92,7 @@ public class Line extends Shape {
 		return endPoint;
 	}
 
+	@Override
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
 	}

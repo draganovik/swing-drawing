@@ -1,4 +1,4 @@
-package it68_2019.dp.drawing.views;
+package it68_2019.dp.drawing.components.layerspanel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

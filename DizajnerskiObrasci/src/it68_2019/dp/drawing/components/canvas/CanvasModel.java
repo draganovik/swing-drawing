@@ -1,10 +1,10 @@
-package it68_2019.dp.drawing.models;
+package it68_2019.dp.drawing.components.canvas;
 
 import java.util.ArrayList;
 
 import it68_2019.dp.drawing.models.geometry.Shape;
 
-public class DrawingModel {
+public class CanvasModel {
 	private ArrayList<Shape> shapes = new ArrayList<Shape>();
 
 	public void add(Shape shape) {

@@ -110,4 +110,18 @@ public class Point extends Shape {
 		return this.x + separator + this.y;
 	}
 
+	@Override
+	public void setStartPoint(Point point) {
+		this.x = point.x;
+		this.y = point.y;
+		
+	}
+
+	@Override
+	public void setEndPoint(Point point) {
+		this.x = point.x;
+		this.y = point.y;
+		
+	}
+
 }

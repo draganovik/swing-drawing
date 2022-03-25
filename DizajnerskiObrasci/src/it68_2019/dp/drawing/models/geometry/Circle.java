@@ -7,9 +7,8 @@ public class Circle extends SurfaceShape {
 	private Point center;
 	private int radius;
 
-	public Circle() {
-	}
-
+	public Circle() {};
+	
 	public Circle(Point center, int radius) {
 		this.center = center;
 		this.radius = radius;
@@ -111,6 +110,17 @@ public class Circle extends SurfaceShape {
 	@Override
 	public String toString() {
 		return "Circle [center=" + center + ", radius=" + radius + "]";
+	}
+
+	@Override
+	public void setStartPoint(Point point) {
+		center = point;
+		
+	}
+
+	@Override
+	public void setEndPoint(Point point) {
+		radius = (int) Math.abs(center.distanceOf(point));
 	}
 
 }
