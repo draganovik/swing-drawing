@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 public class Circle extends SurfaceShape {
 	private Point center;
-	private int radius;
+	protected int radius;
 
 	public Circle() {};
 	

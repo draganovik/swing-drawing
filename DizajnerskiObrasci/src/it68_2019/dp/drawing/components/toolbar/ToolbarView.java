@@ -17,6 +17,10 @@ import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ToolbarView extends JPanel {
 	private ButtonGroup actionsButtonGroup = new ButtonGroup();

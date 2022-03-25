@@ -1,6 +1,8 @@
 package it68_2019.dp.drawing;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -99,45 +101,38 @@ public class ApplicationFrame extends JFrame {
 		toolbarModel = new ToolbarModel();
 		toolbarController = new ToolbarController(toolbarModel, toolbarView);
 		toolbarView.setModel(toolbarModel);
-		toolbarView.btnToolbarSelect.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarSelect.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.SELECT);
 			}
 		});
-		toolbarView.btnToolbarPoint.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarPoint.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.POINT);
 			}
 		});
-		toolbarView.btnToolbarLine.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarLine.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.LINE);
 			}
 		});
-		toolbarView.btnToolbarRectangle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarRectangle.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.RECTANGLE);
 			}
 		});
-		toolbarView.btnToolbarCircle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarCircle.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.CIRCLE);
 			}
 		});
-		toolbarView.btnToolbarDonut.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarDonut.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.DONUT);
 			}
 		});
-		toolbarView.btnToolbarHexagon.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		toolbarView.btnToolbarHexagon.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
 				toolbarController.setToolbarAction(ToolbarAction.HEXAGON);
 			}
 		});

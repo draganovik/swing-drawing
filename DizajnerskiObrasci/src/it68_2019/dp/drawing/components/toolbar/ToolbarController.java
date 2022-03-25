@@ -11,6 +11,7 @@ public class ToolbarController {
 		this.view = view;
 	}
 	public void setToolbarAction(ToolbarAction action) {
+		System.out.println(action);
 		model.setToolbarAction(action);
 	}
 	private void setToolbarAction_ForegroundPicker() {

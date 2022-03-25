@@ -113,5 +113,11 @@ public class Donut extends Circle {
 		return "Circle [center=" + super.getCenter() + ", radius=" + super.getRadius() + ", Inner radius="
 				+ this.getInnerRadius() + "]";
 	}
+	
+	@Override
+	public void setEndPoint(Point point) {
+		super.setEndPoint(point);
+		innerRadius = (int) (radius*0.45);
+	}
 
 }
