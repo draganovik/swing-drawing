@@ -12,7 +12,7 @@ Izmene/Dodatne funkcionalnosti:
 - [ ] 9. učitavanje tekstualne datoteke koja sadrži log izvršenih komandi i na osnovu sadržaja, kreiranje odgovarajućeg crteža, komandu po komandu u interakciji sa korisnikom, učitavanje kompletnog crteža,
 - [ ] 10. promenu pozicije oblika po Z osi, *To Front* (pozicija po pozicija), *To Back* (pozicija po pozicija), *Bring To Front* (na najvišu poziciju), *Bring To Back* (na najnižu poziciju),
 - [ ] 11. prikazati trenutno aktivne boje za crtanje ivice i popunjavanje oblika, klikom na boju, otvara se dijalog sa mogućnošću promene trenutno aktivne boje,
-- [ ] 12. omogućiti selekciju više oblika,
+- [-] 12. omogućiti selekciju više oblika,
 - [ ] 13. dugme za brisanje treba da bude dostupno samo u slučaju da postoje selektovani objekti – *Observer* obrazac,
 - [ ] 14. dugme za modifikaciju treba da bude dostupan samo u slučaju kada je selektovan samo jedan oblik – *Observer* obrazac.
 
