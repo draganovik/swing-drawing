@@ -2,6 +2,7 @@ package it68_2019.dp.drawing.components.canvas;
 
 import java.awt.event.MouseEvent;
 
+import it68_2019.dp.drawing.adapters.HexagonAdapter;
 import it68_2019.dp.drawing.models.geometry.*;
 import it68_2019.dp.drawing.types.ToolbarAction;
 
@@ -16,44 +17,45 @@ public class CanvasController {
 		this.model = model;
 		this.view = view;
 	}
-	
-	public void createShape(ToolbarAction toolbarAction) {
-		 switch(toolbarAction) {
-		 case POINT:
-			 createdShape = new Point();
-			 break;
-		 case LINE:
-			 createdShape = new Line();
-			 break;
-		 case RECTANGLE:
-			 createdShape = new Rectangle();
-			 break;
-		 case CIRCLE:
-			 createdShape = new Circle();
-			 break;
-		 case DONUT:
-			 createdShape = new Donut();
-			 break;
-		 case HEXAGON:
-			 //createdShape = new Hexagon();
-			 break;
-		 default:
-		 case SELECT:
-			 createdShape = null;
-			 break;
-		 }
-	}
 
-	public void mouseClicked(MouseEvent e) {
-		
+	public void createShape(ToolbarAction toolbarAction) {
+		switch (toolbarAction) {
+		case POINT:
+			createdShape = new Point();
+			break;
+		case LINE:
+			createdShape = new Line();
+			break;
+		case RECTANGLE:
+			createdShape = new Rectangle();
+			break;
+		case CIRCLE:
+			createdShape = new Circle();
+			break;
+		case DONUT:
+			createdShape = new Donut();
+			break;
+		case HEXAGON:
+			createdShape = new HexagonAdapter();
+			break;
+		default:
+		case SELECT:
+			createdShape = null;
+			break;
+		}
 	}
 
 	public void mousePressed(MouseEvent e) {
-		startPoint = new Point(e.getX(), e.getY());
-		endPoint = new Point(e.getX(), e.getY());
-		createdShape.setStartPoint(startPoint);
-		createdShape.setEndPoint(endPoint);
-		model.add(createdShape);
+		Point mousePoint = new Point(e.getX(), e.getY());
+		if (createdShape != null) {
+			startPoint = mousePoint;
+			endPoint = mousePoint;
+			createdShape.setStartPoint(startPoint);
+			createdShape.setEndPoint(endPoint);
+			model.add(createdShape);
+			return;
+		}
+		model.select(mousePoint);
 	}
 
 	public void mouseReleased(MouseEvent e) {

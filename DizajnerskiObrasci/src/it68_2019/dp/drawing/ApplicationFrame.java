@@ -3,6 +3,8 @@ package it68_2019.dp.drawing;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -76,11 +78,6 @@ public class ApplicationFrame extends JFrame {
 			}
 		});
 		canvasView.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvasController.createShape(toolbarModel.getToolbarAction());
-				canvasController.mouseClicked(e);
-			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {

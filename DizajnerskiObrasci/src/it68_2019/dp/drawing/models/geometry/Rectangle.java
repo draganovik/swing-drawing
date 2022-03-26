@@ -7,6 +7,7 @@ import it68_2019.dp.drawing.models.geometry.Point;
 
 public class Rectangle extends SurfaceShape {
 	private Point upperLeftPoint;
+	private Point drawStartPoint;
 	private int width;
 	private int height;
 
@@ -129,23 +130,17 @@ public class Rectangle extends SurfaceShape {
 	@Override
 	public void setStartPoint(Point point) {
 		this.upperLeftPoint = point;
-		
+		this.drawStartPoint = point;
 	}
 
 	@Override
 	public void setEndPoint(Point point) {
-		System.out.println(upperLeftPoint.compareTo(point));
+		upperLeftPoint = new Point(Math.min(drawStartPoint.getX(), point.getX()),
+				Math.min(drawStartPoint.getY(), point.getY()));
 		
-		Point pressedPoint = new Point(upperLeftPoint.getX(), upperLeftPoint.getY());
-		Point ulPoint = new Point(Math.min(pressedPoint.getX(), point.getX()),
-				Math.min(pressedPoint.getY(), point.getY()));
-		
-		width = pressedPoint.getX() - ulPoint.getX();
-		height = pressedPoint.getY() - ulPoint.getY();
-		
-		upperLeftPoint = ulPoint;
-		
-		
+		width = drawStartPoint.distanceByXOf(point);
+		height = drawStartPoint.distanceByYOf(point);
+
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import it68_2019.dp.drawing.models.geometry.Shape;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CanvasView extends JPanel {
 
