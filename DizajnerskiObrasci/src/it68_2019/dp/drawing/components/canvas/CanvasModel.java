@@ -21,19 +21,41 @@ public class CanvasModel {
 	public Shape getShape(int index) {
 		return shapes.get(index);
 	}
-	
+
 	public void select(Point point) {
-		if (!shiftDown) {
+		int index;
+		int selectedShapesInitialSize = selectedShapes.size();
+		for (index = shapes.size(); --index >= 0;) {
+			if (shapes.get(index).contains(point)) {
+				if (!shapes.get(index).isSelected()) {
+					shapes.get(index).setSelected(true);
+					selectedShapes.add(shapes.get(index));
+				}
+				break;
+			}
+		}
+		System.out.println(index);
+		System.out.println(shiftDown);
+		if (!shiftDown && selectedShapesInitialSize != selectedShapes.size()) {
+			this.unselectAll(selectedShapes.get(selectedShapes.size() - 1));
+		}
+		if (selectedShapes.size() > 0 && index == -1) {
+			this.unselectAll();
+		}
+	}
+
+	public void unselectAll() {
 		for (Shape shape : shapes) {
 			shape.setSelected(false);
 			selectedShapes.remove(shape);
 		}
-		}
-		for (int i = shapes.size(); i-- > 0;) {
-			if (shapes.get(i).contains(point)) {
-				shapes.get(i).setSelected(true);
-				selectedShapes.add(shapes.get(i));
-				break;
+	}
+
+	public void unselectAll(Shape leave) {
+		for (Shape shape : shapes) {
+			if (!shape.equals(leave)) {
+				shape.setSelected(false);
+				selectedShapes.remove(shape);
 			}
 		}
 	}
@@ -44,7 +66,7 @@ public class CanvasModel {
 
 	public void isShiftDown(boolean shiftDown) {
 		this.shiftDown = shiftDown;
-		
+
 	}
 
 }

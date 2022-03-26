@@ -1,5 +1,6 @@
 package it68_2019.dp.drawing.components.canvas;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 import it68_2019.dp.drawing.adapters.HexagonAdapter;
@@ -55,6 +56,7 @@ public class CanvasController {
 			model.add(createdShape);
 			return;
 		}
+		model.isShiftDown(e.isShiftDown());
 		model.select(mousePoint);
 	}
 
