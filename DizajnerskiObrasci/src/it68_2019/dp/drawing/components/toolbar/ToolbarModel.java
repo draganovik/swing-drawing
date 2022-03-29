@@ -4,7 +4,7 @@ import it68_2019.dp.drawing.types.ToolbarAction;
 
 public class ToolbarModel {
 	private ToolbarAction toolbarAction;
-	
+
 	public ToolbarModel() {
 		toolbarAction = ToolbarAction.SELECT;
 	}

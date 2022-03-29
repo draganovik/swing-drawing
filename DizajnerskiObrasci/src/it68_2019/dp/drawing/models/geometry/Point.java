@@ -114,14 +114,14 @@ public class Point extends Shape {
 	public void setStartPoint(Point point) {
 		this.x = point.x;
 		this.y = point.y;
-		
+
 	}
 
 	@Override
 	public void setEndPoint(Point point) {
 		this.x = point.x;
 		this.y = point.y;
-		
+
 	}
 
 }

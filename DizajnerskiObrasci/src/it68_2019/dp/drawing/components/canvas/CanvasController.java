@@ -1,10 +1,14 @@
 package it68_2019.dp.drawing.components.canvas;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 import it68_2019.dp.drawing.adapters.HexagonAdapter;
-import it68_2019.dp.drawing.models.geometry.*;
+import it68_2019.dp.drawing.models.geometry.Circle;
+import it68_2019.dp.drawing.models.geometry.Donut;
+import it68_2019.dp.drawing.models.geometry.Line;
+import it68_2019.dp.drawing.models.geometry.Point;
+import it68_2019.dp.drawing.models.geometry.Rectangle;
+import it68_2019.dp.drawing.models.geometry.Shape;
 import it68_2019.dp.drawing.types.ToolbarAction;
 
 public class CanvasController {

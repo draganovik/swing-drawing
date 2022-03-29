@@ -8,7 +8,9 @@ public abstract class Shape implements Movable, Comparable<Object> {
 	private boolean selected;
 	private Color color = Color.DARK_GRAY;
 
-	public Shape() {};
+	public Shape() {
+	};
+
 	public Shape(Color color) {
 		this.color = color;
 	}
@@ -17,11 +19,11 @@ public abstract class Shape implements Movable, Comparable<Object> {
 		this(color);
 		this.selected = selected;
 	}
-	
+
 	public abstract void setStartPoint(Point point);
-	
+
 	public abstract void setEndPoint(Point point);
-	
+
 	public abstract boolean contains(Point point);
 
 	public abstract void draw(Graphics g);

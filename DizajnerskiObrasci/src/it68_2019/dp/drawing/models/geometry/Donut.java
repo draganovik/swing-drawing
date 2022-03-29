@@ -2,6 +2,8 @@ package it68_2019.dp.drawing.models.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 
 public class Donut extends Circle {
 
@@ -57,10 +59,10 @@ public class Donut extends Circle {
 
 	@Override
 	public void fill(Graphics g) {
-		super.fill(g);
 		g.setColor(new Color(255, 255, 255));
-		g.fillOval(getCenter().getX() - innerRadius + 1, getCenter().getY() - innerRadius + 1, (innerRadius - 1) * 2,
-				(innerRadius - 1) * 2);
+		Area aInnerCircle = new Area(new Ellipse2D.Double(getCenter().getX() - innerRadius + 1,
+				getCenter().getY() - innerRadius + 1, (innerRadius - 1) * 2, (innerRadius - 1) * 2));
+		super.fill(g, aInnerCircle);
 
 	}
 
@@ -113,11 +115,11 @@ public class Donut extends Circle {
 		return "Circle [center=" + super.getCenter() + ", radius=" + super.getRadius() + ", Inner radius="
 				+ this.getInnerRadius() + "]";
 	}
-	
+
 	@Override
 	public void setEndPoint(Point point) {
 		super.setEndPoint(point);
-		innerRadius = (int) (radius*0.45);
+		innerRadius = (int) (radius * 0.45);
 	}
 
 }

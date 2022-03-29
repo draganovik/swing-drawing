@@ -1,15 +1,16 @@
 package it68_2019.dp.drawing.components.menubar;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
-import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 
 public class MenubarView extends JMenuBar {
 
@@ -55,17 +56,17 @@ public class MenubarView extends JMenuBar {
 		ButtonGroup group = new ButtonGroup();
 		submenu = new JMenu("Log file");
 		submenu.setMnemonic(KeyEvent.VK_S);
-		
-				mntmImport = new JMenuItem("Import");
-				mntmImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
-				submenu.add(mntmImport);
-				
-						mntmExport = new JMenuItem("Export");
-						submenu.add(mntmExport);
-						menu.add(submenu);
-		
-				// a submenu
-				menu.addSeparator();
+
+		mntmImport = new JMenuItem("Import");
+		mntmImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
+		submenu.add(mntmImport);
+
+		mntmExport = new JMenuItem("Export");
+		submenu.add(mntmExport);
+		menu.add(submenu);
+
+		// a submenu
+		menu.addSeparator();
 		rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
 		rbMenuItem.setSelected(true);
 		rbMenuItem.setMnemonic(KeyEvent.VK_R);
@@ -92,38 +93,38 @@ public class MenubarView extends JMenuBar {
 		menu_1.setMnemonic(KeyEvent.VK_N);
 		menu_1.getAccessibleContext().setAccessibleDescription("This menu does nothing");
 		add(menu_1);
-		
+
 		JMenuItem mntmNewMenuItem = new JMenuItem("Undo");
 		menu_1.add(mntmNewMenuItem);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Redo");
 		menu_1.add(mntmNewMenuItem_1);
-		
+
 		JSeparator separator = new JSeparator();
 		menu_1.add(separator);
-		
+
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Clear canvas");
 		menu_1.add(mntmNewMenuItem_2);
-		
+
 		menu = new JMenu("Window");
 		menu.setMnemonic(KeyEvent.VK_N);
 		menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
-		
+
 		JMenu mnNewMenu = new JMenu("Object");
 		add(mnNewMenu);
-		
+
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Move up");
 		mnNewMenu.add(mntmNewMenuItem_6);
-		
+
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Move down");
 		mnNewMenu.add(mntmNewMenuItem_7);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		mnNewMenu.add(separator_1);
-		
+
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Bring to front");
 		mnNewMenu.add(mntmNewMenuItem_4);
-		
+
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Move to back");
 		mnNewMenu.add(mntmNewMenuItem_5);
 		add(menu);

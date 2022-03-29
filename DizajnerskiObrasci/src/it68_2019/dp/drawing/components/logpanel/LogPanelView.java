@@ -26,7 +26,7 @@ public class LogPanelView extends JPanel {
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		list.setModel(listModel);
 		JScrollPane scrollPanel = new JScrollPane(list);
-		scrollPanel.setPreferredSize(new Dimension(200,100));
+		scrollPanel.setPreferredSize(new Dimension(200, 100));
 		setLayout(new BorderLayout(0, 0));
 		add(scrollPanel, BorderLayout.CENTER);
 		mockList(listModel);

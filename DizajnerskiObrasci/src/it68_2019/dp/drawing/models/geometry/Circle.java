@@ -2,13 +2,17 @@ package it68_2019.dp.drawing.models.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 
 public class Circle extends SurfaceShape {
 	private Point center;
 	protected int radius;
 
-	public Circle() {};
-	
+	public Circle() {
+	};
+
 	public Circle(Point center, int radius) {
 		this.center = center;
 		this.radius = radius;
@@ -61,8 +65,21 @@ public class Circle extends SurfaceShape {
 	@Override
 	public void fill(Graphics g) {
 		g.setColor(getBackgroundColor());
-		g.fillOval(center.getX() - radius + 1, center.getY() - radius + 1, (radius - 1) * 2, (radius - 1) * 2);
+		((Graphics2D) g).fill(getGraphicsArea());
 
+	}
+
+	public void fill(Graphics g, Area Shape) {
+		g.setColor(getBackgroundColor());
+		Area areaCircle = getGraphicsArea();
+		areaCircle.subtract(Shape);
+		((Graphics2D) g).fill(areaCircle);
+
+	}
+
+	protected Area getGraphicsArea() {
+		return new Area(new Ellipse2D.Double(center.getX() - radius + 1, center.getY() - radius + 1, (radius - 1) * 2,
+				(radius - 1) * 2));
 	}
 
 	public double area() {
@@ -115,7 +132,7 @@ public class Circle extends SurfaceShape {
 	@Override
 	public void setStartPoint(Point point) {
 		center = point;
-		
+
 	}
 
 	@Override

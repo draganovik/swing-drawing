@@ -3,8 +3,6 @@ package it68_2019.dp.drawing.models.geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import it68_2019.dp.drawing.models.geometry.Point;
-
 public class Rectangle extends SurfaceShape {
 	private Point upperLeftPoint;
 	private Point drawStartPoint;
@@ -137,7 +135,7 @@ public class Rectangle extends SurfaceShape {
 	public void setEndPoint(Point point) {
 		upperLeftPoint = new Point(Math.min(drawStartPoint.getX(), point.getX()),
 				Math.min(drawStartPoint.getY(), point.getY()));
-		
+
 		width = drawStartPoint.distanceByXOf(point);
 		height = drawStartPoint.distanceByYOf(point);
 
