@@ -5,7 +5,7 @@
 Korišćenjem _Java Swing_ implementirati desktop aplikaciju za rad sa 2D grafikom. Aplikacija mora podržavati funkcionalnosti koje su rađene u projektnom zadatku na predmetu Objektno orijentisane informacione tehnologije.
 Izmene/Dodatne funkcionalnosti:
 
-- [ ] 1. crtanje oblika različitim bojama (boja ivice i boja unutrašnjosti) za šta je potrebno koristiti _JColorChooser_ klasu,
+- [x] 1. crtanje oblika različitim bojama (boja ivice i boja unutrašnjosti) za šta je potrebno koristiti _JColorChooser_ klasu,
 - [x] 2. unutrašnjost oblika krug sa rupom treba da bude transparentna (java.awt.Graphics2D, java.awt.Shape, java.awt.geom.Area, java.awt.geom.Ellipse2D),
 - [x] 3. nazivi klasa, metoda i promenljivih moraju biti na engleskom jeziku,
 - [ ] 4. aplikacija mora biti realizovan u skladu sa MVC arhitektonskim obrascem,
@@ -15,7 +15,7 @@ Izmene/Dodatne funkcionalnosti:
 - [ ] 8. zapis u tekstualnu datoteku loga izvršenih komandi na eksterni memorijski medijum, zapis kompletnog crteža (_Serialization_) na eksterni memorijski medijum, - _Strategy_ obrazac,
 - [ ] 9. učitavanje tekstualne datoteke koja sadrži log izvršenih komandi i na osnovu sadržaja, kreiranje odgovarajućeg crteža, komandu po komandu u interakciji sa korisnikom, učitavanje kompletnog crteža,
 - [ ] 10. promenu pozicije oblika po Z osi, _To Front_ (pozicija po pozicija), _To Back_ (pozicija po pozicija), _Bring To Front_ (na najvišu poziciju), _Bring To Back_ (na najnižu poziciju),
-- [ ] 11. prikazati trenutno aktivne boje za crtanje ivice i popunjavanje oblika, klikom na boju, otvara se dijalog sa mogućnošću promene trenutno aktivne boje,
+- [x] 11. prikazati trenutno aktivne boje za crtanje ivice i popunjavanje oblika, klikom na boju, otvara se dijalog sa mogućnošću promene trenutno aktivne boje,
 - [x] 12. omogućiti selekciju više oblika,
 - [ ] 13. dugme za brisanje treba da bude dostupno samo u slučaju da postoje selektovani objekti – _Observer_ obrazac,
 - [ ] 14. dugme za modifikaciju treba da bude dostupan samo u slučaju kada je selektovan samo jedan oblik – _Observer_ obrazac.
