@@ -7,7 +7,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/draganovik/Projects/Obrasci/DizajnerskiObrasci/lib/flatlaf-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/heksagon.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

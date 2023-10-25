@@ -2,12 +2,9 @@ package drawing;
 
 import javax.swing.WindowConstants;
 
-import com.formdev.flatlaf.FlatLightLaf;
-
 public class Main {
 
 	public static void main(String[] args) {
-		FlatLightLaf.setup();
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		ApplicationFrame frame = new ApplicationFrame();
 
