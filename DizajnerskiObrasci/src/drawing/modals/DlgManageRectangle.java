@@ -91,7 +91,7 @@ public class DlgManageRectangle extends JDialog {
 		JLabel lblDimensions = new JLabel("Dimensions");
 		lblDimensions.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 
-		JLabel lblPoint = new JLabel("Upper left corner");
+		JLabel lblPoint = new JLabel("Upper left point");
 		lblPoint.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
