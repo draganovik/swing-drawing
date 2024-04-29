@@ -1,7 +1,7 @@
 package drawing.components.canvas;
 
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.Enumeration;
 
 import drawing.adapters.HexagonAdapter;
 import drawing.components.toolbar.ToolbarController;
@@ -70,6 +70,7 @@ public class CanvasController {
 			}
 		}
 
+		model.refreshList();
 		view.repaint();
 	}
 
@@ -79,6 +80,7 @@ public class CanvasController {
 
 		if (createdShape == null) {
 			model.moveSelectedShapesBy(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
+			model.refreshList();
 			view.repaint();
 			startPoint = endPoint;
 			return;
@@ -96,6 +98,7 @@ public class CanvasController {
 		if (!model.contains(createdShape)) {
 			model.addShape(createdShape);
 		}
+		model.refreshList();
 		view.repaint();
 
 	}
@@ -110,15 +113,18 @@ public class CanvasController {
 
 		handleAction();
 
-		if (createdShape == null) {
-			ArrayList<Shape> selected = model.getAllSelectedShapes();
-			if (selected.size() > 0) {
-				toolbarController.setShapeColor(selected.get(0).getColor());
-				if (selected.get(0) instanceof SurfaceShape) {
-					toolbarController.setShapeBackground(((SurfaceShape) selected.get(0)).getBackgroundColor());
+		switch (toolModel.getToolAction()) {
+		case SELECT:
+			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {
+				Shape shape = en.nextElement();
+				toolbarController.setShapeColor(shape.getColor());
+				if (shape instanceof SurfaceShape) {
+					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());
 				}
 			}
 			return;
+		default:
+			break;
 		}
 
 		createdShape.setStartPoint(startPoint);
@@ -130,6 +136,7 @@ public class CanvasController {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		model.refreshList();
 		view.repaint();
 		if (createdShape != null) {
 			model.selectShape(createdShape);

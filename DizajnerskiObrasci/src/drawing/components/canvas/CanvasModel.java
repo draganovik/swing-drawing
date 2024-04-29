@@ -1,28 +1,35 @@
 package drawing.components.canvas;
 
 import java.awt.Color;
-import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 
 import drawing.geometry.Point;
 import drawing.geometry.Shape;
 import drawing.geometry.SurfaceShape;
 
 public class CanvasModel {
-	private ArrayList<Shape> selectedShapes = new ArrayList<>();
-	private ArrayList<Shape> shapes = new ArrayList<>();
+	private DefaultListModel<Shape> selectedShapes = new DefaultListModel<>();
+	private DefaultListModel<Shape> shapes = new DefaultListModel<>();
 	private boolean shiftDown = false;
 
+	public void refreshList() {
+		for (int index = shapes.size(); --index >= 0;) {
+			shapes.set(index, shapes.get(index));
+		}
+	}
+
 	public void addShape(Shape shape) {
-		shapes.add(shape);
+		shapes.addElement(shape);
 	}
 
 	public void removeShape(Shape shape) {
-		shapes.remove(shape);
+		shapes.removeElement(shape);
 	}
 
 	public void removeSelectedShapes() {
-		for (Shape shape : selectedShapes) {
-			shapes.remove(shape);
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			shapes.removeElement(selectedShapes.get(index));
 		}
 		selectedShapes.clear();
 	}
@@ -31,11 +38,11 @@ public class CanvasModel {
 		return shapes.get(index);
 	}
 
-	public ArrayList<Shape> getAllShapes() {
+	public DefaultListModel<Shape> getAllShapes() {
 		return shapes;
 	}
 
-	public ArrayList<Shape> getAllSelectedShapes() {
+	public DefaultListModel<Shape> getAllSelectedShapes() {
 		return selectedShapes;
 	}
 
@@ -48,7 +55,7 @@ public class CanvasModel {
 			if (shapes.get(index).contains(point)) {
 				if (!shapes.get(index).isSelected()) {
 					shapes.get(index).setSelected(true);
-					selectedShapes.add(shapes.get(index));
+					selectedShapes.addElement(shapes.get(index));
 				}
 				break;
 			}
@@ -66,43 +73,43 @@ public class CanvasModel {
 
 	public void selectShape(Shape shape) {
 		shape.setSelected(true);
-		selectedShapes.add(shape);
+		selectedShapes.addElement(shape);
 
 	}
 
 	public void deselectShape(Shape leave) {
-		for (Shape shape : shapes) {
-			if (!shape.equals(leave)) {
-				shape.setSelected(false);
-				selectedShapes.remove(shape);
+		for (int index = shapes.size(); --index >= 0;) {
+			if (!shapes.get(index).equals(leave)) {
+				shapes.get(index).setSelected(false);
+				selectedShapes.removeElement(shapes.get(index));
 			}
 		}
 	}
 
 	public void deselectAllShapes() {
-		for (Shape shape : shapes) {
-			shape.setSelected(false);
-			selectedShapes.remove(shape);
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			selectedShapes.get(index).setSelected(false);
+			selectedShapes.remove(index);
 		}
 	}
 
 	public void moveSelectedShapesBy(double x, double y) {
-		for (Shape shape : selectedShapes) {
-			shape.moveBy((int) x, (int) y);
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			selectedShapes.get(index).moveBy((int) x, (int) y);
 		}
 	}
 
 	public void UpdateColorOfSelectedShapes(Color color) {
-		for (Shape shape : selectedShapes) {
-			shape.setColor(color);
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			selectedShapes.get(index).setColor(color);
 
 		}
 	}
 
 	public void UpdateBackgroundColorOfSelectedShapes(Color color) {
-		for (Shape shape : selectedShapes) {
-			if (shape instanceof SurfaceShape) {
-				((SurfaceShape) shape).setBackgroundColor(color);
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			if (selectedShapes.get(index) instanceof SurfaceShape) {
+				((SurfaceShape) selectedShapes.get(index)).setBackgroundColor(color);
 			}
 		}
 	}

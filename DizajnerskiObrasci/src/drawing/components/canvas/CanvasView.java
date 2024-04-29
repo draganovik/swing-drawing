@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Iterator;
+import java.util.Enumeration;
 
 import javax.swing.JPanel;
 
@@ -28,9 +28,8 @@ public class CanvasView extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		Iterator<Shape> it = model.getAllShapes().iterator();
-		while (it.hasNext()) {
-			it.next().draw(g);
+		for (Enumeration<Shape> e = model.getAllShapes().elements(); e.hasMoreElements();) {
+			e.nextElement().draw(g);
 		}
 	}
 

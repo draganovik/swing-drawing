@@ -138,7 +138,11 @@ public class Rectangle extends SurfaceShape {
 
 	@Override
 	public String toString() {
-		return "Upper left point=" + this.upperLeftPoint + ", width=" + width + ", height=" + height;
+		StringBuilder output = new StringBuilder();
+		output.append("Rectangle").append("[").append("upper_left_point=" + this.getUpperLeftPoint() + ", ")
+				.append("width=" + this.getWidth() + ", ").append("height=" + this.getHeight() + ", ")
+				.append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 
 }

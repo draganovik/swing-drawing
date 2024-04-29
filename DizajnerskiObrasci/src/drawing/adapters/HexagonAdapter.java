@@ -8,7 +8,8 @@ import drawing.geometry.SurfaceShape;
 import hexagon.Hexagon;
 
 public class HexagonAdapter extends SurfaceShape {
-	Hexagon hexagon;
+	private final Hexagon hexagon;
+	private final Point adaptedCenter;
 
 	public HexagonAdapter() {
 		this(new Hexagon(0, 0, 0));
@@ -16,6 +17,7 @@ public class HexagonAdapter extends SurfaceShape {
 
 	public HexagonAdapter(Hexagon hexagon) {
 		this.hexagon = hexagon;
+		adaptedCenter = new Point(hexagon.getX(), hexagon.getY());
 		this.setBackgroundColor(super.getBackgroundColor());
 		this.setColor(super.getColor());
 	}
@@ -56,7 +58,7 @@ public class HexagonAdapter extends SurfaceShape {
 	}
 
 	public Point getCenter() {
-		return new Point(hexagon.getX(), hexagon.getY());
+		return adaptedCenter;
 	}
 
 	@Override
@@ -75,6 +77,8 @@ public class HexagonAdapter extends SurfaceShape {
 
 	@Override
 	public void moveBy(int byX, int byY) {
+		adaptedCenter.setX(hexagon.getX() + byX);
+		adaptedCenter.setY(hexagon.getY() + byY);
 		hexagon.setX(hexagon.getX() + byX);
 		hexagon.setY(hexagon.getY() + byY);
 
@@ -86,6 +90,8 @@ public class HexagonAdapter extends SurfaceShape {
 	}
 
 	public void setCenter(Point center) {
+		adaptedCenter.setX(center.getX());
+		adaptedCenter.setY(center.getY());
 		hexagon.setX(center.getX());
 		hexagon.setY(center.getY());
 	}
@@ -124,6 +130,19 @@ public class HexagonAdapter extends SurfaceShape {
 	@Override
 	public void setStartPoint(Point point) {
 		this.setCenter(point);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder output = new StringBuilder();
+		output.append("Hexagon").append("[").append("center=" + this.getCenter() + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return hexagon.hashCode();
 	}
 
 }

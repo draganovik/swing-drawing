@@ -99,6 +99,9 @@ public class Line extends Shape {
 
 	@Override
 	public String toString() {
-		return this.startPoint.toString() + " --> " + this.endPoint.toString();
+		StringBuilder output = new StringBuilder();
+		output.append("Line").append("[").append("start=" + this.getStartPoint() + ", ")
+				.append("end=" + this.getEndPoint() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 }

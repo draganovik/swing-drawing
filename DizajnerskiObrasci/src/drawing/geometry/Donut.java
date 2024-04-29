@@ -118,8 +118,11 @@ public class Donut extends Circle {
 
 	@Override
 	public String toString() {
-		return "Circle [center=" + super.getCenter() + ", radius=" + super.getRadius() + ", Inner radius="
-				+ this.getInnerRadius() + "]";
+		StringBuilder output = new StringBuilder();
+		output.append("Donut").append("[").append("center=" + this.getCenter() + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("inner_radius=" + this.getInnerRadius() + ", ")
+				.append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 
 }

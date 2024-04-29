@@ -117,7 +117,10 @@ public class Point extends Shape {
 
 	@Override
 	public String toString() {
-		return "(" + this.x + "," + this.y + ")";
+		StringBuilder output = new StringBuilder();
+		output.append("Point").append("[").append("X=" + this.getX() + ", ").append("X=" + this.getY() + ", ")
+				.append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 
 	public String toString(String separator) {

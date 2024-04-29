@@ -31,7 +31,7 @@ public class ApplicationFrame extends JFrame {
 	private CanvasView canvasView;
 	// Helper Objects
 	private JPanel contentPane;
-	private LayersPanelView layersPanel;
+	private LayersPanelView layersPanelView;
 	// Log Panel Component
 	private LogPanelView logPanelView;
 	private JTabbedPane tabbedPane;
@@ -58,13 +58,14 @@ public class ApplicationFrame extends JFrame {
 	private void initializeViews() {
 		canvasView = new CanvasView();
 		toolbarView = new ToolbarView();
-		layersPanel = new LayersPanelView();
+		layersPanelView = new LayersPanelView();
 		logPanelView = new LogPanelView();
 	}
 
 	private void setupCanvas() {
 		canvasController = new CanvasController(canvasModel, toolbarModel, toolbarController, canvasView);
 		canvasView.setModel(canvasModel);
+		layersPanelView.setDLM(canvasModel.getAllShapes());
 		canvasView.setController(canvasController);
 		contentPane.add(canvasView, BorderLayout.CENTER);
 	}
@@ -84,7 +85,7 @@ public class ApplicationFrame extends JFrame {
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		contentPane.add(tabbedPane, BorderLayout.EAST);
 		{
-			tabbedPane.addTab("Object Layers", null, layersPanel, null);
+			tabbedPane.addTab("Object Layers", null, layersPanelView, null);
 		}
 		tabbedPane.addTab("Log History", null, logPanelView, null);
 
