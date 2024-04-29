@@ -194,7 +194,5 @@ public class ToolbarView extends JPanel {
 
 	public void setModel(ToolbarModel model) {
 		this.model = model;
-		btnToolbarColor.setBackground(model.getShapeColor());
-		btnToolbarBackground.setBackground(model.getShapeBackground());
 	}
 }

@@ -34,25 +34,24 @@ public class CanvasView extends JPanel {
 		}
 	}
 
-	public void setController(CanvasController controller) {
-		this.controller = controller;
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				controller.mouseDragged(e);
-			}
-		});
+	public void setController(CanvasController ccontroller) {
+		this.controller = ccontroller;
 		addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				controller.createShape();
 				controller.mousePressed(e);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				controller.mouseReleased(e);
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				controller.mouseDragged(e);
 			}
 		});
 

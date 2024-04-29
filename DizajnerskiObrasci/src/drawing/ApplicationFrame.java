@@ -63,7 +63,7 @@ public class ApplicationFrame extends JFrame {
 	}
 
 	private void setupCanvas() {
-		canvasController = new CanvasController(canvasModel, toolbarModel, canvasView);
+		canvasController = new CanvasController(canvasModel, toolbarModel, toolbarController, canvasView);
 		canvasView.setModel(canvasModel);
 		canvasView.setController(canvasController);
 		contentPane.add(canvasView, BorderLayout.CENTER);

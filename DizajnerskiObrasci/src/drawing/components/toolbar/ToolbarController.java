@@ -2,6 +2,7 @@ package drawing.components.toolbar;
 
 import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
 
 import drawing.components.canvas.CanvasModel;
@@ -19,6 +20,23 @@ public class ToolbarController {
 		this.canvasModel = canvasModel;
 		this.view = view;
 		this.canvasView = canvasView;
+
+		view.btnToolbarColor.setOpaque(true);
+		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+
+		view.btnToolbarBackground.setOpaque(true);
+		view.btnToolbarBackground.setBackground(model.getShapeBackground());
+		view.btnToolbarBackground.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	}
+
+	public void setShapeColor(Color color) {
+		model.setShapeColor(color);
+		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+	}
+
+	public void setShapeBackground(Color color) {
+		model.setShapeBackground(color);
+		view.btnToolbarBackground.setBackground(model.getShapeBackground());
 	}
 
 	private Color getColorFromPicker(String title, Color initialColor) {
@@ -28,22 +46,32 @@ public class ToolbarController {
 
 	public void setToolbarAction(ToolAction action) {
 		model.setToolAction(action);
-		canvasModel.unselectAll();
+		canvasModel.deselectAllShapes();
 		canvasView.repaint();
 	}
 
 	public void setToolbarAction_BackgroundPicker() {
-		model.setShapeBackground(getColorFromPicker("Choose Background Color", model.getShapeColor()));
-		view.btnToolbarBackground.setBackground(model.getShapeBackground());
+		Color selectedColor = getColorFromPicker("Choose Background Color", model.getShapeColor());
+		if (selectedColor != null) {
+			model.setShapeBackground(selectedColor);
+			canvasModel.UpdateBackgroundColorOfSelectedShapes(selectedColor);
+			view.btnToolbarBackground.setBackground(model.getShapeBackground());
+			canvasView.repaint();
+		}
 	}
 
 	public void setToolbarAction_ColorPicker() {
-		model.setShapeColor(getColorFromPicker("Choose Outline Color", model.getShapeBackground()));
-		view.btnToolbarColor.setBackground(model.getShapeColor());
+		Color selectedColor = getColorFromPicker("Choose Outline Color", model.getShapeBackground());
+		if (selectedColor != null) {
+			model.setShapeColor(selectedColor);
+			canvasModel.UpdateColorOfSelectedShapes(selectedColor);
+			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+			canvasView.repaint();
+		}
 	}
 
 	public void setToolbarAction_Delete() {
-		canvasModel.removeSelected();
+		canvasModel.removeSelectedShapes();
 		canvasView.repaint();
 	}
 
