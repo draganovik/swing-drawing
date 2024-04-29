@@ -120,8 +120,7 @@ public class CanvasController {
 				toolbarController.setShapeColor(shape.getColor());
 				if (shape instanceof SurfaceShape) {
 					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());
-				}
-				else {
+				} else {
 					toolbarController.setShapeBackground(null);
 				}
 			}

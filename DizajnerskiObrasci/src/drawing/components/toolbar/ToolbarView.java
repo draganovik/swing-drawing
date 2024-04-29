@@ -1,6 +1,8 @@
 package drawing.components.toolbar;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -107,7 +109,13 @@ public class ToolbarView extends JPanel {
 
 		JPanel panel = new JPanel();
 
-		btnToolbarModify = new JButton("Modify");
+		btnToolbarModify = new JButton("Edit");
+		btnToolbarModify.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setToolbarAction_Edit();
+			}
+		});
 		btnToolbarModify.setForeground(new Color(100, 149, 237));
 		btnToolbarModify.setBackground(new Color(224, 255, 255));
 		btnToolbarDelete = new JButton("Delete");
@@ -154,34 +162,31 @@ public class ToolbarView extends JPanel {
 				.addComponent(btnToolbarCircle, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
 				.addComponent(btnToolbarDonut, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
 				.addComponent(btnToolbarHexagon, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarModify, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(167, Short.MAX_VALUE)));
-		panel.setLayout(null);
+				.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGap(2).addComponent(btnToolbarModify, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+				.addGap(2).addComponent(btnToolbarDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(128, Short.MAX_VALUE)));
+
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Center alignment
 
 		btnToolbarBackground = new JButton("");
+		btnToolbarBackground.setPreferredSize(new Dimension(32, 32)); // Set preferred size
 		btnToolbarBackground.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setToolbarAction_BackgroundPicker();
 			}
 		});
-
-		btnToolbarBackground.setLocation(22, 10);
-		btnToolbarBackground.setSize(32, 32);
 		panel.add(btnToolbarBackground);
 
 		btnToolbarColor = new JButton("");
+		btnToolbarColor.setPreferredSize(new Dimension(32, 32)); // Set preferred size
 		btnToolbarColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setToolbarAction_ColorPicker();
 			}
 		});
-
-		btnToolbarColor.setLocation(38, 26);
-		btnToolbarColor.setSize(32, 32);
 		panel.add(btnToolbarColor);
 
 		setLayout(groupLayout);
