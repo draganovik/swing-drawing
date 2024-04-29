@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -83,6 +84,7 @@ public class ApplicationFrame extends JFrame {
 
 	private void setupTabPanels() {
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);
 		{
 			tabbedPane.addTab("Object Layers", null, layersPanelView, null);

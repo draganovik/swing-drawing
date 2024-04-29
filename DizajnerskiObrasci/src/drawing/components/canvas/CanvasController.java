@@ -105,6 +105,7 @@ public class CanvasController {
 
 		if (!model.contains(createdShape)) {
 			model.addShape(createdShape);
+			model.selectShape(createdShape);
 		}
 		model.refreshList();
 		view.repaint();
@@ -142,6 +143,7 @@ public class CanvasController {
 
 		if (!(createdShape instanceof SurfaceShape)) {
 			model.addShape(createdShape);
+			model.selectShape(createdShape);
 		}
 	}
 
@@ -160,6 +162,7 @@ public class CanvasController {
 				ShowDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
+					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
 				}
@@ -171,6 +174,7 @@ public class CanvasController {
 				ShowDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
+					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
 				}
@@ -182,6 +186,7 @@ public class CanvasController {
 				ShowDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
+					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
 				}
@@ -193,6 +198,7 @@ public class CanvasController {
 				ShowDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
+					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
 				}
@@ -204,6 +210,7 @@ public class CanvasController {
 				ShowDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
+					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
 				}
@@ -211,9 +218,6 @@ public class CanvasController {
 			break;
 		default:
 		case SELECT:
-			if (createdShape != null) {
-				model.selectShape(createdShape);
-			}
 			createdShape = null;
 			break;
 		}
