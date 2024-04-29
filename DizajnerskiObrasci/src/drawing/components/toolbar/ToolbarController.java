@@ -22,16 +22,16 @@ public class ToolbarController {
 		this.canvasView = canvasView;
 
 		view.btnToolbarColor.setOpaque(true);
-		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 
 		view.btnToolbarBackground.setOpaque(true);
 		view.btnToolbarBackground.setBackground(model.getShapeBackground());
-		view.btnToolbarBackground.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		view.btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 	}
 
 	public void setShapeColor(Color color) {
 		model.setShapeColor(color);
-		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 	}
 
 	public void setShapeBackground(Color color) {
@@ -65,7 +65,7 @@ public class ToolbarController {
 		if (selectedColor != null) {
 			model.setShapeColor(selectedColor);
 			canvasModel.UpdateColorOfSelectedShapes(selectedColor);
-			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, model.getShapeColor()));
+			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			canvasView.repaint();
 		}
 	}

@@ -121,6 +121,9 @@ public class CanvasController {
 				if (shape instanceof SurfaceShape) {
 					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());
 				}
+				else {
+					toolbarController.setShapeBackground(null);
+				}
 			}
 			return;
 		default:
