@@ -66,7 +66,6 @@ public class ApplicationFrame extends JFrame {
 	private void setupCanvas() {
 		canvasController = new CanvasController(canvasModel, toolbarModel, toolbarController, canvasView);
 		canvasView.setModel(canvasModel);
-		layersPanelView.setDLM(canvasModel.getAllShapes());
 		canvasView.setController(canvasController);
 		contentPane.add(canvasView, BorderLayout.CENTER);
 	}
@@ -83,13 +82,12 @@ public class ApplicationFrame extends JFrame {
 	}
 
 	private void setupTabPanels() {
+		layersPanelView.setDLM(canvasModel.getAllShapes());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);
-		{
-			tabbedPane.addTab("Object Layers", null, layersPanelView, null);
-		}
-		tabbedPane.addTab("Log History", null, logPanelView, null);
+		tabbedPane.addTab("Layers", null, layersPanelView, null);
+		tabbedPane.addTab("History", null, logPanelView, null);
 
 	}
 

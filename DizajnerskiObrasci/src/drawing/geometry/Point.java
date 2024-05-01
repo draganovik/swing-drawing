@@ -115,6 +115,10 @@ public class Point extends Shape {
 		this.y = y;
 	}
 
+	public Point deepCopy() {
+		return new Point(getX(), getY(), this.isSelected(), this.getColor());
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();

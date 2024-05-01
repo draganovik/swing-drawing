@@ -15,6 +15,7 @@ import drawing.geometry.Line;
 import drawing.geometry.Point;
 import drawing.geometry.Rectangle;
 import drawing.geometry.Shape;
+import drawing.geometry.SurfaceShape;
 import drawing.modals.DlgManageCircle;
 import drawing.modals.DlgManageDonut;
 import drawing.modals.DlgManageHexagon;
@@ -60,7 +61,26 @@ public class ToolbarController {
 
 	public void setToolbarAction(ToolAction action) {
 		model.setToolAction(action);
-		canvasModel.deselectAllShapes();
+		switch (model.getToolAction()) {
+		case POINT:
+		case LINE:
+			canvasModel.deselectAllShapes();
+			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
+			view.btnToolbarBackground.setBackground(null);
+			view.btnToolbarBackground.setEnabled(false);
+			break;
+		case RECTANGLE:
+		case CIRCLE:
+		case DONUT:
+		case HEXAGON:
+			canvasModel.deselectAllShapes();
+			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
+			view.btnToolbarBackground.setBackground(model.getShapeBackground());
+			view.btnToolbarBackground.setEnabled(true);
+		default:
+			break;
+		}
+
 		canvasView.repaint();
 	}
 

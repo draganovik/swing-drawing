@@ -10,6 +10,11 @@ public class Line extends Shape {
 	public Line() {
 	}
 
+	public Line(Point startPoint) {
+		this.startPoint = startPoint;
+		this.endPoint = startPoint.deepCopy();
+	}
+
 	public Line(Point startPoint, Point endPoint) {
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;

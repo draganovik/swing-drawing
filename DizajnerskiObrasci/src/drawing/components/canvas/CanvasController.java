@@ -38,75 +38,34 @@ public class CanvasController {
 		this.toolbarController = toolbarController;
 	}
 
-	public void handleAction() {
-		switch (toolModel.getToolAction()) {
-		case POINT:
-			model.deselectAllShapes();
-			createdShape = new Point();
-			break;
-		case LINE:
-			model.deselectAllShapes();
-			createdShape = new Line();
-			break;
-		case RECTANGLE:
-			model.deselectAllShapes();
-			createdShape = new Rectangle();
-			break;
-		case CIRCLE:
-			model.deselectAllShapes();
-			createdShape = new Circle();
-			break;
-		case DONUT:
-			model.deselectAllShapes();
-			createdShape = new Donut();
-			break;
-		case HEXAGON:
-			model.deselectAllShapes();
-			createdShape = new HexagonAdapter();
-			break;
-		default:
-		case SELECT:
-			createdShape = null;
-			break;
-		}
-
-		if (createdShape != null) {
-			createdShape.setColor(toolModel.getShapeColor());
-			if (createdShape instanceof SurfaceShape) {
-				((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
-			}
-		}
-
-		model.refreshList();
-		view.repaint();
-	}
-
 	public void mouseDragged(MouseEvent e) {
 
 		endPoint = new Point(e.getX(), e.getY());
-
-		if (createdShape == null) {
-			model.moveSelectedShapesBy(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
-			model.refreshList();
-			view.repaint();
-			startPoint = endPoint;
-			return;
-		}
-
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 
-		if ((createdShape instanceof SurfaceShape || createdShape instanceof Line)
-				&& (pointsXDistance < 8 || pointsYDistance < 8)) {
-			return;
+		switch (toolModel.getToolAction()) {
+		case SELECT:
+			model.moveSelectedShapesBy(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
+			startPoint = endPoint;
+			break;
+		case LINE:
+		case RECTANGLE:
+		case CIRCLE:
+		case DONUT:
+		case HEXAGON:
+			if (pointsXDistance > 8 && pointsYDistance > 8) {
+				createdShape.setEndPoint(endPoint);
+
+				if (!model.contains(createdShape)) {
+					model.addShape(createdShape);
+					model.selectShape(createdShape);
+				}
+			}
+		default:
+			break;
 		}
 
-		createdShape.setEndPoint(endPoint);
-
-		if (!model.contains(createdShape)) {
-			model.addShape(createdShape);
-			model.selectShape(createdShape);
-		}
 		model.refreshList();
 		view.repaint();
 
@@ -118,12 +77,52 @@ public class CanvasController {
 		endPoint = mousePoint;
 
 		model.setIsShiftDown(e.isShiftDown());
-		model.selectShapeAt(mousePoint);
-
-		handleAction();
 
 		switch (toolModel.getToolAction()) {
+		case POINT:
+			model.deselectAllShapes();
+			createdShape = new Point();
+			createdShape.setColor(toolModel.getShapeColor());
+			createdShape.setStartPoint(startPoint);
+			model.addShape(createdShape);
+			model.selectShape(createdShape);
+			break;
+		case LINE:
+			model.deselectAllShapes();
+			createdShape = new Line(startPoint);
+			createdShape.setColor(toolModel.getShapeColor());
+			break;
+		case RECTANGLE:
+			model.deselectAllShapes();
+			createdShape = new Rectangle();
+			createdShape.setColor(toolModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setStartPoint(startPoint);
+			break;
+		case CIRCLE:
+			model.deselectAllShapes();
+			createdShape = new Circle();
+			createdShape.setColor(toolModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setStartPoint(startPoint);
+			break;
+		case DONUT:
+			model.deselectAllShapes();
+			createdShape = new Donut();
+			createdShape.setColor(toolModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setStartPoint(startPoint);
+			break;
+		case HEXAGON:
+			model.deselectAllShapes();
+			createdShape = new HexagonAdapter();
+			createdShape.setColor(toolModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setStartPoint(startPoint);
+			break;
+		default:
 		case SELECT:
+			model.selectShapeAt(mousePoint);
 			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {
 				Shape shape = en.nextElement();
 				toolbarController.setShapeColor(shape.getColor());
@@ -133,18 +132,12 @@ public class CanvasController {
 					toolbarController.setShapeBackground(null);
 				}
 			}
-			return;
-		default:
+			createdShape = null;
 			break;
 		}
 
-		createdShape.setStartPoint(startPoint);
-		createdShape.setEndPoint(endPoint);
-
-		if (!(createdShape instanceof SurfaceShape)) {
-			model.addShape(createdShape);
-			model.selectShape(createdShape);
-		}
+		model.refreshList();
+		view.repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -217,7 +210,6 @@ public class CanvasController {
 			}
 			break;
 		default:
-		case SELECT:
 			createdShape = null;
 			break;
 		}
