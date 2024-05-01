@@ -99,18 +99,80 @@ public class CanvasModel {
 		}
 	}
 
-	public void UpdateColorOfSelectedShapes(Color color) {
+	public void updateColorOfSelectedShapes(Color color) {
 		for (int index = selectedShapes.size(); --index >= 0;) {
 			selectedShapes.get(index).setColor(color);
 
 		}
 	}
 
-	public void UpdateBackgroundColorOfSelectedShapes(Color color) {
+	public void updateBackgroundColorOfSelectedShapes(Color color) {
 		for (int index = selectedShapes.size(); --index >= 0;) {
 			if (selectedShapes.get(index) instanceof SurfaceShape) {
 				((SurfaceShape) selectedShapes.get(index)).setBackgroundColor(color);
 			}
+		}
+	}
+
+	private void moveShapeForward(Shape shape) {
+		if (shapes.lastElement() != shape && shape != null) {
+			int index = shapes.indexOf(shape);
+			Shape switchShape = shapes.getElementAt(index + 1);
+
+			shapes.set(index, switchShape);
+			shapes.set(index + 1, shape);
+
+		}
+	}
+
+	private void moveShapeBackward(Shape shape) {
+		if (shapes.firstElement() != shape && shape != null) {
+			int index = shapes.indexOf(shape);
+			Shape switchShape = shapes.getElementAt(index - 1);
+
+			shapes.set(index, switchShape);
+			shapes.set(index - 1, shape);
+
+		}
+	}
+
+	private void moveShapeToFront(Shape shape) {
+		if (shapes.lastElement() != shape) {
+			shapes.remove(shapes.indexOf(shape));
+			shapes.insertElementAt(shape, shapes.size());
+
+		}
+	}
+
+	private void moveShapeToBack(Shape shape) {
+		if (shapes.firstElement() != shape) {
+			shapes.remove(shapes.indexOf(shape));
+			shapes.insertElementAt(shape, 0);
+
+		}
+	}
+
+	public void moveSelectedShapesBackward() {
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			this.moveShapeBackward(selectedShapes.get(index));
+		}
+	}
+
+	public void moveSelectedShapesForward() {
+		for (int index = 0; index < selectedShapes.size(); index++) {
+			this.moveShapeForward(selectedShapes.get(index));
+		}
+	}
+
+	public void moveSelectedShapesToBack() {
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			this.moveShapeToBack(selectedShapes.get(index));
+		}
+	}
+
+	public void moveSelectedShapesToFront() {
+		for (int index = 0; index < selectedShapes.size(); index++) {
+			this.moveShapeToFront(selectedShapes.get(index));
 		}
 	}
 

@@ -88,7 +88,7 @@ public class ToolbarController {
 		Color selectedColor = getColorFromPicker("Choose Background Color", model.getShapeColor());
 		if (selectedColor != null) {
 			model.setShapeBackground(selectedColor);
-			canvasModel.UpdateBackgroundColorOfSelectedShapes(selectedColor);
+			canvasModel.updateBackgroundColorOfSelectedShapes(selectedColor);
 			view.btnToolbarBackground.setBackground(model.getShapeBackground());
 			canvasView.repaint();
 		}
@@ -98,7 +98,7 @@ public class ToolbarController {
 		Color selectedColor = getColorFromPicker("Choose Outline Color", model.getShapeBackground());
 		if (selectedColor != null) {
 			model.setShapeColor(selectedColor);
-			canvasModel.UpdateColorOfSelectedShapes(selectedColor);
+			canvasModel.updateColorOfSelectedShapes(selectedColor);
 			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			canvasView.repaint();
 		}
@@ -113,46 +113,46 @@ public class ToolbarController {
 		Shape selectedShape = canvasModel.getAllSelectedShapes().get(0);
 		if (selectedShape instanceof Point) {
 			DlgManagePoint modal = new DlgManagePoint((Point) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 		if (selectedShape instanceof Line) {
 			DlgManageLine modal = new DlgManageLine((Line) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 		if (selectedShape instanceof Rectangle) {
 			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 
 		if (selectedShape instanceof Donut) {
 			DlgManageDonut modal = new DlgManageDonut((Donut) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 
 		if (selectedShape instanceof Circle) {
 			DlgManageCircle modal = new DlgManageCircle((Circle) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 
 		if (selectedShape instanceof HexagonAdapter) {
 			DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) canvasModel.getAllSelectedShapes().get(0));
-			ShowDialog(modal);
+			showDialog(modal);
 			canvasView.repaint();
 			return;
 		}
 	}
 
-	private void ShowDialog(JDialog modal) {
+	private void showDialog(JDialog modal) {
 		modal.pack();
 		modal.setLocationRelativeTo(canvasView);
 		modal.setVisible(true);

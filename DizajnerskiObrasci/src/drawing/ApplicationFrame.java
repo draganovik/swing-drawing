@@ -16,6 +16,7 @@ import drawing.components.canvas.CanvasView;
 import drawing.components.layerspanel.LayersPanelView;
 import drawing.components.logpanel.LogPanelView;
 import drawing.components.menubar.MenubarView;
+import drawing.components.menubar.MenubarController;
 import drawing.components.toolbar.ToolbarController;
 import drawing.components.toolbar.ToolbarModel;
 import drawing.components.toolbar.ToolbarView;
@@ -49,6 +50,7 @@ public class ApplicationFrame extends JFrame {
 		setupToolbar();
 		setupTabPanels();
 		setupCanvas();
+		setupManubar();
 	}
 
 	private void initializeModels() {
@@ -78,7 +80,7 @@ public class ApplicationFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(6, 0));
-		setJMenuBar(new MenubarView());
+
 	}
 
 	private void setupTabPanels() {
@@ -96,6 +98,14 @@ public class ApplicationFrame extends JFrame {
 		toolbarView.setModel(toolbarModel);
 		toolbarView.setController(toolbarController);
 		contentPane.add(toolbarView, BorderLayout.WEST);
+	}
+
+	private void setupManubar() {
+		MenubarView menubarView = new MenubarView();
+		MenubarController menubarController = new MenubarController(menubarView, canvasModel, canvasView);
+		menubarView.setController(menubarController);
+		setJMenuBar(menubarView);
+
 	}
 
 }

@@ -152,7 +152,7 @@ public class CanvasController {
 		case LINE:
 			if (initShapeViaDialog) {
 				DlgManageLine modal = new DlgManageLine((Line) createdShape);
-				ShowDialog(modal);
+				showDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
 					model.selectShape(createdShape);
@@ -164,7 +164,7 @@ public class CanvasController {
 		case RECTANGLE:
 			if (initShapeViaDialog) {
 				DlgManageRectangle modal = new DlgManageRectangle((Rectangle) createdShape);
-				ShowDialog(modal);
+				showDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
 					model.selectShape(createdShape);
@@ -176,7 +176,7 @@ public class CanvasController {
 		case CIRCLE:
 			if (initShapeViaDialog) {
 				DlgManageCircle modal = new DlgManageCircle((Circle) createdShape);
-				ShowDialog(modal);
+				showDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
 					model.selectShape(createdShape);
@@ -188,7 +188,7 @@ public class CanvasController {
 		case DONUT:
 			if (initShapeViaDialog) {
 				DlgManageDonut modal = new DlgManageDonut((Donut) createdShape);
-				ShowDialog(modal);
+				showDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
 					model.selectShape(createdShape);
@@ -200,7 +200,7 @@ public class CanvasController {
 		case HEXAGON:
 			if (initShapeViaDialog) {
 				DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) createdShape);
-				ShowDialog(modal);
+				showDialog(modal);
 				if (modal.IsSuccessful) {
 					model.addShape(createdShape);
 					model.selectShape(createdShape);
@@ -215,7 +215,7 @@ public class CanvasController {
 		}
 	}
 
-	private void ShowDialog(JDialog modal) {
+	private void showDialog(JDialog modal) {
 		modal.pack();
 		modal.setLocationRelativeTo(view);
 		modal.setVisible(true);
