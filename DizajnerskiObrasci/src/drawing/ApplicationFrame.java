@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,6 +16,7 @@ import drawing.components.canvas.CanvasView;
 import drawing.components.layerspanel.LayersPanelView;
 import drawing.components.logpanel.LogPanelView;
 import drawing.components.menubar.MenubarView;
+import drawing.components.menubar.MenubarController;
 import drawing.components.toolbar.ToolbarController;
 import drawing.components.toolbar.ToolbarModel;
 import drawing.components.toolbar.ToolbarView;
@@ -31,7 +33,7 @@ public class ApplicationFrame extends JFrame {
 	private CanvasView canvasView;
 	// Helper Objects
 	private JPanel contentPane;
-	private LayersPanelView layersPanel;
+	private LayersPanelView layersPanelView;
 	// Log Panel Component
 	private LogPanelView logPanelView;
 	private JTabbedPane tabbedPane;
@@ -48,6 +50,7 @@ public class ApplicationFrame extends JFrame {
 		setupToolbar();
 		setupTabPanels();
 		setupCanvas();
+		setupManubar();
 	}
 
 	private void initializeModels() {
@@ -58,12 +61,12 @@ public class ApplicationFrame extends JFrame {
 	private void initializeViews() {
 		canvasView = new CanvasView();
 		toolbarView = new ToolbarView();
-		layersPanel = new LayersPanelView();
+		layersPanelView = new LayersPanelView();
 		logPanelView = new LogPanelView();
 	}
 
 	private void setupCanvas() {
-		canvasController = new CanvasController(canvasModel, toolbarModel, canvasView);
+		canvasController = new CanvasController(canvasModel, toolbarModel, toolbarController, canvasView);
 		canvasView.setModel(canvasModel);
 		canvasView.setController(canvasController);
 		contentPane.add(canvasView, BorderLayout.CENTER);
@@ -77,16 +80,16 @@ public class ApplicationFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(6, 0));
-		setJMenuBar(new MenubarView());
+
 	}
 
 	private void setupTabPanels() {
+		layersPanelView.setDLM(canvasModel.getAllShapes());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);
-		{
-			tabbedPane.addTab("Object Layers", null, layersPanel, null);
-		}
-		tabbedPane.addTab("Log History", null, logPanelView, null);
+		tabbedPane.addTab("Layers", null, layersPanelView, null);
+		tabbedPane.addTab("History", null, logPanelView, null);
 
 	}
 
@@ -95,6 +98,14 @@ public class ApplicationFrame extends JFrame {
 		toolbarView.setModel(toolbarModel);
 		toolbarView.setController(toolbarController);
 		contentPane.add(toolbarView, BorderLayout.WEST);
+	}
+
+	private void setupManubar() {
+		MenubarView menubarView = new MenubarView();
+		MenubarController menubarController = new MenubarController(menubarView, canvasModel, canvasView);
+		menubarView.setController(menubarController);
+		setJMenuBar(menubarView);
+
 	}
 
 }

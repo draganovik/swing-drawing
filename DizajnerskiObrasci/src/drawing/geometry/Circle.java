@@ -137,7 +137,10 @@ public class Circle extends SurfaceShape {
 
 	@Override
 	public String toString() {
-		return "Circle [center=" + center + ", radius=" + radius + "]";
+		StringBuilder output = new StringBuilder();
+		output.append("Circle").append("[").append("center=" + this.getCenter() + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 
 }

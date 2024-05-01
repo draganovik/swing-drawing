@@ -10,6 +10,11 @@ public class Line extends Shape {
 	public Line() {
 	}
 
+	public Line(Point startPoint) {
+		this.startPoint = startPoint;
+		this.endPoint = startPoint.deepCopy();
+	}
+
 	public Line(Point startPoint, Point endPoint) {
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
@@ -99,6 +104,9 @@ public class Line extends Shape {
 
 	@Override
 	public String toString() {
-		return this.startPoint.toString() + " --> " + this.endPoint.toString();
+		StringBuilder output = new StringBuilder();
+		output.append("Line").append("[").append("start=" + this.getStartPoint() + ", ")
+				.append("end=" + this.getEndPoint() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		return output.toString();
 	}
 }
