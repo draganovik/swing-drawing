@@ -29,11 +29,12 @@ public class ToolbarController {
 	private ToolbarModel model;
 	private ToolbarView view;
 
-	public ToolbarController(ToolbarModel model, CanvasModel canvasModel, ToolbarView view, CanvasView canvasView) {
+	public ToolbarController(ToolbarModel model) {
 		this.model = model;
-		this.canvasModel = canvasModel;
+	}
+
+	public void setToolbarView(ToolbarView view) {
 		this.view = view;
-		this.canvasView = canvasView;
 
 		view.btnToolbarColor.setOpaque(true);
 		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
@@ -41,6 +42,11 @@ public class ToolbarController {
 		view.btnToolbarBackground.setOpaque(true);
 		view.btnToolbarBackground.setBackground(model.getShapeBackground());
 		view.btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+	}
+
+	public void setCanvasViewModel(CanvasView canvasView, CanvasModel canvasModel) {
+		this.canvasModel = canvasModel;
+		this.canvasView = canvasView;
 	}
 
 	public void setShapeColor(Color color) {

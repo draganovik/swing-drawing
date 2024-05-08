@@ -4,13 +4,14 @@ import drawing.components.canvas.CanvasModel;
 import drawing.components.canvas.CanvasView;
 
 public class MenubarController {
-	MenubarView menubarView;
 	CanvasModel canvasModel;
 	CanvasView canvasView;
 
-	public MenubarController(MenubarView menubarView, CanvasModel canvasModel, CanvasView canvasView) {
-		this.menubarView = menubarView;
+	public MenubarController(CanvasModel canvasModel) {
 		this.canvasModel = canvasModel;
+	}
+
+	public void setCanvasView(CanvasView canvasView) {
 		this.canvasView = canvasView;
 	}
 

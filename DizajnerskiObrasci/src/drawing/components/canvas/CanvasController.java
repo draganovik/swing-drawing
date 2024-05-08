@@ -26,15 +26,21 @@ public class CanvasController {
 	private Point endPoint;
 	private CanvasModel model;
 	private Point startPoint;
-	private ToolbarModel toolModel;
+	private ToolbarModel toolbarModel;
 	private ToolbarController toolbarController;
 	private CanvasView view;
 
-	public CanvasController(CanvasModel model, ToolbarModel toolModel, ToolbarController toolbarController,
-			CanvasView view) {
+	public CanvasController(CanvasModel model) {
 		this.model = model;
-		this.toolModel = toolModel;
+
+	}
+
+	public void setCanvasView(CanvasView view) {
 		this.view = view;
+	}
+
+	public void setToolbarModelController(ToolbarModel toolbarModel, ToolbarController toolbarController) {
+		this.toolbarModel = toolbarModel;
 		this.toolbarController = toolbarController;
 	}
 
@@ -44,7 +50,7 @@ public class CanvasController {
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 
-		switch (toolModel.getToolAction()) {
+		switch (toolbarModel.getToolAction()) {
 		case SELECT:
 			model.moveSelectedShapesBy(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
 			startPoint = endPoint;
@@ -78,11 +84,11 @@ public class CanvasController {
 
 		model.setIsShiftDown(e.isShiftDown());
 
-		switch (toolModel.getToolAction()) {
+		switch (toolbarModel.getToolAction()) {
 		case POINT:
 			model.deselectAllShapes();
 			createdShape = new Point();
-			createdShape.setColor(toolModel.getShapeColor());
+			createdShape.setColor(toolbarModel.getShapeColor());
 			createdShape.setStartPoint(startPoint);
 			model.addShape(createdShape);
 			model.selectShape(createdShape);
@@ -90,34 +96,34 @@ public class CanvasController {
 		case LINE:
 			model.deselectAllShapes();
 			createdShape = new Line(startPoint);
-			createdShape.setColor(toolModel.getShapeColor());
+			createdShape.setColor(toolbarModel.getShapeColor());
 			break;
 		case RECTANGLE:
 			model.deselectAllShapes();
 			createdShape = new Rectangle();
-			createdShape.setColor(toolModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setColor(toolbarModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case CIRCLE:
 			model.deselectAllShapes();
 			createdShape = new Circle();
-			createdShape.setColor(toolModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setColor(toolbarModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case DONUT:
 			model.deselectAllShapes();
 			createdShape = new Donut();
-			createdShape.setColor(toolModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setColor(toolbarModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case HEXAGON:
 			model.deselectAllShapes();
 			createdShape = new HexagonAdapter();
-			createdShape.setColor(toolModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolModel.getShapeBackground());
+			createdShape.setColor(toolbarModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		default:
@@ -146,7 +152,7 @@ public class CanvasController {
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 		boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
 
-		switch (toolModel.getToolAction()) {
+		switch (toolbarModel.getToolAction()) {
 		case POINT:
 			break;
 		case LINE:

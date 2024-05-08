@@ -23,56 +23,25 @@ import drawing.components.toolbar.ToolbarView;
 
 public class ApplicationFrame extends JFrame {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -6456110324869685433L;
-	private CanvasController canvasController;
-	private CanvasModel canvasModel;
-	// Canvas Component
-	private CanvasView canvasView;
-	// Helper Objects
+	// Frame View modules
+	private CanvasView canvasView = new CanvasView();
+	private ToolbarView toolbarView = new ToolbarView();
+	private LayersPanelView layersPanelView = new LayersPanelView();
+	private LogPanelView logPanelView = new LogPanelView();
+	private MenubarView menubarView = new MenubarView();
+
+	// Local components
 	private JPanel contentPane;
-	private LayersPanelView layersPanelView;
-	// Log Panel Component
-	private LogPanelView logPanelView;
 	private JTabbedPane tabbedPane;
-	private ToolbarController toolbarController;
-	private ToolbarModel toolbarModel;
-	// Tool Bar Component
-	private ToolbarView toolbarView;
+
+	public CanvasView getCanvasView() {
+		return canvasView;
+	}
 
 	public ApplicationFrame() {
 		super();
-		setupFrame();
-		initializeViews();
-		initializeModels();
-		setupToolbar();
-		setupTabPanels();
-		setupCanvas();
-		setupManubar();
-	}
 
-	private void initializeModels() {
-		canvasModel = new CanvasModel();
-		toolbarModel = new ToolbarModel();
-	}
-
-	private void initializeViews() {
-		canvasView = new CanvasView();
-		toolbarView = new ToolbarView();
-		layersPanelView = new LayersPanelView();
-		logPanelView = new LogPanelView();
-	}
-
-	private void setupCanvas() {
-		canvasController = new CanvasController(canvasModel, toolbarModel, toolbarController, canvasView);
-		canvasView.setModel(canvasModel);
-		canvasView.setController(canvasController);
-		contentPane.add(canvasView, BorderLayout.CENTER);
-	}
-
-	private void setupFrame() {
 		setTitle("Draganović Mladen - IT68/2019");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 880, 500);
@@ -80,10 +49,25 @@ public class ApplicationFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(6, 0));
-
 	}
 
-	private void setupTabPanels() {
+	public void setupCanvas(CanvasModel canvasModel, CanvasController canvasController) {
+		canvasController.setCanvasView(canvasView);
+		canvasView.setModel(canvasModel);
+		canvasView.setController(canvasController);
+
+		contentPane.add(canvasView, BorderLayout.CENTER);
+	}
+
+	public void setupToolbar(ToolbarModel toolbarModel, ToolbarController toolbarController) {
+		toolbarController.setToolbarView(toolbarView);
+		toolbarView.setModel(toolbarModel);
+		toolbarView.setController(toolbarController);
+
+		contentPane.add(toolbarView, BorderLayout.WEST);
+	}
+
+	public void setupTabPanels(CanvasModel canvasModel) {
 		layersPanelView.setDLM(canvasModel.getAllShapes());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
@@ -93,16 +77,8 @@ public class ApplicationFrame extends JFrame {
 
 	}
 
-	private void setupToolbar() {
-		toolbarController = new ToolbarController(toolbarModel, canvasModel, toolbarView, canvasView);
-		toolbarView.setModel(toolbarModel);
-		toolbarView.setController(toolbarController);
-		contentPane.add(toolbarView, BorderLayout.WEST);
-	}
-
-	private void setupManubar() {
-		MenubarView menubarView = new MenubarView();
-		MenubarController menubarController = new MenubarController(menubarView, canvasModel, canvasView);
+	public void setupManubar(MenubarController menubarController) {
+		menubarController.setCanvasView(canvasView);
 		menubarView.setController(menubarController);
 		setJMenuBar(menubarView);
 
