@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Rectangle extends SurfaceShape {
+	private static final long serialVersionUID = 296561039882161461L;
 	private Point drawStartPoint;
 	private int height;
 	private Point upperLeftPoint;
@@ -143,6 +144,25 @@ public class Rectangle extends SurfaceShape {
 				.append("width=" + this.getWidth() + ", ").append("height=" + this.getHeight() + ", ")
 				.append("hashCode=" + this.hashCode()).append("]");
 		return output.toString();
+	}
+
+	@Override
+	public Rectangle clone() {
+		Rectangle clone = new Rectangle(this.getUpperLeftPoint().clone(), this.getWidth(), this.getHeight(),
+				this.isSelected(), this.getColor(), this.getBackgroundColor());
+		return clone;
+	}
+
+	public void updateFrom(Rectangle rectangle) {
+		super.updateFrom(rectangle);
+		try {
+			this.setUpperLeftPoint(rectangle.getUpperLeftPoint().clone());
+			this.setWidth(rectangle.getWidth());
+			this.setHeight(rectangle.getHeight());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

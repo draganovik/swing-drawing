@@ -15,7 +15,6 @@ import drawing.geometry.Line;
 import drawing.geometry.Point;
 import drawing.geometry.Rectangle;
 import drawing.geometry.Shape;
-import drawing.geometry.SurfaceShape;
 import drawing.modals.DlgManageCircle;
 import drawing.modals.DlgManageDonut;
 import drawing.modals.DlgManageHexagon;

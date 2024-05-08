@@ -7,6 +7,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 public class Circle extends SurfaceShape {
+	private static final long serialVersionUID = -1719656449150869603L;
 	private Point center;
 	protected int radius;
 
@@ -141,6 +142,24 @@ public class Circle extends SurfaceShape {
 		output.append("Circle").append("[").append("center=" + this.getCenter() + ", ")
 				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
 		return output.toString();
+	}
+
+	@Override
+	public Circle clone() {
+		Circle clone = new Circle(this.getCenter().clone(), this.getRadius(), this.isSelected(), this.getColor(),
+				this.getBackgroundColor());
+		return clone;
+	}
+
+	public void updateFrom(Circle circle) {
+		super.updateFrom(circle);
+		try {
+			this.setCenter(circle.getCenter().clone());
+			this.setRadius(circle.getRadius());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

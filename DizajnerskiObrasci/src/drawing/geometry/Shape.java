@@ -2,9 +2,11 @@ package drawing.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
-public abstract class Shape implements Movable, Comparable<Object> {
+public abstract class Shape implements Movable, Comparable<Object>, Cloneable, Serializable {
 
+	private static final long serialVersionUID = 5098059299732788753L;
 	private Color color = Color.DARK_GRAY;
 	private boolean selected;
 
@@ -24,6 +26,10 @@ public abstract class Shape implements Movable, Comparable<Object> {
 
 	public abstract void draw(Graphics g);
 
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	public Color getColor() {
 		return color;
 	}
@@ -32,18 +38,22 @@ public abstract class Shape implements Movable, Comparable<Object> {
 		return selected;
 	}
 
-	@Override
-	public abstract void moveBy(int byX, int byY);
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public abstract void setEndPoint(Point point);
-
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
+	@Override
+	public abstract void moveBy(int byX, int byY);
+
+	public abstract void setEndPoint(Point point);
+
 	public abstract void setStartPoint(Point point);
+
+	@Override
+	public abstract Shape clone();
+
+	public void updateFrom(Shape shape) {
+		this.setColor(shape.getColor());
+		this.setSelected(shape.selected);
+	}
 }

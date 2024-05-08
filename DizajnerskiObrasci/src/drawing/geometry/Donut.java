@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 
 public class Donut extends Circle {
 
+	private static final long serialVersionUID = 3365059876952620250L;
 	private int innerRadius;
 
 	public Donut() {
@@ -123,6 +124,18 @@ public class Donut extends Circle {
 				.append("radius=" + this.getRadius() + ", ").append("inner_radius=" + this.getInnerRadius() + ", ")
 				.append("hashCode=" + this.hashCode()).append("]");
 		return output.toString();
+	}
+
+	@Override
+	public Donut clone() {
+		Donut clone = new Donut(this.getCenter().clone(), this.getRadius(), this.getInnerRadius(), this.isSelected(),
+				this.getColor(), this.getBackgroundColor());
+		return clone;
+	}
+
+	public void updateFrom(Donut donut) {
+		super.updateFrom(donut);
+		this.setInnerRadius(donut.getInnerRadius());
 	}
 
 }

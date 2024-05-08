@@ -1,6 +1,8 @@
 package drawing.components.menubar;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
@@ -11,11 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
-
-import drawing.components.toolbar.ToolbarController;
-
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 
 public class MenubarView extends JMenuBar {
 
@@ -113,25 +110,36 @@ public class MenubarView extends JMenuBar {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Clear canvas");
 		menu_1.add(mntmNewMenuItem_2);
 
-		menu = new JMenu("Window");
-		menu.setMnemonic(KeyEvent.VK_N);
-		menu.getAccessibleContext().setAccessibleDescription("This menu does nothing");
-
 		JMenu mnNewMenu = new JMenu("Object");
 		add(mnNewMenu);
 
 		mntmMoveForward = new JMenuItem("Move forward");
 		mntmMoveForward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0));
 		mntmMoveForward.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.moveForward();
 			}
 		});
+
+		JMenuItem mntmDuplicate = new JMenuItem("Duplicate");
+		mntmDuplicate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.duplicateSelected();
+			}
+		});
+		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
+		mnNewMenu.add(mntmDuplicate);
+
+		JSeparator separator_1_1 = new JSeparator();
+		mnNewMenu.add(separator_1_1);
 		mnNewMenu.add(mntmMoveForward);
 
 		JMenuItem mntmMoveBackward = new JMenuItem("Move backward");
 		mntmMoveBackward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
 		mntmMoveBackward.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.moveBackward();
 			}
@@ -143,6 +151,7 @@ public class MenubarView extends JMenuBar {
 
 		JMenuItem mntmToFront = new JMenuItem("Bring to front");
 		mntmToFront.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.moveToFront();
 			}
@@ -152,13 +161,13 @@ public class MenubarView extends JMenuBar {
 
 		JMenuItem mntmToBack = new JMenuItem("Move to back");
 		mntmToBack.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.moveToBack();
 			}
 		});
 		mntmToBack.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK));
 		mnNewMenu.add(mntmToBack);
-		add(menu);
 
 	}
 

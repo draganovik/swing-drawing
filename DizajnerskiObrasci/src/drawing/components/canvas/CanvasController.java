@@ -144,7 +144,7 @@ public class CanvasController {
 
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
-		Boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
+		boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
 
 		switch (toolModel.getToolAction()) {
 		case POINT:

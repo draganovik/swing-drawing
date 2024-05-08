@@ -56,18 +56,24 @@ public class CanvasModel {
 				if (!shapes.get(index).isSelected()) {
 					shapes.get(index).setSelected(true);
 					selectedShapes.addElement(shapes.get(index));
+					break;
+				}
+				if (shiftDown) {
+					shapes.get(index).setSelected(false);
+					selectedShapes.removeElement(shapes.get(index));
+					break;
 				}
 				break;
 			}
 		}
 
-		if (!shiftDown) {
-			if (initialSelectedShapesSize != selectedShapes.size()) {
-				this.deselectShape(selectedShapes.get(selectedShapes.size() - 1));
+		if (!shiftDown && selectedShapes.size() > 0) {
+			if (initialSelectedShapesSize < selectedShapes.size()) {
+				this.deselectAllShapes(selectedShapes.lastElement());
 			}
-			if (selectedShapes.size() > 0 && index == -1) {
-				this.deselectAllShapes();
-			}
+		}
+		if (index == -1) {
+			this.deselectAllShapes();
 		}
 	}
 
@@ -77,11 +83,17 @@ public class CanvasModel {
 
 	}
 
-	public void deselectShape(Shape leave) {
-		for (int index = shapes.size(); --index >= 0;) {
-			if (!shapes.get(index).equals(leave)) {
-				shapes.get(index).setSelected(false);
-				selectedShapes.removeElement(shapes.get(index));
+	public void deselectShape(Shape shape) {
+		shape.setSelected(false);
+		selectedShapes.removeElement(shape);
+
+	}
+
+	public void deselectAllShapes(Shape leave) {
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			if (!selectedShapes.get(index).equals(leave)) {
+				selectedShapes.get(index).setSelected(false);
+				selectedShapes.removeElement(selectedShapes.get(index));
 			}
 		}
 	}
@@ -187,6 +199,17 @@ public class CanvasModel {
 
 	public Boolean contains(Shape shape) {
 		return shapes.contains(shape);
+	}
+
+	public void duplicateSelected() {
+		int initSelectSize = selectedShapes.size();
+		for (int index = 0; index < initSelectSize; index++) {
+			Shape clone = selectedShapes.firstElement().clone();
+			this.deselectShape(selectedShapes.firstElement());
+			this.addShape(clone);
+			this.selectShape(clone);
+		}
+
 	}
 
 }

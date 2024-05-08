@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Line extends Shape {
+	private static final long serialVersionUID = -3226030232779664581L;
 	private Point endPoint;
 	private Point startPoint;
 
@@ -12,7 +13,7 @@ public class Line extends Shape {
 
 	public Line(Point startPoint) {
 		this.startPoint = startPoint;
-		this.endPoint = startPoint.deepCopy();
+		this.endPoint = startPoint.clone();
 	}
 
 	public Line(Point startPoint, Point endPoint) {
@@ -108,5 +109,18 @@ public class Line extends Shape {
 		output.append("Line").append("[").append("start=" + this.getStartPoint() + ", ")
 				.append("end=" + this.getEndPoint() + ", ").append("hashCode=" + this.hashCode()).append("]");
 		return output.toString();
+	}
+
+	@Override
+	public Shape clone() {
+		Line clone = new Line(this.getStartPoint().clone(), this.getEndPoint().clone(), this.isSelected(),
+				this.getColor());
+		return clone;
+	}
+
+	public void updateFrom(Line line) {
+		super.updateFrom(line);
+		this.setEndPoint(line.getEndPoint().clone());
+		this.setStartPoint(line.getStartPoint().clone());
 	}
 }

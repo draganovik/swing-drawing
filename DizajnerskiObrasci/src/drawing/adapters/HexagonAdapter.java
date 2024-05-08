@@ -8,6 +8,7 @@ import drawing.geometry.SurfaceShape;
 import hexagon.Hexagon;
 
 public class HexagonAdapter extends SurfaceShape {
+	private static final long serialVersionUID = -6568601569650306348L;
 	private final Hexagon hexagon;
 	private final Point adaptedCenter;
 
@@ -18,8 +19,8 @@ public class HexagonAdapter extends SurfaceShape {
 	public HexagonAdapter(Hexagon hexagon) {
 		this.hexagon = hexagon;
 		adaptedCenter = new Point(hexagon.getX(), hexagon.getY());
-		this.setBackgroundColor(super.getBackgroundColor());
-		this.setColor(super.getColor());
+		this.setBackgroundColor(hexagon.getAreaColor());
+		this.setColor(hexagon.getBorderColor());
 	}
 
 	public HexagonAdapter(Hexagon hexagon, Color color, Color backgroundColor) {
@@ -143,6 +144,28 @@ public class HexagonAdapter extends SurfaceShape {
 	@Override
 	public int hashCode() {
 		return hexagon.hashCode();
+	}
+
+	@Override
+	public HexagonAdapter clone() {
+		Hexagon hexClone = new Hexagon(this.getCenter().getX(), this.getCenter().getY(), this.getRadius());
+		hexClone.setAreaColor(this.getBackgroundColor());
+		hexClone.setBorderColor(this.getColor());
+		HexagonAdapter clone = new HexagonAdapter(hexClone);
+		clone.setSelected(this.isSelected());
+		return clone;
+	}
+
+	public void updateFrom(HexagonAdapter hexagonAdapter) {
+		try {
+			this.setCenter(hexagonAdapter.getCenter().clone());
+			this.setRadius(hexagonAdapter.getRadius());
+			this.setColor(hexagonAdapter.getColor());
+			this.setBackgroundColor(hexagonAdapter.getBackgroundColor());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -34,4 +34,10 @@ public class MenubarController {
 		canvasView.repaint();
 	}
 
+	public void duplicateSelected() {
+		canvasModel.duplicateSelected();
+		canvasView.repaint();
+
+	}
+
 }
