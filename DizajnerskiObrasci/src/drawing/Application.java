@@ -38,8 +38,6 @@ public class Application {
 		frameView.setupManubar(menubarController);
 
 		// Start application
-		frameView.setSize(800, 600);
-		frameView.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frameView.setVisible(true);
 	}
 
