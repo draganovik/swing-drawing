@@ -2,9 +2,9 @@ package drawing;
 
 import javax.swing.WindowConstants;
 
-import drawing.mvc.FrameView;
 import drawing.mvc.CanvasController;
 import drawing.mvc.CanvasModel;
+import drawing.mvc.FrameView;
 import drawing.mvc.MenubarController;
 import drawing.mvc.ToolbarController;
 import drawing.mvc.ToolbarModel;
@@ -28,7 +28,7 @@ public class Application {
 		// Toolbar <-> Canvas cross-references
 		toolbarController.setCanvasViewModel(frameView.getCanvasView(), canvasModel);
 		canvasController.setToolbarModelController(toolbarModel, toolbarController);
-		
+
 		// Setup Tab panels
 		frameView.setupTabPanels(canvasModel);
 
