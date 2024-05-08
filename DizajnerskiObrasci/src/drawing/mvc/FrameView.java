@@ -1,4 +1,4 @@
-package drawing;
+package drawing.mvc;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,18 +10,13 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import drawing.components.canvas.CanvasController;
-import drawing.components.canvas.CanvasModel;
-import drawing.components.canvas.CanvasView;
-import drawing.components.layerspanel.LayersPanelView;
-import drawing.components.logpanel.LogPanelView;
-import drawing.components.menubar.MenubarController;
-import drawing.components.menubar.MenubarView;
-import drawing.components.toolbar.ToolbarController;
-import drawing.components.toolbar.ToolbarModel;
-import drawing.components.toolbar.ToolbarView;
+import drawing.mvc.views.CanvasView;
+import drawing.mvc.views.LayersPanelView;
+import drawing.mvc.views.LogPanelView;
+import drawing.mvc.views.MenubarView;
+import drawing.mvc.views.ToolbarView;
 
-public class ApplicationFrame extends JFrame {
+public class FrameView extends JFrame {
 
 	private static final long serialVersionUID = -6456110324869685433L;
 	// Frame View modules
@@ -39,7 +34,7 @@ public class ApplicationFrame extends JFrame {
 		return canvasView;
 	}
 
-	public ApplicationFrame() {
+	public FrameView() {
 		super();
 
 		setTitle("Draganović Mladen - IT68/2019");

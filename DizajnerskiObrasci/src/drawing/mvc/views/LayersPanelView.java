@@ -1,4 +1,4 @@
-package drawing.components.layerspanel;
+package drawing.mvc.views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

@@ -1,4 +1,4 @@
-package drawing.components.canvas;
+package drawing.mvc;
 
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -6,8 +6,6 @@ import java.util.Enumeration;
 import javax.swing.JDialog;
 
 import drawing.adapters.HexagonAdapter;
-import drawing.components.toolbar.ToolbarController;
-import drawing.components.toolbar.ToolbarModel;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -20,6 +18,7 @@ import drawing.modals.DlgManageDonut;
 import drawing.modals.DlgManageHexagon;
 import drawing.modals.DlgManageLine;
 import drawing.modals.DlgManageRectangle;
+import drawing.mvc.views.CanvasView;
 
 public class CanvasController {
 	private Shape createdShape;

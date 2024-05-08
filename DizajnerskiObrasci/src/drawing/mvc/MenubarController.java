@@ -1,7 +1,6 @@
-package drawing.components.menubar;
+package drawing.mvc;
 
-import drawing.components.canvas.CanvasModel;
-import drawing.components.canvas.CanvasView;
+import drawing.mvc.views.CanvasView;
 
 public class MenubarController {
 	CanvasModel canvasModel;

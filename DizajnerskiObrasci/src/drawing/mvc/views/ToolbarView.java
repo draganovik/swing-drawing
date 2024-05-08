@@ -1,4 +1,4 @@
-package drawing.components.toolbar;
+package drawing.mvc.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import drawing.mvc.ToolbarController;
+import drawing.mvc.ToolbarModel;
 import drawing.types.ToolAction;
 
 public class ToolbarView extends JPanel {

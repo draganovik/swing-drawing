@@ -1,4 +1,4 @@
-package drawing.components.toolbar;
+package drawing.mvc;
 
 import java.awt.Color;
 
@@ -7,8 +7,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 import drawing.adapters.HexagonAdapter;
-import drawing.components.canvas.CanvasModel;
-import drawing.components.canvas.CanvasView;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -21,6 +19,8 @@ import drawing.modals.DlgManageHexagon;
 import drawing.modals.DlgManageLine;
 import drawing.modals.DlgManagePoint;
 import drawing.modals.DlgManageRectangle;
+import drawing.mvc.views.CanvasView;
+import drawing.mvc.views.ToolbarView;
 import drawing.types.ToolAction;
 
 public class ToolbarController {

@@ -1,4 +1,4 @@
-package drawing.components.menubar;
+package drawing.mvc.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+
+import drawing.mvc.MenubarController;
 
 public class MenubarView extends JMenuBar {
 

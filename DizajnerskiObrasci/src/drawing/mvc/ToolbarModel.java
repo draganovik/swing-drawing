@@ -1,4 +1,4 @@
-package drawing.components.toolbar;
+package drawing.mvc;
 
 import java.awt.Color;
 

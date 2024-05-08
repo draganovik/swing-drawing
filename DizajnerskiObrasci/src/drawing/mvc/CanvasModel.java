@@ -1,4 +1,4 @@
-package drawing.components.canvas;
+package drawing.mvc;
 
 import java.awt.Color;
 
