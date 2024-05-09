@@ -10,6 +10,8 @@ import javax.swing.JDialog;
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
+import drawing.command.UpdateModelSelectedShapesBackward;
+import drawing.command.UpdateModelSelectedShapesForward;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
@@ -72,7 +74,6 @@ public class CanvasController {
 				createdShape.setEndPoint(endPoint);
 
 				if (!model.contains(createdShape)) {
-					// model.addShape(createdShape);
 					command = new UpdateModelAddShape(model, createdShape);
 					command.execute();
 					actionStack.push(command);
@@ -300,5 +301,23 @@ public class CanvasController {
 		command.redo();
 		actionStack.push(command);
 		view.repaint();
+	}
+
+	public void moveSelectionForward() {
+		model.moveSelectedShapesForward();
+		ICommand command = new UpdateModelSelectedShapesForward(model);
+		command.execute();
+		actionStack.push(command);
+		view.repaint();
+
+	}
+
+	public void moveSelectionBackward() {
+		model.moveSelectedShapesForward();
+		ICommand command = new UpdateModelSelectedShapesBackward(model);
+		command.execute();
+		actionStack.push(command);
+		view.repaint();
+
 	}
 }

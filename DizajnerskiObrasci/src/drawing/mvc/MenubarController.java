@@ -17,13 +17,11 @@ public class MenubarController {
 	}
 
 	public void moveForward() {
-		canvasModel.moveSelectedShapesForward();
-		canvasView.repaint();
+		canvasController.moveSelectionForward();
 	}
 
 	public void moveBackward() {
-		canvasModel.moveSelectedShapesBackward();
-		canvasView.repaint();
+		canvasController.moveSelectionBackward();
 	}
 
 	public void moveToFront() {
