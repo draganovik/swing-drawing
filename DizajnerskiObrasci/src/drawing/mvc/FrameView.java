@@ -73,7 +73,6 @@ public class FrameView extends JFrame {
 	}
 
 	public void setupManubar(MenubarController menubarController) {
-		menubarController.setCanvasView(canvasView);
 		menubarView.setController(menubarController);
 		setJMenuBar(menubarView);
 

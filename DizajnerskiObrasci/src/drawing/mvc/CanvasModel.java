@@ -1,6 +1,8 @@
 package drawing.mvc;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.swing.DefaultListModel;
 
@@ -46,6 +48,26 @@ public class CanvasModel {
 		return selectedShapes;
 	}
 
+	public ArrayList<Integer> getAllSelectedShapeIndexes() {
+		ArrayList<Integer> seletedIndexList = new ArrayList<Integer>();
+		for (int index = selectedShapes.size(); --index >= 0;) {
+			seletedIndexList.add(shapes.indexOf(selectedShapes.get(index)));
+		}
+		return seletedIndexList;
+	}
+
+	public Optional<Shape> getShapeAt(Point point) {
+		for (int index = shapes.size(); --index >= 0;) {
+			if (shapes.get(index).contains(point)) {
+				if (!shapes.get(index).isSelected()) {
+					return Optional.ofNullable(shapes.get(index));
+				}
+				return Optional.empty();
+			}
+		}
+		return Optional.empty();
+	}
+
 	public void selectShapeAt(Point point) {
 		int index;
 
@@ -75,6 +97,12 @@ public class CanvasModel {
 		if (index == -1) {
 			this.deselectAllShapes();
 		}
+	}
+
+	public void selectShapeAt(Integer index) {
+		shapes.get(index).setSelected(true);
+		selectedShapes.addElement(shapes.get(index));
+
 	}
 
 	public void selectShape(Shape shape) {

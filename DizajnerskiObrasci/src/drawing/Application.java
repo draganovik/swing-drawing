@@ -1,7 +1,5 @@
 package drawing;
 
-import javax.swing.WindowConstants;
-
 import drawing.mvc.CanvasController;
 import drawing.mvc.CanvasModel;
 import drawing.mvc.FrameView;
@@ -34,8 +32,10 @@ public class Application {
 
 		// Setup Menubar
 		MenubarController menubarController = new MenubarController(canvasModel);
-		menubarController.setCanvasView(frameView.getCanvasView());
 		frameView.setupManubar(menubarController);
+
+		// Menubar Canvas references
+		menubarController.setCanvasViewController(frameView.getCanvasView(), canvasController);
 
 		// Start application
 		frameView.setVisible(true);

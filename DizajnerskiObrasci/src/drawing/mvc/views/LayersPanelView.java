@@ -29,6 +29,7 @@ public class LayersPanelView extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		listModel = new DefaultListModel<>();
+
 		JScrollPane scrollPanel = new JScrollPane(list);
 		scrollPanel.setPreferredSize(new Dimension(200, 100));
 		setLayout(new BorderLayout(0, 0));

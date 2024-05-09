@@ -100,11 +100,24 @@ public class MenubarView extends JMenuBar {
 		menu_1.getAccessibleContext().setAccessibleDescription("This menu does nothing");
 		add(menu_1);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Undo");
-		menu_1.add(mntmNewMenuItem);
+		JMenuItem mntmUndo = new JMenuItem("Undo");
+		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK));
+		mntmUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.undo();
+			}
+		});
+		menu_1.add(mntmUndo);
 
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Redo");
-		menu_1.add(mntmNewMenuItem_1);
+		JMenuItem mntmRedo = new JMenuItem("Redo");
+		mntmRedo.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
+		mntmRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.redo();
+			}
+		});
+		menu_1.add(mntmRedo);
 
 		JSeparator separator = new JSeparator();
 		menu_1.add(separator);

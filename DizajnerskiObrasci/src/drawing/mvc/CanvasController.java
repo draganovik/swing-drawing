@@ -2,10 +2,17 @@ package drawing.mvc;
 
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import java.util.Optional;
+import java.util.Stack;
 
 import javax.swing.JDialog;
 
 import drawing.adapters.HexagonAdapter;
+import drawing.command.ICommand;
+import drawing.command.UpdateModelAddShape;
+import drawing.command.UpdateModelShapeDeselect;
+import drawing.command.UpdateModelShapeDeselectAll;
+import drawing.command.UpdateModelShapeSelect;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -28,10 +35,11 @@ public class CanvasController {
 	private ToolbarModel toolbarModel;
 	private ToolbarController toolbarController;
 	private CanvasView view;
+	private Stack<ICommand> actionStack = new Stack<>();
+	private Stack<ICommand> actionStackPopped = new Stack<>();
 
 	public CanvasController(CanvasModel model) {
 		this.model = model;
-
 	}
 
 	public void setCanvasView(CanvasView view) {
@@ -45,6 +53,7 @@ public class CanvasController {
 
 	public void mouseDragged(MouseEvent e) {
 
+		ICommand command;
 		endPoint = new Point(e.getX(), e.getY());
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
@@ -63,7 +72,11 @@ public class CanvasController {
 				createdShape.setEndPoint(endPoint);
 
 				if (!model.contains(createdShape)) {
-					model.addShape(createdShape);
+					// model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 				}
 			}
@@ -77,6 +90,7 @@ public class CanvasController {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		ICommand command;
 		Point mousePoint = new Point(e.getX(), e.getY());
 		startPoint = mousePoint;
 		endPoint = mousePoint;
@@ -89,7 +103,11 @@ public class CanvasController {
 			createdShape = new Point();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			createdShape.setStartPoint(startPoint);
-			model.addShape(createdShape);
+			// model.addShape(createdShape);
+			command = new UpdateModelAddShape(model, createdShape);
+			command.execute();
+			actionStack.push(command);
+
 			model.selectShape(createdShape);
 			break;
 		case LINE:
@@ -127,7 +145,32 @@ public class CanvasController {
 			break;
 		default:
 		case SELECT:
-			model.selectShapeAt(mousePoint);
+			Optional<Shape> optionalShape = model.getShapeAt(mousePoint);
+			if (!optionalShape.isPresent()) {
+				if (model.getAllSelectedShapes().size() == 0) {
+					break;
+				}
+				command = new UpdateModelShapeDeselectAll(model);
+				command.execute();
+				actionStack.push(command);
+				break;
+			}
+			if (optionalShape.get().isSelected() && model.getIsShiftDown()) {
+				command = new UpdateModelShapeDeselect(model, optionalShape.get());
+				command.execute();
+				actionStack.push(command);
+			}
+			if (!optionalShape.get().isSelected()) {
+				if (!model.getIsShiftDown()) {
+					command = new UpdateModelShapeDeselectAll(model);
+					command.execute();
+					actionStack.push(command);
+				}
+				command = new UpdateModelShapeSelect(model, optionalShape.get());
+				command.execute();
+				actionStack.push(command);
+			}
+
 			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {
 				Shape shape = en.nextElement();
 				toolbarController.setShapeColor(shape.getColor());
@@ -140,13 +183,11 @@ public class CanvasController {
 			createdShape = null;
 			break;
 		}
-
-		model.refreshList();
 		view.repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {
-
+		ICommand command;
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 		boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
@@ -159,7 +200,10 @@ public class CanvasController {
 				DlgManageLine modal = new DlgManageLine((Line) createdShape);
 				showDialog(modal);
 				if (modal.IsSuccessful) {
-					model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
@@ -171,7 +215,10 @@ public class CanvasController {
 				DlgManageRectangle modal = new DlgManageRectangle((Rectangle) createdShape);
 				showDialog(modal);
 				if (modal.IsSuccessful) {
-					model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
@@ -183,7 +230,10 @@ public class CanvasController {
 				DlgManageCircle modal = new DlgManageCircle((Circle) createdShape);
 				showDialog(modal);
 				if (modal.IsSuccessful) {
-					model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
@@ -195,7 +245,10 @@ public class CanvasController {
 				DlgManageDonut modal = new DlgManageDonut((Donut) createdShape);
 				showDialog(modal);
 				if (modal.IsSuccessful) {
-					model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
@@ -207,7 +260,10 @@ public class CanvasController {
 				DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) createdShape);
 				showDialog(modal);
 				if (modal.IsSuccessful) {
-					model.addShape(createdShape);
+					command = new UpdateModelAddShape(model, createdShape);
+					command.execute();
+					actionStack.push(command);
+
 					model.selectShape(createdShape);
 					model.refreshList();
 					view.repaint();
@@ -224,5 +280,25 @@ public class CanvasController {
 		modal.pack();
 		modal.setLocationRelativeTo(view);
 		modal.setVisible(true);
+	}
+
+	public void undo() {
+		if (actionStack.isEmpty()) {
+			return;
+		}
+		ICommand command = actionStack.pop();
+		command.undo();
+		actionStackPopped.push(command);
+		view.repaint();
+	}
+
+	public void redo() {
+		if (actionStackPopped.isEmpty()) {
+			return;
+		}
+		ICommand command = actionStackPopped.pop();
+		command.redo();
+		actionStack.push(command);
+		view.repaint();
 	}
 }

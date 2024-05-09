@@ -5,13 +5,15 @@ import drawing.mvc.views.CanvasView;
 public class MenubarController {
 	CanvasModel canvasModel;
 	CanvasView canvasView;
+	CanvasController canvasController;
 
 	public MenubarController(CanvasModel canvasModel) {
 		this.canvasModel = canvasModel;
 	}
 
-	public void setCanvasView(CanvasView canvasView) {
+	public void setCanvasViewController(CanvasView canvasView, CanvasController canvasController) {
 		this.canvasView = canvasView;
+		this.canvasController = canvasController;
 	}
 
 	public void moveForward() {
@@ -37,6 +39,16 @@ public class MenubarController {
 	public void duplicateSelected() {
 		canvasModel.duplicateSelected();
 		canvasView.repaint();
+
+	}
+
+	public void undo() {
+		canvasController.undo();
+
+	}
+
+	public void redo() {
+		canvasController.redo();
 
 	}
 
