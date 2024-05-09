@@ -1,6 +1,6 @@
 package drawing.command;
 
-import drawing.components.canvas.CanvasModel;
+import drawing.mvc.CanvasModel;
 
 public class UpdateModelSelectedShapesToFront implements ICommand {
 

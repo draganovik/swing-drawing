@@ -1,17 +1,19 @@
-package drawing.components.menubar;
+package drawing.mvc;
 
-import drawing.components.canvas.CanvasModel;
-import drawing.components.canvas.CanvasView;
+import drawing.mvc.views.CanvasView;
 
 public class MenubarController {
-	MenubarView menubarView;
 	CanvasModel canvasModel;
 	CanvasView canvasView;
+	CanvasController canvasController;
 
-	public MenubarController(MenubarView menubarView, CanvasModel canvasModel, CanvasView canvasView) {
-		this.menubarView = menubarView;
+	public MenubarController(CanvasModel canvasModel) {
 		this.canvasModel = canvasModel;
+	}
+
+	public void setCanvasViewController(CanvasView canvasView, CanvasController canvasController) {
 		this.canvasView = canvasView;
+		this.canvasController = canvasController;
 	}
 
 	public void moveForward() {
@@ -37,6 +39,16 @@ public class MenubarController {
 	public void duplicateSelected() {
 		canvasModel.duplicateSelected();
 		canvasView.repaint();
+
+	}
+
+	public void undo() {
+		canvasController.undo();
+
+	}
+
+	public void redo() {
+		canvasController.redo();
 
 	}
 
