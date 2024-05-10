@@ -160,6 +160,7 @@ public class CanvasController {
 				command = new UpdateModelShapeDeselect(model, optionalShape.get());
 				command.execute();
 				actionStack.push(command);
+				break;
 			}
 			if (!optionalShape.get().isSelected()) {
 				if (!model.getIsShiftDown()) {
@@ -170,6 +171,7 @@ public class CanvasController {
 				command = new UpdateModelShapeSelect(model, optionalShape.get());
 				command.execute();
 				actionStack.push(command);
+				break;
 			}
 
 			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {

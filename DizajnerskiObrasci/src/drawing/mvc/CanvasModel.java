@@ -36,10 +36,6 @@ public class CanvasModel {
 		selectedShapes.clear();
 	}
 
-	public Shape getShape(int index) {
-		return shapes.get(index);
-	}
-
 	public DefaultListModel<Shape> getAllShapes() {
 		return shapes;
 	}
@@ -59,44 +55,10 @@ public class CanvasModel {
 	public Optional<Shape> getShapeAt(Point point) {
 		for (int index = shapes.size(); --index >= 0;) {
 			if (shapes.get(index).contains(point)) {
-				if (!shapes.get(index).isSelected()) {
-					return Optional.ofNullable(shapes.get(index));
-				}
-				return Optional.empty();
+				return Optional.ofNullable(shapes.get(index));
 			}
 		}
 		return Optional.empty();
-	}
-
-	public void selectShapeAt(Point point) {
-		int index;
-
-		int initialSelectedShapesSize = selectedShapes.size();
-
-		for (index = shapes.size(); --index >= 0;) {
-			if (shapes.get(index).contains(point)) {
-				if (!shapes.get(index).isSelected()) {
-					shapes.get(index).setSelected(true);
-					selectedShapes.addElement(shapes.get(index));
-					break;
-				}
-				if (shiftDown) {
-					shapes.get(index).setSelected(false);
-					selectedShapes.removeElement(shapes.get(index));
-					break;
-				}
-				break;
-			}
-		}
-
-		if (!shiftDown && selectedShapes.size() > 0) {
-			if (initialSelectedShapesSize < selectedShapes.size()) {
-				this.deselectAllShapes(selectedShapes.lastElement());
-			}
-		}
-		if (index == -1) {
-			this.deselectAllShapes();
-		}
 	}
 
 	public void selectShapeAt(Integer index) {
@@ -115,15 +77,6 @@ public class CanvasModel {
 		shape.setSelected(false);
 		selectedShapes.removeElement(shape);
 
-	}
-
-	public void deselectAllShapes(Shape leave) {
-		for (int index = selectedShapes.size(); --index >= 0;) {
-			if (!selectedShapes.get(index).equals(leave)) {
-				selectedShapes.get(index).setSelected(false);
-				selectedShapes.removeElement(selectedShapes.get(index));
-			}
-		}
 	}
 
 	public void deselectAllShapes() {
