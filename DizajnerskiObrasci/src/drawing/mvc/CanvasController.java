@@ -306,7 +306,6 @@ public class CanvasController {
 	}
 
 	public void moveSelectionForward() {
-		model.moveSelectedShapesForward();
 		ICommand command = new UpdateModelSelectedShapesForward(model);
 		command.execute();
 		actionStack.push(command);
@@ -315,7 +314,6 @@ public class CanvasController {
 	}
 
 	public void moveSelectionBackward() {
-		model.moveSelectedShapesForward();
 		ICommand command = new UpdateModelSelectedShapesBackward(model);
 		command.execute();
 		actionStack.push(command);
