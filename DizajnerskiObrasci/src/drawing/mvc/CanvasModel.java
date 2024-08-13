@@ -45,7 +45,7 @@ public class CanvasModel {
 	}
 
 	public ArrayList<Integer> getAllSelectedShapeIndexes() {
-		ArrayList<Integer> seletedIndexList = new ArrayList<Integer>();
+		ArrayList<Integer> seletedIndexList = new ArrayList<>();
 		for (int index = selectedShapes.size(); --index >= 0;) {
 			seletedIndexList.add(shapes.indexOf(selectedShapes.get(index)));
 		}

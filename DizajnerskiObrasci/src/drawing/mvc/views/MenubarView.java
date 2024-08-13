@@ -103,6 +103,7 @@ public class MenubarView extends JMenuBar {
 		JMenuItem mntmUndo = new JMenuItem("Undo");
 		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK));
 		mntmUndo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.undo();
 			}
@@ -113,6 +114,7 @@ public class MenubarView extends JMenuBar {
 		mntmRedo.setAccelerator(
 				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
 		mntmRedo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.redo();
 			}

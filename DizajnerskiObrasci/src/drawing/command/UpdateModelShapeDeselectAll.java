@@ -22,8 +22,8 @@ public class UpdateModelShapeDeselectAll implements ICommand {
 	@Override
 	public void undo() {
 		model.deselectAllShapes();
-		for (int i = 0; i < selectedIndexList.size(); i++) {
-			model.selectShapeAt(selectedIndexList.get(i));
+		for (Integer element : selectedIndexList) {
+			model.selectShapeAt(element);
 		}
 	}
 
