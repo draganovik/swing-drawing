@@ -12,6 +12,7 @@ import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
 import drawing.command.UpdateModelSelectedShapesBackward;
 import drawing.command.UpdateModelSelectedShapesForward;
+import drawing.command.UpdateModelSelectedShapesPosition;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
@@ -39,6 +40,7 @@ public class CanvasController {
 	private CanvasView view;
 	private Stack<ICommand> actionStack = new Stack<>();
 	private Stack<ICommand> actionStackPopped = new Stack<>();
+	private ICommand command;
 
 	public CanvasController(CanvasModel model) {
 		this.model = model;
@@ -53,17 +55,29 @@ public class CanvasController {
 		this.toolbarController = toolbarController;
 	}
 
+	private void executeCommand() {
+		command.execute();
+		actionStack.push(command);
+		actionStackPopped.clear();
+		command = null;
+		view.repaint();
+	}
+
 	public void mouseDragged(MouseEvent e) {
 
-		ICommand command;
 		endPoint = new Point(e.getX(), e.getY());
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 
 		switch (toolbarModel.getToolAction()) {
 		case SELECT:
-			model.moveSelectedShapesBy(endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
-			startPoint = endPoint;
+			if (command instanceof UpdateModelSelectedShapesPosition) {
+				command.undo();
+			}
+			command = new UpdateModelSelectedShapesPosition(model, startPoint, endPoint);
+			command.execute();
+			view.repaint();
+
 			break;
 		case LINE:
 		case RECTANGLE:
@@ -75,23 +89,19 @@ public class CanvasController {
 
 				if (!model.contains(createdShape)) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
+					executeCommand();
 
 					model.selectShape(createdShape);
 				}
 			}
+			view.repaint();
 		default:
 			break;
 		}
 
-		model.refreshList();
-		view.repaint();
-
 	}
 
 	public void mousePressed(MouseEvent e) {
-		ICommand command;
 		Point mousePoint = new Point(e.getX(), e.getY());
 		startPoint = mousePoint;
 		endPoint = mousePoint;
@@ -103,13 +113,6 @@ public class CanvasController {
 			model.deselectAllShapes();
 			createdShape = new Point();
 			createdShape.setColor(toolbarModel.getShapeColor());
-			createdShape.setStartPoint(startPoint);
-			// model.addShape(createdShape);
-			command = new UpdateModelAddShape(model, createdShape);
-			command.execute();
-			actionStack.push(command);
-
-			model.selectShape(createdShape);
 			break;
 		case LINE:
 			model.deselectAllShapes();
@@ -146,32 +149,28 @@ public class CanvasController {
 			break;
 		default:
 		case SELECT:
-			Optional<Shape> optionalShape = model.getShapeAt(mousePoint);
-			if (!optionalShape.isPresent()) {
-				if (model.getAllSelectedShapes().size() == 0) {
-					break;
-				}
-				command = new UpdateModelShapeDeselectAll(model);
-				command.execute();
-				actionStack.push(command);
-				break;
-			}
-			if (optionalShape.get().isSelected() && model.getIsShiftDown()) {
-				command = new UpdateModelShapeDeselect(model, optionalShape.get());
-				command.execute();
-				actionStack.push(command);
-				break;
-			}
-			if (!optionalShape.get().isSelected()) {
-				if (!model.getIsShiftDown()) {
+			Optional<Shape> optionalShape = model.getShapeAt(startPoint);
+			if (optionalShape.isEmpty()) {
+				if (!model.getAllSelectedShapes().isEmpty()) {
 					command = new UpdateModelShapeDeselectAll(model);
-					command.execute();
-					actionStack.push(command);
+					executeCommand();
 				}
-				command = new UpdateModelShapeSelect(model, optionalShape.get());
-				command.execute();
-				actionStack.push(command);
-				break;
+			} else {
+
+				if (optionalShape.get().isSelected()) {
+					if (model.getIsShiftDown()) {
+						command = new UpdateModelShapeDeselect(model, optionalShape.get());
+						executeCommand();
+					}
+				} else {
+					if (!model.getIsShiftDown() && model.getAllSelectedShapes().capacity() > 1) {
+						command = new UpdateModelShapeDeselectAll(model);
+						executeCommand();
+					}
+
+					command = new UpdateModelShapeSelect(model, optionalShape.get());
+					executeCommand();
+				}
 			}
 
 			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {
@@ -179,24 +178,39 @@ public class CanvasController {
 				toolbarController.setShapeColor(shape.getColor());
 				if (shape instanceof SurfaceShape) {
 					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());
+					view.repaint();
 				} else {
 					toolbarController.setShapeBackground(null);
+					view.repaint();
 				}
 			}
-			createdShape = null;
 			break;
 		}
-		view.repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		ICommand command;
+		Point mousePoint = new Point(e.getX(), e.getY());
+		endPoint = mousePoint;
+
 		double pointsXDistance = startPoint.distanceByXOf(endPoint);
 		double pointsYDistance = startPoint.distanceByYOf(endPoint);
 		boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
 
 		switch (toolbarModel.getToolAction()) {
+		case SELECT:
+			if (command instanceof UpdateModelSelectedShapesPosition) {
+				command.undo();
+				executeCommand();
+			}
+			break;
 		case POINT:
+			if (createdShape instanceof Point) {
+				createdShape.setEndPoint(endPoint);
+				command = new UpdateModelAddShape(model, createdShape);
+				model.selectShape(createdShape);
+				executeCommand();
+
+			}
 			break;
 		case LINE:
 			if (initShapeViaDialog) {
@@ -204,12 +218,8 @@ public class CanvasController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
-
 					model.selectShape(createdShape);
-					model.refreshList();
-					view.repaint();
+					executeCommand();
 				}
 			}
 			break;
@@ -219,12 +229,8 @@ public class CanvasController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
-
 					model.selectShape(createdShape);
-					model.refreshList();
-					view.repaint();
+					executeCommand();
 				}
 			}
 			break;
@@ -234,12 +240,8 @@ public class CanvasController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
-
 					model.selectShape(createdShape);
-					model.refreshList();
-					view.repaint();
+					executeCommand();
 				}
 			}
 			break;
@@ -249,8 +251,7 @@ public class CanvasController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
+					executeCommand();
 
 					model.selectShape(createdShape);
 					model.refreshList();
@@ -264,8 +265,7 @@ public class CanvasController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					command.execute();
-					actionStack.push(command);
+					executeCommand();
 
 					model.selectShape(createdShape);
 					model.refreshList();
@@ -289,7 +289,7 @@ public class CanvasController {
 		if (actionStack.isEmpty()) {
 			return;
 		}
-		ICommand command = actionStack.pop();
+		command = actionStack.pop();
 		command.undo();
 		actionStackPopped.push(command);
 		view.repaint();
@@ -299,24 +299,22 @@ public class CanvasController {
 		if (actionStackPopped.isEmpty()) {
 			return;
 		}
-		ICommand command = actionStackPopped.pop();
+		command = actionStackPopped.pop();
 		command.redo();
 		actionStack.push(command);
 		view.repaint();
 	}
 
 	public void moveSelectionForward() {
-		ICommand command = new UpdateModelSelectedShapesForward(model);
-		command.execute();
-		actionStack.push(command);
+		command = new UpdateModelSelectedShapesForward(model);
+		executeCommand();
 		view.repaint();
 
 	}
 
 	public void moveSelectionBackward() {
-		ICommand command = new UpdateModelSelectedShapesBackward(model);
-		command.execute();
-		actionStack.push(command);
+		command = new UpdateModelSelectedShapesBackward(model);
+		executeCommand();
 		view.repaint();
 
 	}
