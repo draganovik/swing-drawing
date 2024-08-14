@@ -129,7 +129,12 @@ public class Point extends Shape {
 		return output.toString();
 	}
 
-	public void updateFrom(Point point) {
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof Point)) {
+			throw new NumberFormatException("'updateFrom' shape must be of thhe same type.");
+		}
+		Point point = (Point) shape;
 		super.updateFrom(point);
 		this.setX(point.getX());
 		this.setY(point.getY());

@@ -118,7 +118,12 @@ public class Line extends Shape {
 		return clone;
 	}
 
-	public void updateFrom(Line line) {
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof Line)) {
+			throw new NumberFormatException("'updateFrom' shape must be of thhe same type.");
+		}
+		Line line = (Line) shape;
 		super.updateFrom(line);
 		this.setEndPoint(line.getEndPoint().clone());
 		this.setStartPoint(line.getStartPoint().clone());

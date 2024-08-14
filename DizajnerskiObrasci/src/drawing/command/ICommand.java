@@ -1,11 +1,11 @@
 package drawing.command;
 
 public interface ICommand {
-	public void execute();
+	public void execute() throws Exception;
 
-	public void undo();
+	public void undo() throws Exception;
 
-	public default void redo() {
+	public default void redo() throws Exception {
 		this.execute();
 	}
 }

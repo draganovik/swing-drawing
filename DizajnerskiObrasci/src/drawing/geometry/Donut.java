@@ -133,7 +133,12 @@ public class Donut extends Circle {
 		return clone;
 	}
 
-	public void updateFrom(Donut donut) {
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof Donut)) {
+			throw new NumberFormatException("'updateFrom' shape must be of thhe same type.");
+		}
+		Donut donut = (Donut) shape;
 		super.updateFrom(donut);
 		this.setInnerRadius(donut.getInnerRadius());
 	}

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import drawing.geometry.Point;
+import drawing.geometry.Shape;
 import drawing.geometry.SurfaceShape;
 import hexagon.Hexagon;
 
@@ -77,6 +78,11 @@ public class HexagonAdapter extends SurfaceShape {
 	}
 
 	@Override
+	public void setSelected(boolean selected) {
+		hexagon.setSelected(selected);
+	}
+
+	@Override
 	public void moveBy(int byX, int byY) {
 		adaptedCenter.setX(hexagon.getX() + byX);
 		adaptedCenter.setY(hexagon.getY() + byY);
@@ -124,11 +130,6 @@ public class HexagonAdapter extends SurfaceShape {
 	}
 
 	@Override
-	public void setSelected(boolean selected) {
-		hexagon.setSelected(selected);
-	}
-
-	@Override
 	public void setStartPoint(Point point) {
 		this.setCenter(point);
 	}
@@ -156,16 +157,18 @@ public class HexagonAdapter extends SurfaceShape {
 		return clone;
 	}
 
-	public void updateFrom(HexagonAdapter hexagonAdapter) {
-		try {
-			this.setCenter(hexagonAdapter.getCenter().clone());
-			this.setRadius(hexagonAdapter.getRadius());
-			this.setColor(hexagonAdapter.getColor());
-			this.setBackgroundColor(hexagonAdapter.getBackgroundColor());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof HexagonAdapter)) {
+			throw new NumberFormatException("Inner radius must be less than radius by at least 3.");
 		}
+		HexagonAdapter hexagonAdapter = (HexagonAdapter) shape;
+		super.updateFrom(hexagonAdapter);
+		this.setSelected(hexagonAdapter.isSelected());
+		this.setCenter(hexagonAdapter.getCenter());
+		this.setRadius(hexagonAdapter.getRadius());
+		this.setColor(hexagonAdapter.getColor());
+		this.setBackgroundColor(hexagonAdapter.getBackgroundColor());
 	}
 
 }

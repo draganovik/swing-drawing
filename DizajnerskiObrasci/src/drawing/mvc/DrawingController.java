@@ -20,6 +20,7 @@ import drawing.command.UpdateModelSelectedShapesToFront;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
+import drawing.command.UpdateShapeProperties;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -73,11 +74,16 @@ public class DrawingController {
 	}
 
 	private void executeCommand() {
-		command.execute();
-		actionStack.push(command);
-		actionStackPopped.clear();
-		command = null;
-		view.repaint();
+		try {
+			command.execute();
+			actionStack.push(command);
+			actionStackPopped.clear();
+			command = null;
+			view.repaint();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void showDialog(JDialog modal) {
@@ -196,11 +202,21 @@ public class DrawingController {
 
 		switch (toolbarModel.getToolAction()) {
 		case SELECT:
-			if (command instanceof UpdateModelSelectedShapesPosition) {
-				command.undo();
+			try {
+				if (command instanceof UpdateModelSelectedShapesPosition) {
+					command.undo();
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			command = new UpdateModelSelectedShapesPosition(model, startPoint, endPoint);
-			command.execute();
+			try {
+				command.execute();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			view.repaint();
 			break;
 		case POINT:
@@ -236,7 +252,12 @@ public class DrawingController {
 		switch (toolbarModel.getToolAction()) {
 		case SELECT:
 			if (command instanceof UpdateModelSelectedShapesPosition) {
-				command.undo();
+				try {
+					command.undo();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				executeCommand();
 			}
 			break;
@@ -316,22 +337,32 @@ public class DrawingController {
 		if (actionStack.isEmpty()) {
 			return;
 		}
-		command = actionStack.pop();
-		command.undo();
-		actionStackPopped.push(command);
-		command = null;
-		view.repaint();
+		try {
+			command = actionStack.pop();
+			command.undo();
+			actionStackPopped.push(command);
+			command = null;
+			view.repaint();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void redo() {
 		if (actionStackPopped.isEmpty()) {
 			return;
 		}
-		command = actionStackPopped.pop();
-		command.redo();
-		actionStack.push(command);
-		command = null;
-		view.repaint();
+		try {
+			command = actionStackPopped.pop();
+			command.redo();
+			actionStack.push(command);
+			command = null;
+			view.repaint();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void moveSelectedForward() {
@@ -434,46 +465,56 @@ public class DrawingController {
 	}
 
 	public void modifySelected() {
-		Shape selectedShape = model.getAllSelectedShapes().get(0);
+		Shape selectedShape = model.getAllSelectedShapes().getFirst();
+		Shape update = selectedShape.clone();
 		if (selectedShape instanceof Point) {
-			DlgManagePoint modal = new DlgManagePoint((Point) model.getAllSelectedShapes().get(0));
+			DlgManagePoint modal = new DlgManagePoint((Point) update);
 			showDialog(modal);
-			view.repaint();
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
 		if (selectedShape instanceof Line) {
-			DlgManageLine modal = new DlgManageLine((Line) model.getAllSelectedShapes().get(0));
+			DlgManageLine modal = new DlgManageLine((Line) update);
 			showDialog(modal);
-			view.repaint();
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
 		if (selectedShape instanceof Rectangle) {
-			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) model.getAllSelectedShapes().get(0));
+			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) update);
 			showDialog(modal);
-			view.repaint();
+			System.out.println(update.toString());
+			System.out.println(selectedShape.toString());
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
 
 		if (selectedShape instanceof Donut) {
-			DlgManageDonut modal = new DlgManageDonut((Donut) model.getAllSelectedShapes().get(0));
+			DlgManageDonut modal = new DlgManageDonut((Donut) update);
 			showDialog(modal);
-			view.repaint();
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
 
 		if (selectedShape instanceof Circle) {
-			DlgManageCircle modal = new DlgManageCircle((Circle) model.getAllSelectedShapes().get(0));
+			DlgManageCircle modal = new DlgManageCircle((Circle) update);
 			showDialog(modal);
-			view.repaint();
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
 
 		if (selectedShape instanceof HexagonAdapter) {
-			DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) model.getAllSelectedShapes().get(0));
+			DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) update);
 			showDialog(modal);
-			view.repaint();
+			command = new UpdateShapeProperties(selectedShape, update);
+			this.executeCommand();
 			return;
 		}
+
 	}
 
 }

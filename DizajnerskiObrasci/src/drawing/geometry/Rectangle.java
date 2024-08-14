@@ -153,16 +153,16 @@ public class Rectangle extends SurfaceShape {
 		return clone;
 	}
 
-	public void updateFrom(Rectangle rectangle) {
-		super.updateFrom(rectangle);
-		try {
-			this.setUpperLeftPoint(rectangle.getUpperLeftPoint().clone());
-			this.setWidth(rectangle.getWidth());
-			this.setHeight(rectangle.getHeight());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof Rectangle)) {
+			throw new NumberFormatException("Inner radius must be less than radius by at least 3.");
 		}
+		Rectangle rectangle = (Rectangle) shape;
+		super.updateFrom(rectangle);
+		this.setUpperLeftPoint(rectangle.getUpperLeftPoint().clone());
+		this.setWidth(rectangle.getWidth());
+		this.setHeight(rectangle.getHeight());
 	}
 
 }
