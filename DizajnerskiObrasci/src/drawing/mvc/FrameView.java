@@ -63,7 +63,7 @@ public class FrameView extends JFrame {
 	}
 
 	public void setupTabPanels(CanvasModel canvasModel) {
-		layersPanelView.setDLM(canvasModel.getAllShapes());
+		layersPanelView.setDLM(canvasModel.getAllShapesDLM());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);

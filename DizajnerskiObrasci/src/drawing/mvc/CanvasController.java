@@ -13,6 +13,8 @@ import drawing.command.UpdateModelAddShape;
 import drawing.command.UpdateModelSelectedShapesBackward;
 import drawing.command.UpdateModelSelectedShapesForward;
 import drawing.command.UpdateModelSelectedShapesPosition;
+import drawing.command.UpdateModelSelectedShapesToBack;
+import drawing.command.UpdateModelSelectedShapesToFront;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
@@ -59,6 +61,7 @@ public class CanvasController {
 		command.execute();
 		actionStack.push(command);
 		actionStackPopped.clear();
+		System.out.println(actionStack.size() + ". executed " + command.getClass());
 		command = null;
 		view.repaint();
 	}
@@ -77,7 +80,6 @@ public class CanvasController {
 			command = new UpdateModelSelectedShapesPosition(model, startPoint, endPoint);
 			command.execute();
 			view.repaint();
-
 			break;
 		case LINE:
 		case RECTANGLE:
@@ -163,7 +165,7 @@ public class CanvasController {
 						executeCommand();
 					}
 				} else {
-					if (!model.getIsShiftDown() && model.getAllSelectedShapes().capacity() > 1) {
+					if (!model.getIsShiftDown() && !model.getAllSelectedShapes().isEmpty()) {
 						command = new UpdateModelShapeDeselectAll(model);
 						executeCommand();
 					}
@@ -173,8 +175,8 @@ public class CanvasController {
 				}
 			}
 
-			for (Enumeration<Shape> en = model.getAllSelectedShapes().elements(); en.hasMoreElements();) {
-				Shape shape = en.nextElement();
+			for (int i = 0; i < model.getAllSelectedShapes().size(); i++) {
+				Shape shape = model.getAllSelectedShapes().get(i);
 				toolbarController.setShapeColor(shape.getColor());
 				if (shape instanceof SurfaceShape) {
 					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());
@@ -254,7 +256,6 @@ public class CanvasController {
 					executeCommand();
 
 					model.selectShape(createdShape);
-					model.refreshList();
 					view.repaint();
 				}
 			}
@@ -268,7 +269,6 @@ public class CanvasController {
 					executeCommand();
 
 					model.selectShape(createdShape);
-					model.refreshList();
 					view.repaint();
 				}
 			}
@@ -308,14 +308,20 @@ public class CanvasController {
 	public void moveSelectionForward() {
 		command = new UpdateModelSelectedShapesForward(model);
 		executeCommand();
-		view.repaint();
-
 	}
 
 	public void moveSelectionBackward() {
 		command = new UpdateModelSelectedShapesBackward(model);
 		executeCommand();
-		view.repaint();
+	}
 
+	public void moveSelectionToFront() {
+		command = new UpdateModelSelectedShapesToFront(model);
+		executeCommand();
+	}
+
+	public void moveSelectionToBack() {
+		command = new UpdateModelSelectedShapesToBack(model);
+		executeCommand();
 	}
 }

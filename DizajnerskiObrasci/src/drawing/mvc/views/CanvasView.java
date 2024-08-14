@@ -30,7 +30,7 @@ public class CanvasView extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		for (Enumeration<Shape> e = model.getAllShapes().elements(); e.hasMoreElements();) {
+		for (Enumeration<Shape> e = model.getAllShapesDLM().elements(); e.hasMoreElements();) {
 			e.nextElement().draw(g);
 		}
 	}

@@ -25,13 +25,11 @@ public class MenubarController {
 	}
 
 	public void moveToFront() {
-		canvasModel.moveSelectedShapesToFront();
-		canvasView.repaint();
+		canvasController.moveSelectionToFront();
 	}
 
 	public void moveToBack() {
-		canvasModel.moveSelectedShapesToBack();
-		canvasView.repaint();
+		canvasController.moveSelectionToBack();
 	}
 
 	public void duplicateSelected() {
