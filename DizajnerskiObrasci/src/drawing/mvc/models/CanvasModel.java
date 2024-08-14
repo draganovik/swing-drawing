@@ -1,4 +1,4 @@
-package drawing.mvc;
+package drawing.mvc.models;
 
 import java.awt.Color;
 import java.util.ArrayList;

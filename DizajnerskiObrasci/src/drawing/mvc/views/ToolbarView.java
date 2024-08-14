@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import drawing.mvc.DrawingController;
-import drawing.mvc.ToolbarModel;
+import drawing.mvc.models.ToolbarModel;
 import drawing.types.ToolAction;
 
 public class ToolbarView extends JPanel {
@@ -116,7 +116,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarModify.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction_Edit();
+				controller.modifySelected();
 			}
 		});
 		btnToolbarModify.setForeground(new Color(100, 149, 237));
@@ -125,7 +125,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction_Delete();
+				controller.deleteSelected();
 			}
 		});
 		btnToolbarDelete.setForeground(new Color(128, 0, 0));
@@ -177,7 +177,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarBackground.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction_BackgroundPicker();
+				controller.colorPickerPickBackgroundColor();
 			}
 		});
 		panel.add(btnToolbarBackground);
@@ -187,7 +187,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction_ColorPicker();
+				controller.colorPickerPickOutlineColor();
 			}
 		});
 		panel.add(btnToolbarColor);

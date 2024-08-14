@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import drawing.geometry.Shape;
 import drawing.mvc.DrawingController;
-import drawing.mvc.CanvasModel;
+import drawing.mvc.models.CanvasModel;
 
 public class CanvasView extends JPanel {
 

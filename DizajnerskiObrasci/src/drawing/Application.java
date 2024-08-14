@@ -1,28 +1,28 @@
 package drawing;
 
 import drawing.mvc.DrawingController;
-import drawing.mvc.CanvasModel;
-import drawing.mvc.FrameView;
-import drawing.mvc.ToolbarModel;
+import drawing.mvc.DrawingFrame;
+import drawing.mvc.models.CanvasModel;
+import drawing.mvc.models.ToolbarModel;
 
 public class Application {
 
 	public static void main(String[] args) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		FrameView frameView = new FrameView();
+		DrawingFrame drawingFrame = new DrawingFrame();
 
-		// Setup Models
+		// Initialize Models
 		CanvasModel canvasModel = new CanvasModel();
 		ToolbarModel toolbarModel = new ToolbarModel();
-		
+
 		// Setup Controller
 		DrawingController drawingController = new DrawingController(canvasModel, toolbarModel);
-		
-		// Initialize Views
-		frameView.setupCanvas(canvasModel, toolbarModel, drawingController);
 
-		// Start application
-		frameView.setVisible(true);
+		// Initialize Views
+		drawingFrame.setupCanvas(canvasModel, toolbarModel, drawingController);
+
+		// Show Frame
+		drawingFrame.setVisible(true);
 	}
 
 }

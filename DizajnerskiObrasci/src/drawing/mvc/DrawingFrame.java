@@ -10,13 +10,15 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import drawing.mvc.models.CanvasModel;
+import drawing.mvc.models.ToolbarModel;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.LayersPanelView;
 import drawing.mvc.views.LogPanelView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
 
-public class FrameView extends JFrame {
+public class DrawingFrame extends JFrame {
 
 	private static final long serialVersionUID = -6456110324869685433L;
 	// Frame View modules
@@ -34,7 +36,7 @@ public class FrameView extends JFrame {
 		return canvasView;
 	}
 
-	public FrameView() {
+	public DrawingFrame() {
 		super();
 
 		setTitle("Draganović Mladen - IT68/2019");
@@ -48,18 +50,18 @@ public class FrameView extends JFrame {
 
 	public void setupCanvas(CanvasModel canvasModel, ToolbarModel toolbarModel, DrawingController controller) {
 		controller.setViews(canvasView, toolbarView);
-		
+
 		canvasView.setModel(canvasModel);
 		canvasView.setController(controller);
 		contentPane.add(canvasView, BorderLayout.CENTER);
-		
+
 		toolbarView.setModel(toolbarModel);
 		toolbarView.setController(controller);
 		contentPane.add(toolbarView, BorderLayout.WEST);
 
 		menubarView.setController(controller);
 		setJMenuBar(menubarView);
-		
+
 		layersPanelView.setDLM(canvasModel.getAllShapesDLM());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));

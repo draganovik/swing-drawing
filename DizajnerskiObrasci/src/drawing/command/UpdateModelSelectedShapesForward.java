@@ -1,6 +1,6 @@
 package drawing.command;
 
-import drawing.mvc.CanvasModel;
+import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesForward implements ICommand {
 
