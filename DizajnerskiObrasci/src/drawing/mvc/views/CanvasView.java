@@ -1,4 +1,4 @@
-package drawing.components.canvas;
+package drawing.mvc.views;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,6 +10,8 @@ import java.util.Enumeration;
 import javax.swing.JPanel;
 
 import drawing.geometry.Shape;
+import drawing.mvc.CanvasController;
+import drawing.mvc.CanvasModel;
 
 public class CanvasView extends JPanel {
 
@@ -28,7 +30,7 @@ public class CanvasView extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		for (Enumeration<Shape> e = model.getAllShapes().elements(); e.hasMoreElements();) {
+		for (Enumeration<Shape> e = model.getAllShapesDLM().elements(); e.hasMoreElements();) {
 			e.nextElement().draw(g);
 		}
 	}

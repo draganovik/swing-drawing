@@ -14,7 +14,7 @@ Izmene/Dodatne funkcionalnosti:
 - [ ] 7. generisanje i prikaz loga izvršenih komandi u okviru aplikacije,
 - [ ] 8. zapis u tekstualnu datoteku loga izvršenih komandi na eksterni memorijski medijum, zapis kompletnog crteža (_Serialization_) na eksterni memorijski medijum, - _Strategy_ obrazac,
 - [ ] 9. učitavanje tekstualne datoteke koja sadrži log izvršenih komandi i na osnovu sadržaja, kreiranje odgovarajućeg crteža, komandu po komandu u interakciji sa korisnikom, učitavanje kompletnog crteža,
-- [ ] 10. promenu pozicije oblika po Z osi, _To Front_ (pozicija po pozicija), _To Back_ (pozicija po pozicija), _Bring To Front_ (na najvišu poziciju), _Bring To Back_ (na najnižu poziciju),
+- [x] 10. promenu pozicije oblika po Z osi, _To Front_ (pozicija po pozicija), _To Back_ (pozicija po pozicija), _Bring To Front_ (na najvišu poziciju), _Bring To Back_ (na najnižu poziciju),
 - [x] 11. prikazati trenutno aktivne boje za crtanje ivice i popunjavanje oblika, klikom na boju, otvara se dijalog sa mogućnošću promene trenutno aktivne boje,
 - [x] 12. omogućiti selekciju više oblika,
 - [ ] 13. dugme za brisanje treba da bude dostupno samo u slučaju da postoje selektovani objekti – _Observer_ obrazac,

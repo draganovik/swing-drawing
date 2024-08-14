@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Point extends Shape {
+	private static final long serialVersionUID = 6080090333546103633L;
 	private int x;
 	private int y;
 
@@ -115,7 +116,8 @@ public class Point extends Shape {
 		this.y = y;
 	}
 
-	public Point deepCopy() {
+	@Override
+	public Point clone() {
 		return new Point(getX(), getY(), this.isSelected(), this.getColor());
 	}
 
@@ -127,8 +129,10 @@ public class Point extends Shape {
 		return output.toString();
 	}
 
-	public String toString(String separator) {
-		return this.x + separator + this.y;
+	public void updateFrom(Point point) {
+		super.updateFrom(point);
+		this.setX(point.getX());
+		this.setY(point.getY());
 	}
 
 }

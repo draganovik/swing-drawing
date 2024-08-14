@@ -1,4 +1,4 @@
-package drawing.components.toolbar;
+package drawing.mvc;
 
 import java.awt.Color;
 
@@ -7,21 +7,20 @@ import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 import drawing.adapters.HexagonAdapter;
-import drawing.components.canvas.CanvasModel;
-import drawing.components.canvas.CanvasView;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
 import drawing.geometry.Point;
 import drawing.geometry.Rectangle;
 import drawing.geometry.Shape;
-import drawing.geometry.SurfaceShape;
 import drawing.modals.DlgManageCircle;
 import drawing.modals.DlgManageDonut;
 import drawing.modals.DlgManageHexagon;
 import drawing.modals.DlgManageLine;
 import drawing.modals.DlgManagePoint;
 import drawing.modals.DlgManageRectangle;
+import drawing.mvc.views.CanvasView;
+import drawing.mvc.views.ToolbarView;
 import drawing.types.ToolAction;
 
 public class ToolbarController {
@@ -30,11 +29,12 @@ public class ToolbarController {
 	private ToolbarModel model;
 	private ToolbarView view;
 
-	public ToolbarController(ToolbarModel model, CanvasModel canvasModel, ToolbarView view, CanvasView canvasView) {
+	public ToolbarController(ToolbarModel model) {
 		this.model = model;
-		this.canvasModel = canvasModel;
+	}
+
+	public void setToolbarView(ToolbarView view) {
 		this.view = view;
-		this.canvasView = canvasView;
 
 		view.btnToolbarColor.setOpaque(true);
 		view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
@@ -42,6 +42,11 @@ public class ToolbarController {
 		view.btnToolbarBackground.setOpaque(true);
 		view.btnToolbarBackground.setBackground(model.getShapeBackground());
 		view.btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+	}
+
+	public void setCanvasViewModel(CanvasView canvasView, CanvasModel canvasModel) {
+		this.canvasModel = canvasModel;
+		this.canvasView = canvasView;
 	}
 
 	public void setShapeColor(Color color) {
@@ -64,7 +69,7 @@ public class ToolbarController {
 		switch (model.getToolAction()) {
 		case POINT:
 		case LINE:
-			canvasModel.deselectAllShapes();
+			// canvasModel.deselectAllShapes();
 			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			view.btnToolbarBackground.setBackground(null);
 			view.btnToolbarBackground.setEnabled(false);
@@ -73,7 +78,7 @@ public class ToolbarController {
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			canvasModel.deselectAllShapes();
+			// canvasModel.deselectAllShapes();
 			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			view.btnToolbarBackground.setBackground(model.getShapeBackground());
 			view.btnToolbarBackground.setEnabled(true);
