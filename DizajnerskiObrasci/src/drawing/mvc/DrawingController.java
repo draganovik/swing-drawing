@@ -12,7 +12,9 @@ import javax.swing.JDialog;
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
+import drawing.command.UpdateModelSelectedShapesBackgroundColor;
 import drawing.command.UpdateModelSelectedShapesBackward;
+import drawing.command.UpdateModelSelectedShapesColor;
 import drawing.command.UpdateModelSelectedShapesForward;
 import drawing.command.UpdateModelSelectedShapesPosition;
 import drawing.command.UpdateModelSelectedShapesToBack;
@@ -400,7 +402,6 @@ public class DrawingController {
 		switch (toolbarModel.getToolAction()) {
 		case POINT:
 		case LINE:
-			// canvasModel.deselectAllShapes();
 			toolbarView.btnToolbarColor
 					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
 			toolbarView.btnToolbarBackground.setBackground(null);
@@ -410,7 +411,6 @@ public class DrawingController {
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			// canvasModel.deselectAllShapes();
 			toolbarView.btnToolbarColor
 					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
 			toolbarView.btnToolbarBackground.setBackground(toolbarModel.getShapeBackground());
@@ -431,9 +431,12 @@ public class DrawingController {
 		Color selectedColor = getColorFromColorPicker("Choose Background Color", toolbarModel.getShapeColor());
 		if (selectedColor != null) {
 			toolbarModel.setShapeBackground(selectedColor);
-			model.updateBackgroundColorOfSelectedShapes(selectedColor);
 			toolbarView.btnToolbarBackground.setBackground(toolbarModel.getShapeBackground());
-			view.repaint();
+			if (model.getAllSelectedShapeIndexes().isEmpty()) {
+				return;
+			}
+			command = new UpdateModelSelectedShapesBackgroundColor(model, selectedColor);
+			this.executeCommand();
 		}
 	}
 
@@ -441,10 +444,14 @@ public class DrawingController {
 		Color selectedColor = getColorFromColorPicker("Choose Outline Color", toolbarModel.getShapeBackground());
 		if (selectedColor != null) {
 			toolbarModel.setShapeColor(selectedColor);
-			model.updateColorOfSelectedShapes(selectedColor);
 			toolbarView.btnToolbarColor
 					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
-			view.repaint();
+			if (model.getAllSelectedShapeIndexes().isEmpty()) {
+				return;
+			}
+			command = new UpdateModelSelectedShapesColor(model, selectedColor);
+			this.executeCommand();
+
 		}
 	}
 
@@ -484,8 +491,6 @@ public class DrawingController {
 		if (selectedShape instanceof Rectangle) {
 			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) update);
 			showDialog(modal);
-			System.out.println(update.toString());
-			System.out.println(selectedShape.toString());
 			command = new UpdateShapeProperties(selectedShape, update);
 			this.executeCommand();
 			return;

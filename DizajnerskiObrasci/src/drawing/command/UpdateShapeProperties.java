@@ -16,13 +16,7 @@ public class UpdateShapeProperties implements ICommand {
 
 	@Override
 	public void execute() throws Exception {
-		System.out.println("before");
-		System.out.println(shape.toString());
-		System.out.println(nextProperties.toString());
 		this.shape.updateFrom(this.nextProperties);
-		System.out.println("after");
-		System.out.println(shape.toString());
-		System.out.println(nextProperties.toString());
 	}
 
 	@Override
