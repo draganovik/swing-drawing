@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.util.Optional;
 import java.util.Stack;
 
-import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
@@ -199,10 +198,9 @@ public class DrawingController {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-
 		endPoint = new Point(e.getX(), e.getY());
-		double pointsXDistance = startPoint.distanceByXOf(endPoint);
-		double pointsYDistance = startPoint.distanceByYOf(endPoint);
+
+		double distance = startPoint.distanceOf(endPoint);
 
 		switch (toolbarModel.getToolAction()) {
 		case SELECT:
@@ -223,22 +221,30 @@ public class DrawingController {
 			}
 			view.repaint();
 			break;
-		case POINT:
 		case LINE:
 		case RECTANGLE:
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			if (pointsXDistance > 8 && pointsYDistance > 8) {
+			if (distance > 10) {
 				createdShape.setEndPoint(endPoint);
 
 				if (!model.contains(createdShape)) {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
-
 				}
 			}
 			view.repaint();
+			break;
+		case POINT:
+			createdShape.setEndPoint(endPoint);
+			if (!model.contains(createdShape)) {
+				command = new UpdateModelAddShape(model, createdShape);
+				executeCommand();
+
+			}
+			view.repaint();
+			break;
 		default:
 			break;
 		}
@@ -249,20 +255,20 @@ public class DrawingController {
 		Point mousePoint = new Point(e.getX(), e.getY());
 		endPoint = mousePoint;
 
-		double pointsXDistance = startPoint.distanceByXOf(endPoint);
-		double pointsYDistance = startPoint.distanceByYOf(endPoint);
-		boolean initShapeViaDialog = pointsXDistance < 8 || pointsYDistance < 8;
+		double distance = startPoint.distanceOf(endPoint);
+
+		boolean initShapeViaDialog = distance < 10;
 
 		switch (toolbarModel.getToolAction()) {
 		case SELECT:
 			if (command instanceof UpdateModelSelectedShapesPosition) {
 				try {
 					command.undo();
+					executeCommand();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				executeCommand();
 			}
 			break;
 		case POINT:
@@ -310,8 +316,6 @@ public class DrawingController {
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
-
-					view.repaint();
 				}
 			}
 			break;
@@ -322,8 +326,6 @@ public class DrawingController {
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
-
-					view.repaint();
 				}
 			}
 			break;
@@ -405,19 +407,15 @@ public class DrawingController {
 		switch (toolbarModel.getToolAction()) {
 		case POINT:
 		case LINE:
-			toolbarView.btnToolbarColor
-					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
-			toolbarView.btnToolbarBackground.setBackground(null);
-			toolbarView.btnToolbarBackground.setEnabled(false);
+			toolbarModel.setShapeColor(toolbarModel.getShapeColor());
+			toolbarView.setEnabledPreviewShapeBackgroundColor(false);
 			break;
 		case RECTANGLE:
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			toolbarView.btnToolbarColor
-					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
-			toolbarView.btnToolbarBackground.setBackground(toolbarModel.getShapeBackground());
-			toolbarView.btnToolbarBackground.setEnabled(true);
+			toolbarModel.setShapeColor(toolbarModel.getShapeColor());
+			toolbarView.setEnabledPreviewShapeBackgroundColor(true);
 		default:
 			break;
 		}
@@ -434,7 +432,7 @@ public class DrawingController {
 		Color selectedColor = getColorFromColorPicker("Choose Background Color", toolbarModel.getShapeColor());
 		if (selectedColor != null) {
 			toolbarModel.setShapeBackground(selectedColor);
-			toolbarView.btnToolbarBackground.setBackground(toolbarModel.getShapeBackground());
+			toolbarView.setPreviewShapeBackgroundColor(selectedColor);
 			if (model.getAllSelectedShapeIndexes().isEmpty()) {
 				return;
 			}
@@ -447,8 +445,7 @@ public class DrawingController {
 		Color selectedColor = getColorFromColorPicker("Choose Outline Color", toolbarModel.getShapeBackground());
 		if (selectedColor != null) {
 			toolbarModel.setShapeColor(selectedColor);
-			toolbarView.btnToolbarColor
-					.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
+			toolbarView.setPreviewShapeColor(selectedColor);
 			if (model.getAllSelectedShapeIndexes().isEmpty()) {
 				return;
 			}
@@ -460,14 +457,16 @@ public class DrawingController {
 
 	public void setColorPickerShapeColor(Color color) {
 		toolbarModel.setShapeColor(color);
-		toolbarView.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, color));
+		toolbarView.setPreviewShapeColor(color);
 	}
 
 	public void setColorPickerShapeBackground(Color color) {
-		if (color != null) {
-			toolbarModel.setShapeBackground(color);
+		if (color == null) {
+			toolbarView.setEnabledPreviewShapeBackgroundColor(false);
+			return;
 		}
-		toolbarView.btnToolbarBackground.setBackground(color);
+		toolbarModel.setShapeBackground(color);
+		toolbarView.setPreviewShapeBackgroundColor(color);
 	}
 
 	public void deleteSelected() {
@@ -527,11 +526,11 @@ public class DrawingController {
 	}
 
 	public void setEnabledToolbarDelete(boolean isEnabled) {
-		toolbarView.btnToolbarDelete.setEnabled(isEnabled);
+		toolbarView.setEnabledDelete(isEnabled);
 	}
 
 	public void setEnabledToolbarModify(boolean isEnabled) {
-		toolbarView.btnToolbarModify.setEnabled(isEnabled);
+		toolbarView.setEnabledModify(isEnabled);
 	}
 
 }

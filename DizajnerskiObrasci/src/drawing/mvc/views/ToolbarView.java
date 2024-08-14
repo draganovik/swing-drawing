@@ -25,18 +25,18 @@ public class ToolbarView extends JPanel {
 	 */
 	private static final long serialVersionUID = 8181676546869383767L;
 	private ButtonGroup actionsButtonGroup = new ButtonGroup();
-	public JButton btnToolbarBackground;
-	public JToggleButton btnToolbarCircle;
-	public JButton btnToolbarColor;
-	public JButton btnToolbarDelete;
-	public JToggleButton btnToolbarDonut;
-	public JToggleButton btnToolbarHexagon;
-	public JToggleButton btnToolbarLine;
-	public JButton btnToolbarModify;
-	public JToggleButton btnToolbarPoint;
-	public JToggleButton btnToolbarRectangle;
+	private JButton btnToolbarBackground;
+	private JToggleButton btnToolbarCircle;
+	private JButton btnToolbarColor;
+	private JButton btnToolbarDelete;
+	private JToggleButton btnToolbarDonut;
+	private JToggleButton btnToolbarHexagon;
+	private JToggleButton btnToolbarLine;
+	private JButton btnToolbarModify;
+	private JToggleButton btnToolbarPoint;
+	private JToggleButton btnToolbarRectangle;
 	// Command Buttons
-	public JToggleButton btnToolbarSelect;
+	private JToggleButton btnToolbarSelect;
 	private DrawingController controller;
 
 	/**
@@ -208,5 +208,25 @@ public class ToolbarView extends JPanel {
 		btnToolbarBackground.setOpaque(true);
 		btnToolbarBackground.setBackground(model.getShapeBackground());
 		btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+	}
+
+	public void setEnabledModify(boolean isEnabled) {
+		btnToolbarModify.setEnabled(isEnabled);
+	}
+
+	public void setEnabledDelete(boolean isEnabled) {
+		btnToolbarDelete.setEnabled(isEnabled);
+	}
+
+	public void setPreviewShapeColor(Color color) {
+		btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, color));
+	}
+
+	public void setPreviewShapeBackgroundColor(Color color) {
+		btnToolbarBackground.setBackground(color);
+	}
+
+	public void setEnabledPreviewShapeBackgroundColor(boolean isEnabled) {
+		btnToolbarBackground.setEnabled(isEnabled);
 	}
 }
