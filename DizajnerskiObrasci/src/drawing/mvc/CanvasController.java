@@ -1,7 +1,6 @@
 package drawing.mvc;
 
 import java.awt.event.MouseEvent;
-import java.util.Enumeration;
 import java.util.Optional;
 import java.util.Stack;
 
@@ -112,38 +111,44 @@ public class CanvasController {
 
 		switch (toolbarModel.getToolAction()) {
 		case POINT:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new Point();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			break;
 		case LINE:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new Line(startPoint);
 			createdShape.setColor(toolbarModel.getShapeColor());
 			break;
 		case RECTANGLE:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new Rectangle();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case CIRCLE:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new Circle();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case DONUT:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new Donut();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			break;
 		case HEXAGON:
-			model.deselectAllShapes();
+			command = new UpdateModelShapeDeselectAll(model);
+			executeCommand();
 			createdShape = new HexagonAdapter();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
@@ -175,8 +180,7 @@ public class CanvasController {
 				}
 			}
 
-			for (int i = 0; i < model.getAllSelectedShapes().size(); i++) {
-				Shape shape = model.getAllSelectedShapes().get(i);
+			for (Shape shape : model.getAllSelectedShapes()) {
 				toolbarController.setShapeColor(shape.getColor());
 				if (shape instanceof SurfaceShape) {
 					toolbarController.setShapeBackground(((SurfaceShape) shape).getBackgroundColor());

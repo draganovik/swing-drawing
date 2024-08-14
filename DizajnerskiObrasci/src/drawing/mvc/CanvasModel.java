@@ -143,8 +143,7 @@ public class CanvasModel {
 		ArrayList<Shape> orderedSelectedShapes = this.getAllSelectedShapes();
 		Collections.sort(orderedSelectedShapes);
 
-		for (int selectedIndex = 0; selectedIndex < orderedSelectedShapes.size(); selectedIndex++) {
-			Shape selectedShape = orderedSelectedShapes.get(selectedIndex);
+		for (Shape selectedShape : orderedSelectedShapes) {
 			int switchIndex = shapes.indexOf(selectedShape);
 			if (switchIndex > shapes.size() - orderedSelectedShapes.size()) {
 				continue;
@@ -169,8 +168,8 @@ public class CanvasModel {
 	public void moveSelectedShapesToFront() {
 		ArrayList<Shape> orderedSelectedShapes = this.getAllSelectedShapes();
 		Collections.sort(orderedSelectedShapes);
-		for (int index = 0; index < orderedSelectedShapes.size(); index++) {
-			this.moveShapeToFront(orderedSelectedShapes.get(index));
+		for (Shape orderedSelectedShape : orderedSelectedShapes) {
+			this.moveShapeToFront(orderedSelectedShape);
 		}
 	}
 

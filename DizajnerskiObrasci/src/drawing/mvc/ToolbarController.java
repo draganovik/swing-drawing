@@ -69,7 +69,7 @@ public class ToolbarController {
 		switch (model.getToolAction()) {
 		case POINT:
 		case LINE:
-			canvasModel.deselectAllShapes();
+			// canvasModel.deselectAllShapes();
 			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			view.btnToolbarBackground.setBackground(null);
 			view.btnToolbarBackground.setEnabled(false);
@@ -78,7 +78,7 @@ public class ToolbarController {
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			canvasModel.deselectAllShapes();
+			// canvasModel.deselectAllShapes();
 			view.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 			view.btnToolbarBackground.setBackground(model.getShapeBackground());
 			view.btnToolbarBackground.setEnabled(true);
