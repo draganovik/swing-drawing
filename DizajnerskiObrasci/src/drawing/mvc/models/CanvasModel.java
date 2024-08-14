@@ -33,6 +33,9 @@ public class CanvasModel {
 	}
 
 	public void insertShape(Shape shape, int index) {
+		if (index > shapes.size()) {
+			index = shapes.size();
+		}
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.insertElementAt(shape, index);
 		int nextSelectionSize = getAllSelectedShapeIndexes().size();

@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
+import drawing.command.UpdateModelRemoveSelectedShapes;
 import drawing.command.UpdateModelSelectedShapesBackgroundColor;
 import drawing.command.UpdateModelSelectedShapesBackward;
 import drawing.command.UpdateModelSelectedShapesColor;
@@ -467,8 +468,8 @@ public class DrawingController {
 	}
 
 	public void deleteSelected() {
-		model.removeSelectedShapes();
-		view.repaint();
+		command = new UpdateModelRemoveSelectedShapes(model);
+		this.executeCommand();
 	}
 
 	public void modifySelected() {
