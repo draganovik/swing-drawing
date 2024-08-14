@@ -46,12 +46,15 @@ public class FrameView extends JFrame {
 		contentPane.setLayout(new BorderLayout(6, 0));
 	}
 
-	public void setupCanvas(CanvasModel canvasModel, DrawingController canvasController) {
-		canvasController.setCanvasView(canvasView);
+	public void setupCanvas(CanvasModel canvasModel, DrawingController controller) {
+		controller.setCanvasView(canvasView);
 		canvasView.setModel(canvasModel);
-		canvasView.setController(canvasController);
+		canvasView.setController(controller);
 
 		contentPane.add(canvasView, BorderLayout.CENTER);
+		
+		menubarView.setController(controller);
+		setJMenuBar(menubarView);
 	}
 
 	public void setupToolbar(ToolbarModel toolbarModel, ToolbarController toolbarController) {
@@ -69,12 +72,6 @@ public class FrameView extends JFrame {
 		contentPane.add(tabbedPane, BorderLayout.EAST);
 		tabbedPane.addTab("Layers", null, layersPanelView, null);
 		tabbedPane.addTab("History", null, logPanelView, null);
-
-	}
-
-	public void setupManubar(MenubarController menubarController) {
-		menubarView.setController(menubarController);
-		setJMenuBar(menubarView);
 
 	}
 

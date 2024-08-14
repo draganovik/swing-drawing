@@ -14,7 +14,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import drawing.mvc.MenubarController;
+import drawing.mvc.DrawingController;
 
 public class MenubarView extends JMenuBar {
 
@@ -22,7 +22,7 @@ public class MenubarView extends JMenuBar {
 	 *
 	 */
 	private static final long serialVersionUID = -4578066578067109451L;
-	private MenubarController controller;
+	private DrawingController controller;
 	private JMenu menu_1;
 	private JMenuItem mntmExport;
 	private JMenuItem mntmImport;
@@ -135,7 +135,7 @@ public class MenubarView extends JMenuBar {
 		mntmMoveForward.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveForward();
+				controller.moveSelectionForward();
 			}
 		});
 
@@ -143,7 +143,7 @@ public class MenubarView extends JMenuBar {
 		mntmDuplicate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.duplicateSelected();
+				controller.duplicateSelection();
 			}
 		});
 		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
@@ -158,7 +158,7 @@ public class MenubarView extends JMenuBar {
 		mntmMoveBackward.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveBackward();
+				controller.moveSelectionBackward();
 			}
 		});
 		mnNewMenu.add(mntmMoveBackward);
@@ -170,7 +170,7 @@ public class MenubarView extends JMenuBar {
 		mntmToFront.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveToFront();
+				controller.moveSelectionToFront();
 			}
 		});
 		mntmToFront.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.SHIFT_DOWN_MASK));
@@ -180,7 +180,7 @@ public class MenubarView extends JMenuBar {
 		mntmToBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveToBack();
+				controller.moveSelectionToBack();
 			}
 		});
 		mntmToBack.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK));
@@ -188,7 +188,7 @@ public class MenubarView extends JMenuBar {
 
 	}
 
-	public void setController(MenubarController controller) {
+	public void setController(DrawingController controller) {
 		this.controller = controller;
 	}
 

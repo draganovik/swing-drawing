@@ -3,7 +3,6 @@ package drawing;
 import drawing.mvc.DrawingController;
 import drawing.mvc.CanvasModel;
 import drawing.mvc.FrameView;
-import drawing.mvc.MenubarController;
 import drawing.mvc.ToolbarController;
 import drawing.mvc.ToolbarModel;
 
@@ -29,13 +28,6 @@ public class Application {
 
 		// Setup Tab panels
 		frameView.setupTabPanels(canvasModel);
-
-		// Setup Menubar
-		MenubarController menubarController = new MenubarController(canvasModel);
-		frameView.setupManubar(menubarController);
-
-		// Menubar Canvas references
-		menubarController.setCanvasViewController(frameView.getCanvasView(), canvasController);
 
 		// Start application
 		frameView.setVisible(true);

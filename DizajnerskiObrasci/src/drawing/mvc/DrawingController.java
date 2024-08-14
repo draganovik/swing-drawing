@@ -328,4 +328,10 @@ public class DrawingController {
 		command = new UpdateModelSelectedShapesToBack(model);
 		executeCommand();
 	}
+
+	public void duplicateSelection() {
+		model.duplicateSelected();
+		view.repaint();
+
+	}
 }
