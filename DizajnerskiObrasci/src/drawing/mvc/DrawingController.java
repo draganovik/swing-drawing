@@ -41,6 +41,7 @@ import drawing.modals.DlgManageRectangle;
 import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.ToolbarModel;
 import drawing.mvc.views.CanvasView;
+import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
 import drawing.observer.ToolbarPropertyObserver;
 import drawing.types.ToolAction;
@@ -56,6 +57,7 @@ public class DrawingController {
 
 	private CanvasView view;
 	private ToolbarView toolbarView;
+	private MenubarView menubarView;
 
 	ToolbarPropertyObserver toolbarPropertyObserver;
 
@@ -69,9 +71,10 @@ public class DrawingController {
 		this.toolbarModel = toolbarModel;
 	}
 
-	public void setViews(CanvasView view, ToolbarView toolbarView) {
+	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView) {
 		this.view = view;
 		this.toolbarView = toolbarView;
+		this.menubarView = menubarView;
 
 		this.toolbarPropertyObserver = new ToolbarPropertyObserver(this);
 		model.addPropertyObserver(this.toolbarPropertyObserver);
@@ -89,6 +92,9 @@ public class DrawingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		this.menubarView.setEnabledUndo(!actionStack.isEmpty());
+		this.menubarView.setEnabledRedo(!actionStackPopped.isEmpty());
 	}
 
 	private void showDialog(JDialog modal) {
@@ -332,9 +338,6 @@ public class DrawingController {
 	 */
 
 	public void undo() {
-		if (actionStack.isEmpty()) {
-			return;
-		}
 		try {
 			command = actionStack.pop();
 			command.undo();
@@ -346,12 +349,12 @@ public class DrawingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		this.menubarView.setEnabledUndo(!actionStack.isEmpty());
+		this.menubarView.setEnabledRedo(!actionStackPopped.isEmpty());
 	}
 
 	public void redo() {
-		if (actionStackPopped.isEmpty()) {
-			return;
-		}
 		try {
 			command = actionStackPopped.pop();
 			command.redo();
@@ -363,6 +366,9 @@ public class DrawingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		this.menubarView.setEnabledUndo(!actionStack.isEmpty());
+		this.menubarView.setEnabledRedo(!actionStackPopped.isEmpty());
 	}
 
 	public void moveSelectedForward() {

@@ -49,7 +49,7 @@ public class DrawingFrame extends JFrame {
 	}
 
 	public void setupCanvas(CanvasModel canvasModel, ToolbarModel toolbarModel, DrawingController controller) {
-		controller.setViews(canvasView, toolbarView);
+		controller.setViews(canvasView, toolbarView, menubarView);
 
 		canvasView.setModel(canvasModel);
 		canvasView.setController(controller);

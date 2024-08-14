@@ -28,6 +28,8 @@ public class MenubarView extends JMenuBar {
 	private JMenuItem mntmImport;
 	private JMenuItem mntmLoad;
 	private JMenuItem mntmSave;
+	private JMenuItem mntmRedo;
+	private JMenuItem mntmUndo;
 
 	/**
 	 * Create the panel.
@@ -100,7 +102,7 @@ public class MenubarView extends JMenuBar {
 		menu_1.getAccessibleContext().setAccessibleDescription("This menu does nothing");
 		add(menu_1);
 
-		JMenuItem mntmUndo = new JMenuItem("Undo");
+		mntmUndo = new JMenuItem("Undo");
 		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK));
 		mntmUndo.addActionListener(new ActionListener() {
 			@Override
@@ -108,9 +110,10 @@ public class MenubarView extends JMenuBar {
 				controller.undo();
 			}
 		});
+		mntmUndo.setEnabled(false);
 		menu_1.add(mntmUndo);
 
-		JMenuItem mntmRedo = new JMenuItem("Redo");
+		mntmRedo = new JMenuItem("Redo");
 		mntmRedo.setAccelerator(
 				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
 		mntmRedo.addActionListener(new ActionListener() {
@@ -119,6 +122,7 @@ public class MenubarView extends JMenuBar {
 				controller.redo();
 			}
 		});
+		mntmRedo.setEnabled(false);
 		menu_1.add(mntmRedo);
 
 		JSeparator separator = new JSeparator();
@@ -190,6 +194,14 @@ public class MenubarView extends JMenuBar {
 
 	public void setController(DrawingController controller) {
 		this.controller = controller;
+	}
+
+	public void setEnabledUndo(boolean inEnabled) {
+		mntmUndo.setEnabled(inEnabled);
+	}
+
+	public void setEnabledRedo(boolean inEnabled) {
+		mntmRedo.setEnabled(inEnabled);
 	}
 
 }
