@@ -62,7 +62,7 @@ public class DrawingFrame extends JFrame {
 		menubarView.setController(controller);
 		setJMenuBar(menubarView);
 
-		layersPanelView.setDLM(canvasModel.getAllShapesDLM());
+		layersPanelView.setDLM(canvasModel.getDefaultListModel());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);

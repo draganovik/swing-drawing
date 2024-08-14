@@ -1,6 +1,8 @@
 package drawing.mvc.models;
 
 import java.awt.Color;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -12,19 +14,29 @@ import drawing.geometry.Shape;
 import drawing.geometry.SurfaceShape;
 
 public class CanvasModel {
-	private DefaultListModel<Shape> shapes = new DefaultListModel<>();
 	private boolean shiftDown = false;
+	private DefaultListModel<Shape> shapes = new DefaultListModel<>();
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public void addShape(Shape shape) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.addElement(shape);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void removeShape(Shape shape) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.removeElement(shape);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void insertShape(Shape shape, int index) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.insertElementAt(shape, index);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	private ArrayList<Integer> selectedShapesIndexes() {
@@ -38,12 +50,15 @@ public class CanvasModel {
 	}
 
 	public void removeSelectedShapes() {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
 			shapes.remove(selectedShapesIndexes().get(index));
 		}
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
-	public DefaultListModel<Shape> getAllShapesDLM() {
+	public DefaultListModel<Shape> getDefaultListModel() {
 		return shapes;
 	}
 
@@ -69,22 +84,34 @@ public class CanvasModel {
 	}
 
 	public void selectShapeAt(Integer index) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.get(index).setSelected(true);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void selectShape(Shape shape) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shape.setSelected(true);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void deselectShape(Shape shape) {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		shape.setSelected(false);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void deselectAllShapes() {
+		int previosSelectionSize = getAllSelectedShapeIndexes().size();
 		ArrayList<Integer> selectedShapesIndexes = selectedShapesIndexes();
 		for (int index = selectedShapesIndexes.size(); --index >= 0;) {
 			shapes.get(selectedShapesIndexes.get(index)).setSelected(false);
 		}
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previosSelectionSize, nextSelectionSize);
 	}
 
 	public void moveSelectedShapesBy(double x, double y) {
@@ -195,6 +222,14 @@ public class CanvasModel {
 			this.selectShape(clone);
 		}
 
+	}
+
+	public void addPropertyObserver(PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
+	}
+
+	public void removePropertyObserver(PropertyChangeListener propertyChangeListener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
 	}
 
 }

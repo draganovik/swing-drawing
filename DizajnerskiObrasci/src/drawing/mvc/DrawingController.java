@@ -37,6 +37,7 @@ import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.ToolbarModel;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.ToolbarView;
+import drawing.observer.ToolbarPropertyObserver;
 import drawing.types.ToolAction;
 
 public class DrawingController {
@@ -51,6 +52,8 @@ public class DrawingController {
 	private CanvasView view;
 	private ToolbarView toolbarView;
 
+	ToolbarPropertyObserver toolbarPropertyObserver;
+
 	private Stack<ICommand> actionStack = new Stack<>();
 	private Stack<ICommand> actionStackPopped = new Stack<>();
 
@@ -64,6 +67,9 @@ public class DrawingController {
 	public void setViews(CanvasView view, ToolbarView toolbarView) {
 		this.view = view;
 		this.toolbarView = toolbarView;
+
+		this.toolbarPropertyObserver = new ToolbarPropertyObserver(toolbarView);
+		model.addPropertyObserver(this.toolbarPropertyObserver);
 	}
 
 	private void executeCommand() {
@@ -95,14 +101,16 @@ public class DrawingController {
 		case POINT:
 			command = new UpdateModelShapeDeselectAll(model);
 			executeCommand();
-			createdShape = new Point();
+			createdShape = mousePoint;
 			createdShape.setColor(toolbarModel.getShapeColor());
+			createdShape.setSelected(true);
 			break;
 		case LINE:
 			command = new UpdateModelShapeDeselectAll(model);
 			executeCommand();
 			createdShape = new Line(startPoint);
 			createdShape.setColor(toolbarModel.getShapeColor());
+			createdShape.setSelected(true);
 			break;
 		case RECTANGLE:
 			command = new UpdateModelShapeDeselectAll(model);
@@ -111,6 +119,7 @@ public class DrawingController {
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
+			createdShape.setSelected(true);
 			break;
 		case CIRCLE:
 			command = new UpdateModelShapeDeselectAll(model);
@@ -119,6 +128,7 @@ public class DrawingController {
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
+			createdShape.setSelected(true);
 			break;
 		case DONUT:
 			command = new UpdateModelShapeDeselectAll(model);
@@ -127,6 +137,7 @@ public class DrawingController {
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
+			createdShape.setSelected(true);
 			break;
 		case HEXAGON:
 			command = new UpdateModelShapeDeselectAll(model);
@@ -135,6 +146,7 @@ public class DrawingController {
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
+			createdShape.setSelected(true);
 			break;
 		default:
 		case SELECT:
@@ -191,6 +203,7 @@ public class DrawingController {
 			command.execute();
 			view.repaint();
 			break;
+		case POINT:
 		case LINE:
 		case RECTANGLE:
 		case CIRCLE:
@@ -203,7 +216,6 @@ public class DrawingController {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
 
-					model.selectShape(createdShape);
 				}
 			}
 			view.repaint();
@@ -232,7 +244,6 @@ public class DrawingController {
 			if (createdShape instanceof Point) {
 				createdShape.setEndPoint(endPoint);
 				command = new UpdateModelAddShape(model, createdShape);
-				model.selectShape(createdShape);
 				executeCommand();
 
 			}
@@ -243,7 +254,6 @@ public class DrawingController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					model.selectShape(createdShape);
 					executeCommand();
 				}
 			}
@@ -254,7 +264,6 @@ public class DrawingController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					model.selectShape(createdShape);
 					executeCommand();
 				}
 			}
@@ -265,7 +274,6 @@ public class DrawingController {
 				showDialog(modal);
 				if (modal.IsSuccessful) {
 					command = new UpdateModelAddShape(model, createdShape);
-					model.selectShape(createdShape);
 					executeCommand();
 				}
 			}
@@ -278,7 +286,6 @@ public class DrawingController {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
 
-					model.selectShape(createdShape);
 					view.repaint();
 				}
 			}
@@ -291,7 +298,6 @@ public class DrawingController {
 					command = new UpdateModelAddShape(model, createdShape);
 					executeCommand();
 
-					model.selectShape(createdShape);
 					view.repaint();
 				}
 			}

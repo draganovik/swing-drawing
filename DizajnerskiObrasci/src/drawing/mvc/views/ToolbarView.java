@@ -121,6 +121,7 @@ public class ToolbarView extends JPanel {
 		});
 		btnToolbarModify.setForeground(new Color(100, 149, 237));
 		btnToolbarModify.setBackground(new Color(224, 255, 255));
+		btnToolbarModify.setEnabled(false);
 		btnToolbarDelete = new JButton("Delete");
 		btnToolbarDelete.addActionListener(new ActionListener() {
 			@Override
@@ -130,6 +131,7 @@ public class ToolbarView extends JPanel {
 		});
 		btnToolbarDelete.setForeground(new Color(128, 0, 0));
 		btnToolbarDelete.setBackground(new Color(255, 182, 193));
+		btnToolbarDelete.setEnabled(false);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
 				.createSequentialGroup()
