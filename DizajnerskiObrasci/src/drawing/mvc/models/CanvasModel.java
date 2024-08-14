@@ -33,13 +33,14 @@ public class CanvasModel {
 	}
 
 	public void insertShape(Shape shape, int index) {
-		if (index > shapes.size()) {
-			index = shapes.size();
-		}
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
 		shapes.insertElementAt(shape, index);
 		int nextSelectionSize = getAllSelectedShapeIndexes().size();
 		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
+	}
+
+	public int getShapeIndex(Shape shape) {
+		return shapes.indexOf(shape);
 	}
 
 	private ArrayList<Integer> selectedShapesIndexes() {

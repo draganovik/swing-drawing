@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
+import drawing.command.UpdateModelDuplicateSelectedShape;
 import drawing.command.UpdateModelRemoveSelectedShapes;
 import drawing.command.UpdateModelSelectedShapesBackgroundColor;
 import drawing.command.UpdateModelSelectedShapesBackward;
@@ -72,7 +73,7 @@ public class DrawingController {
 		this.view = view;
 		this.toolbarView = toolbarView;
 
-		this.toolbarPropertyObserver = new ToolbarPropertyObserver(toolbarView);
+		this.toolbarPropertyObserver = new ToolbarPropertyObserver(this);
 		model.addPropertyObserver(this.toolbarPropertyObserver);
 	}
 
@@ -81,6 +82,7 @@ public class DrawingController {
 			command.execute();
 			actionStack.push(command);
 			actionStackPopped.clear();
+			System.out.println(actionStack.size() + ". Command: " + command.getClass());
 			command = null;
 			view.repaint();
 		} catch (Exception e) {
@@ -106,24 +108,23 @@ public class DrawingController {
 
 		model.setIsShiftDown(e.isShiftDown());
 
-		switch (toolbarModel.getToolAction()) {
-		case POINT:
+		if (model.getAllSelectedShapeIndexes().size() > 0 && toolbarModel.getToolAction() != ToolAction.SELECT) {
 			command = new UpdateModelShapeDeselectAll(model);
 			executeCommand();
+		}
+
+		switch (toolbarModel.getToolAction()) {
+		case POINT:
 			createdShape = mousePoint;
 			createdShape.setColor(toolbarModel.getShapeColor());
 			createdShape.setSelected(true);
 			break;
 		case LINE:
-			command = new UpdateModelShapeDeselectAll(model);
-			executeCommand();
 			createdShape = new Line(startPoint);
 			createdShape.setColor(toolbarModel.getShapeColor());
 			createdShape.setSelected(true);
 			break;
 		case RECTANGLE:
-			command = new UpdateModelShapeDeselectAll(model);
-			executeCommand();
 			createdShape = new Rectangle();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
@@ -131,8 +132,6 @@ public class DrawingController {
 			createdShape.setSelected(true);
 			break;
 		case CIRCLE:
-			command = new UpdateModelShapeDeselectAll(model);
-			executeCommand();
 			createdShape = new Circle();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
@@ -140,8 +139,6 @@ public class DrawingController {
 			createdShape.setSelected(true);
 			break;
 		case DONUT:
-			command = new UpdateModelShapeDeselectAll(model);
-			executeCommand();
 			createdShape = new Donut();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
@@ -149,8 +146,6 @@ public class DrawingController {
 			createdShape.setSelected(true);
 			break;
 		case HEXAGON:
-			command = new UpdateModelShapeDeselectAll(model);
-			executeCommand();
 			createdShape = new HexagonAdapter();
 			createdShape.setColor(toolbarModel.getShapeColor());
 			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
@@ -186,10 +181,10 @@ public class DrawingController {
 			for (Shape shape : model.getAllSelectedShapes()) {
 				this.setColorPickerShapeColor(shape.getColor());
 				if (shape instanceof SurfaceShape) {
-					this.setPickerShapeBackground(((SurfaceShape) shape).getBackgroundColor());
+					this.setColorPickerShapeBackground(((SurfaceShape) shape).getBackgroundColor());
 					view.repaint();
 				} else {
-					this.setPickerShapeBackground(null);
+					this.setColorPickerShapeBackground(null);
 					view.repaint();
 				}
 			}
@@ -344,6 +339,7 @@ public class DrawingController {
 			command = actionStack.pop();
 			command.undo();
 			actionStackPopped.push(command);
+			System.out.println(actionStack.size() + 1 + ". Undo command: " + command.getClass());
 			command = null;
 			view.repaint();
 		} catch (Exception e) {
@@ -360,6 +356,7 @@ public class DrawingController {
 			command = actionStackPopped.pop();
 			command.redo();
 			actionStack.push(command);
+			System.out.println(actionStack.size() + ". Redo command: " + command.getClass());
 			command = null;
 			view.repaint();
 		} catch (Exception e) {
@@ -389,9 +386,8 @@ public class DrawingController {
 	}
 
 	public void duplicateSelected() {
-		model.duplicateSelected();
-		view.repaint();
-
+		command = new UpdateModelDuplicateSelectedShape(model);
+		this.executeCommand();
 	}
 
 	/*
@@ -458,13 +454,14 @@ public class DrawingController {
 
 	public void setColorPickerShapeColor(Color color) {
 		toolbarModel.setShapeColor(color);
-		toolbarView.btnToolbarColor
-				.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, toolbarModel.getShapeColor()));
+		toolbarView.btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, color));
 	}
 
-	public void setPickerShapeBackground(Color color) {
-		toolbarModel.setShapeBackground(color);
-		toolbarView.btnToolbarBackground.setBackground(toolbarModel.getShapeBackground());
+	public void setColorPickerShapeBackground(Color color) {
+		if (color != null) {
+			toolbarModel.setShapeBackground(color);
+		}
+		toolbarView.btnToolbarBackground.setBackground(color);
 	}
 
 	public void deleteSelected() {
@@ -521,6 +518,14 @@ public class DrawingController {
 			return;
 		}
 
+	}
+
+	public void setEnabledToolbarDelete(boolean isEnabled) {
+		toolbarView.btnToolbarDelete.setEnabled(isEnabled);
+	}
+
+	public void setEnabledToolbarModify(boolean isEnabled) {
+		toolbarView.btnToolbarModify.setEnabled(isEnabled);
 	}
 
 }
