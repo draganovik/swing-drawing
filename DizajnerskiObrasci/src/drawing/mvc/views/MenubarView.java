@@ -38,7 +38,6 @@ public class MenubarView extends JMenuBar {
 		super();
 		// Where the GUI is created:
 		JMenu menu, submenu;
-		JMenuItem menuItem;
 		JRadioButtonMenuItem rbMenuItem;
 		JCheckBoxMenuItem cbMenuItem;
 		JMenuItem mntmMoveForward;

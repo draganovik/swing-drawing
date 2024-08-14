@@ -38,7 +38,6 @@ public class ToolbarView extends JPanel {
 	// Command Buttons
 	public JToggleButton btnToolbarSelect;
 	private DrawingController controller;
-	private ToolbarModel model;
 
 	/**
 	 * Create the panel.
@@ -203,7 +202,6 @@ public class ToolbarView extends JPanel {
 	}
 
 	public void setModel(ToolbarModel model) {
-		this.model = model;
 		btnToolbarColor.setOpaque(true);
 		btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 
