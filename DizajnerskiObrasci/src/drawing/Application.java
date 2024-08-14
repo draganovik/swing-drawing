@@ -1,44 +1,28 @@
 package drawing;
 
-import drawing.mvc.CanvasController;
-import drawing.mvc.CanvasModel;
-import drawing.mvc.FrameView;
-import drawing.mvc.MenubarController;
-import drawing.mvc.ToolbarController;
-import drawing.mvc.ToolbarModel;
+import drawing.mvc.DrawingController;
+import drawing.mvc.DrawingFrame;
+import drawing.mvc.models.CanvasModel;
+import drawing.mvc.models.ToolbarModel;
 
 public class Application {
 
 	public static void main(String[] args) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		FrameView frameView = new FrameView();
+		DrawingFrame drawingFrame = new DrawingFrame();
 
-		// Setup Canvas
+		// Initialize Models
 		CanvasModel canvasModel = new CanvasModel();
-		CanvasController canvasController = new CanvasController(canvasModel);
-		frameView.setupCanvas(canvasModel, canvasController);
-
-		// Setup Toolbar
 		ToolbarModel toolbarModel = new ToolbarModel();
-		ToolbarController toolbarController = new ToolbarController(toolbarModel);
-		frameView.setupToolbar(toolbarModel, toolbarController);
 
-		// Toolbar <-> Canvas cross-references
-		toolbarController.setCanvasViewModel(frameView.getCanvasView(), canvasModel);
-		canvasController.setToolbarModelController(toolbarModel, toolbarController);
+		// Setup Controller
+		DrawingController drawingController = new DrawingController(canvasModel, toolbarModel);
 
-		// Setup Tab panels
-		frameView.setupTabPanels(canvasModel);
+		// Initialize Views
+		drawingFrame.setupCanvas(canvasModel, toolbarModel, drawingController);
 
-		// Setup Menubar
-		MenubarController menubarController = new MenubarController(canvasModel);
-		frameView.setupManubar(menubarController);
-
-		// Menubar Canvas references
-		menubarController.setCanvasViewController(frameView.getCanvasView(), canvasController);
-
-		// Start application
-		frameView.setVisible(true);
+		// Show Frame
+		drawingFrame.setVisible(true);
 	}
 
 }

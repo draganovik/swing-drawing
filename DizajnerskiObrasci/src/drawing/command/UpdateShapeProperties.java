@@ -5,8 +5,8 @@ import drawing.geometry.Shape;
 public class UpdateShapeProperties implements ICommand {
 
 	final Shape shape;
-	final Shape nextProperties;
 	final Shape prevProperties;
+	final Shape nextProperties;
 
 	public UpdateShapeProperties(Shape shape, Shape update) {
 		this.shape = shape;
@@ -15,14 +15,13 @@ public class UpdateShapeProperties implements ICommand {
 	}
 
 	@Override
-	public void execute() {
-		shape.updateFrom(this.nextProperties);
-
+	public void execute() throws Exception {
+		this.shape.updateFrom(this.nextProperties);
 	}
 
 	@Override
-	public void undo() {
-		shape.updateFrom(this.prevProperties);
+	public void undo() throws Exception {
+		this.shape.updateFrom(this.prevProperties);
 	}
 
 }

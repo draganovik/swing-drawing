@@ -2,7 +2,7 @@ package drawing.command;
 
 import java.util.ArrayList;
 
-import drawing.mvc.CanvasModel;
+import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelShapeDeselectAll implements ICommand {
 

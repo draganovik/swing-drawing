@@ -17,7 +17,12 @@ public abstract class SurfaceShape extends Shape {
 		this.backgroundColor = backgroundColor;
 	}
 
-	public void updateFrom(SurfaceShape surfaceShape) {
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof SurfaceShape)) {
+			throw new NumberFormatException("Inner radius must be less than radius by at least 3.");
+		}
+		SurfaceShape surfaceShape = (SurfaceShape) shape;
 		super.updateFrom(surfaceShape);
 		this.setBackgroundColor(surfaceShape.getBackgroundColor());
 	}

@@ -1,7 +1,7 @@
 package drawing.command;
 
 import drawing.geometry.Point;
-import drawing.mvc.CanvasModel;
+import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesPosition implements ICommand {
 

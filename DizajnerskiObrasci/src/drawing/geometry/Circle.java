@@ -151,15 +151,15 @@ public class Circle extends SurfaceShape {
 		return clone;
 	}
 
-	public void updateFrom(Circle circle) {
-		super.updateFrom(circle);
-		try {
-			this.setCenter(circle.getCenter().clone());
-			this.setRadius(circle.getRadius());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@Override
+	public void updateFrom(Shape shape) throws Exception {
+		if (!(shape instanceof Circle)) {
+			throw new NumberFormatException("'updateFrom' shape must be of thhe same type.");
 		}
+		Circle circle = (Circle) shape;
+		super.updateFrom(circle);
+		this.setCenter(circle.getCenter().clone());
+		this.setRadius(circle.getRadius());
 	}
 
 }

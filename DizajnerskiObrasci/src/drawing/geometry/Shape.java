@@ -52,7 +52,7 @@ public abstract class Shape implements Movable, Comparable<Object>, Cloneable, S
 	@Override
 	public abstract Shape clone();
 
-	public void updateFrom(Shape shape) {
+	public void updateFrom(Shape shape) throws Exception {
 		this.setColor(shape.getColor());
 		this.setSelected(shape.selected);
 	}
