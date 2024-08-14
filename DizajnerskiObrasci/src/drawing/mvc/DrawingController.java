@@ -40,15 +40,20 @@ import drawing.mvc.views.ToolbarView;
 import drawing.types.ToolAction;
 
 public class DrawingController {
-	private Shape createdShape;
-	private Point endPoint;
-	private CanvasModel model;
 	private Point startPoint;
+	private Point endPoint;
+
+	private Shape createdShape;
+
+	private CanvasModel model;
 	private ToolbarModel toolbarModel;
+
 	private CanvasView view;
 	private ToolbarView toolbarView;
+
 	private Stack<ICommand> actionStack = new Stack<>();
 	private Stack<ICommand> actionStackPopped = new Stack<>();
+
 	private ICommand command;
 
 	public DrawingController(CanvasModel model, ToolbarModel toolbarModel) {
@@ -65,7 +70,6 @@ public class DrawingController {
 		command.execute();
 		actionStack.push(command);
 		actionStackPopped.clear();
-		System.out.println(actionStack.size() + ". executed " + command.getClass());
 		command = null;
 		view.repaint();
 	}
@@ -79,43 +83,6 @@ public class DrawingController {
 	/*
 	 * Canvas commands
 	 */
-
-	public void mouseDragged(MouseEvent e) {
-
-		endPoint = new Point(e.getX(), e.getY());
-		double pointsXDistance = startPoint.distanceByXOf(endPoint);
-		double pointsYDistance = startPoint.distanceByYOf(endPoint);
-
-		switch (toolbarModel.getToolAction()) {
-		case SELECT:
-			if (command instanceof UpdateModelSelectedShapesPosition) {
-				command.undo();
-			}
-			command = new UpdateModelSelectedShapesPosition(model, startPoint, endPoint);
-			command.execute();
-			view.repaint();
-			break;
-		case LINE:
-		case RECTANGLE:
-		case CIRCLE:
-		case DONUT:
-		case HEXAGON:
-			if (pointsXDistance > 8 && pointsYDistance > 8) {
-				createdShape.setEndPoint(endPoint);
-
-				if (!model.contains(createdShape)) {
-					command = new UpdateModelAddShape(model, createdShape);
-					executeCommand();
-
-					model.selectShape(createdShape);
-				}
-			}
-			view.repaint();
-		default:
-			break;
-		}
-
-	}
 
 	public void mousePressed(MouseEvent e) {
 		Point mousePoint = new Point(e.getX(), e.getY());
@@ -207,6 +174,43 @@ public class DrawingController {
 			}
 			break;
 		}
+	}
+
+	public void mouseDragged(MouseEvent e) {
+
+		endPoint = new Point(e.getX(), e.getY());
+		double pointsXDistance = startPoint.distanceByXOf(endPoint);
+		double pointsYDistance = startPoint.distanceByYOf(endPoint);
+
+		switch (toolbarModel.getToolAction()) {
+		case SELECT:
+			if (command instanceof UpdateModelSelectedShapesPosition) {
+				command.undo();
+			}
+			command = new UpdateModelSelectedShapesPosition(model, startPoint, endPoint);
+			command.execute();
+			view.repaint();
+			break;
+		case LINE:
+		case RECTANGLE:
+		case CIRCLE:
+		case DONUT:
+		case HEXAGON:
+			if (pointsXDistance > 8 && pointsYDistance > 8) {
+				createdShape.setEndPoint(endPoint);
+
+				if (!model.contains(createdShape)) {
+					command = new UpdateModelAddShape(model, createdShape);
+					executeCommand();
+
+					model.selectShape(createdShape);
+				}
+			}
+			view.repaint();
+		default:
+			break;
+		}
+
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -309,6 +313,7 @@ public class DrawingController {
 		command = actionStack.pop();
 		command.undo();
 		actionStackPopped.push(command);
+		command = null;
 		view.repaint();
 	}
 
@@ -319,6 +324,7 @@ public class DrawingController {
 		command = actionStackPopped.pop();
 		command.redo();
 		actionStack.push(command);
+		command = null;
 		view.repaint();
 	}
 
