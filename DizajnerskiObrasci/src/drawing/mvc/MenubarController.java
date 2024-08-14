@@ -5,13 +5,13 @@ import drawing.mvc.views.CanvasView;
 public class MenubarController {
 	CanvasModel canvasModel;
 	CanvasView canvasView;
-	CanvasController canvasController;
+	DrawingController canvasController;
 
 	public MenubarController(CanvasModel canvasModel) {
 		this.canvasModel = canvasModel;
 	}
 
-	public void setCanvasViewController(CanvasView canvasView, CanvasController canvasController) {
+	public void setCanvasViewController(CanvasView canvasView, DrawingController canvasController) {
 		this.canvasView = canvasView;
 		this.canvasController = canvasController;
 	}

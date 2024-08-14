@@ -31,7 +31,7 @@ import drawing.modals.DlgManageLine;
 import drawing.modals.DlgManageRectangle;
 import drawing.mvc.views.CanvasView;
 
-public class CanvasController {
+public class DrawingController {
 	private Shape createdShape;
 	private Point endPoint;
 	private CanvasModel model;
@@ -43,7 +43,7 @@ public class CanvasController {
 	private Stack<ICommand> actionStackPopped = new Stack<>();
 	private ICommand command;
 
-	public CanvasController(CanvasModel model) {
+	public DrawingController(CanvasModel model) {
 		this.model = model;
 	}
 

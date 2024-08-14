@@ -10,7 +10,7 @@ import java.util.Enumeration;
 import javax.swing.JPanel;
 
 import drawing.geometry.Shape;
-import drawing.mvc.CanvasController;
+import drawing.mvc.DrawingController;
 import drawing.mvc.CanvasModel;
 
 public class CanvasView extends JPanel {
@@ -19,7 +19,7 @@ public class CanvasView extends JPanel {
 	 *
 	 */
 	private static final long serialVersionUID = 6030623193401339242L;
-	private CanvasController controller;
+	private DrawingController controller;
 	private CanvasModel model = new CanvasModel();
 
 	public CanvasView() {
@@ -35,7 +35,7 @@ public class CanvasView extends JPanel {
 		}
 	}
 
-	public void setController(CanvasController ccontroller) {
+	public void setController(DrawingController ccontroller) {
 		this.controller = ccontroller;
 		addMouseListener(new MouseAdapter() {
 

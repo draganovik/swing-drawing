@@ -1,6 +1,6 @@
 package drawing;
 
-import drawing.mvc.CanvasController;
+import drawing.mvc.DrawingController;
 import drawing.mvc.CanvasModel;
 import drawing.mvc.FrameView;
 import drawing.mvc.MenubarController;
@@ -15,7 +15,7 @@ public class Application {
 
 		// Setup Canvas
 		CanvasModel canvasModel = new CanvasModel();
-		CanvasController canvasController = new CanvasController(canvasModel);
+		DrawingController canvasController = new DrawingController(canvasModel);
 		frameView.setupCanvas(canvasModel, canvasController);
 
 		// Setup Toolbar

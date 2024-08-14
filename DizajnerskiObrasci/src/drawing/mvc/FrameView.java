@@ -46,7 +46,7 @@ public class FrameView extends JFrame {
 		contentPane.setLayout(new BorderLayout(6, 0));
 	}
 
-	public void setupCanvas(CanvasModel canvasModel, CanvasController canvasController) {
+	public void setupCanvas(CanvasModel canvasModel, DrawingController canvasController) {
 		canvasController.setCanvasView(canvasView);
 		canvasView.setModel(canvasModel);
 		canvasView.setController(canvasController);
