@@ -322,37 +322,37 @@ public class DrawingController {
 		view.repaint();
 	}
 
-	public void moveSelectionForward() {
+	public void moveSelectedForward() {
 		command = new UpdateModelSelectedShapesForward(model);
 		executeCommand();
 	}
 
-	public void moveSelectionBackward() {
+	public void moveSelectedBackward() {
 		command = new UpdateModelSelectedShapesBackward(model);
 		executeCommand();
 	}
 
-	public void moveSelectionToFront() {
+	public void moveSelectedToFront() {
 		command = new UpdateModelSelectedShapesToFront(model);
 		executeCommand();
 	}
 
-	public void moveSelectionToBack() {
+	public void moveSelectedToBack() {
 		command = new UpdateModelSelectedShapesToBack(model);
 		executeCommand();
 	}
 
-	public void duplicateSelection() {
+	public void duplicateSelected() {
 		model.duplicateSelected();
 		view.repaint();
 
 	}
 
 	/*
-	 * Tollbar commands
+	 * Toolbar commands
 	 */
 
-	public void setToolbarAction(ToolAction action) {
+	public void setToolAction(ToolAction action) {
 		toolbarModel.setToolAction(action);
 		switch (toolbarModel.getToolAction()) {
 		case POINT:

@@ -135,7 +135,7 @@ public class MenubarView extends JMenuBar {
 		mntmMoveForward.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveSelectionForward();
+				controller.moveSelectedForward();
 			}
 		});
 
@@ -143,7 +143,7 @@ public class MenubarView extends JMenuBar {
 		mntmDuplicate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.duplicateSelection();
+				controller.duplicateSelected();
 			}
 		});
 		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
@@ -158,7 +158,7 @@ public class MenubarView extends JMenuBar {
 		mntmMoveBackward.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveSelectionBackward();
+				controller.moveSelectedBackward();
 			}
 		});
 		mnNewMenu.add(mntmMoveBackward);
@@ -170,7 +170,7 @@ public class MenubarView extends JMenuBar {
 		mntmToFront.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveSelectionToFront();
+				controller.moveSelectedToFront();
 			}
 		});
 		mntmToFront.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.SHIFT_DOWN_MASK));
@@ -180,7 +180,7 @@ public class MenubarView extends JMenuBar {
 		mntmToBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.moveSelectionToBack();
+				controller.moveSelectedToBack();
 			}
 		});
 		mntmToBack.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK));

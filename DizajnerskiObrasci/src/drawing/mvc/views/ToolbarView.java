@@ -50,7 +50,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.SELECT);
+				controller.setToolAction(ToolAction.SELECT);
 			}
 		});
 		btnToolbarSelect.setSelected(true);
@@ -60,7 +60,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarPoint.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.POINT);
+				controller.setToolAction(ToolAction.POINT);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarPoint);
@@ -69,7 +69,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarLine.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.LINE);
+				controller.setToolAction(ToolAction.LINE);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarLine);
@@ -78,7 +78,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarRectangle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.RECTANGLE);
+				controller.setToolAction(ToolAction.RECTANGLE);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarRectangle);
@@ -87,7 +87,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarCircle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.CIRCLE);
+				controller.setToolAction(ToolAction.CIRCLE);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarCircle);
@@ -96,7 +96,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarDonut.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.DONUT);
+				controller.setToolAction(ToolAction.DONUT);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarDonut);
@@ -105,7 +105,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarHexagon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.setToolbarAction(ToolAction.HEXAGON);
+				controller.setToolAction(ToolAction.HEXAGON);
 			}
 		});
 		actionsButtonGroup.add(btnToolbarHexagon);
