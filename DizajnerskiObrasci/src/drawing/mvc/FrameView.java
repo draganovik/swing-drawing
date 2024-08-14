@@ -46,33 +46,26 @@ public class FrameView extends JFrame {
 		contentPane.setLayout(new BorderLayout(6, 0));
 	}
 
-	public void setupCanvas(CanvasModel canvasModel, DrawingController controller) {
-		controller.setCanvasView(canvasView);
+	public void setupCanvas(CanvasModel canvasModel, ToolbarModel toolbarModel, DrawingController controller) {
+		controller.setViews(canvasView, toolbarView);
+		
 		canvasView.setModel(canvasModel);
 		canvasView.setController(controller);
-
 		contentPane.add(canvasView, BorderLayout.CENTER);
 		
+		toolbarView.setModel(toolbarModel);
+		toolbarView.setController(controller);
+		contentPane.add(toolbarView, BorderLayout.WEST);
+
 		menubarView.setController(controller);
 		setJMenuBar(menubarView);
-	}
-
-	public void setupToolbar(ToolbarModel toolbarModel, ToolbarController toolbarController) {
-		toolbarController.setToolbarView(toolbarView);
-		toolbarView.setModel(toolbarModel);
-		toolbarView.setController(toolbarController);
-
-		contentPane.add(toolbarView, BorderLayout.WEST);
-	}
-
-	public void setupTabPanels(CanvasModel canvasModel) {
+		
 		layersPanelView.setDLM(canvasModel.getAllShapesDLM());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);
 		tabbedPane.addTab("Layers", null, layersPanelView, null);
 		tabbedPane.addTab("History", null, logPanelView, null);
-
 	}
 
 }

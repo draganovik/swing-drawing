@@ -3,7 +3,6 @@ package drawing;
 import drawing.mvc.DrawingController;
 import drawing.mvc.CanvasModel;
 import drawing.mvc.FrameView;
-import drawing.mvc.ToolbarController;
 import drawing.mvc.ToolbarModel;
 
 public class Application {
@@ -12,22 +11,15 @@ public class Application {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		FrameView frameView = new FrameView();
 
-		// Setup Canvas
+		// Setup Models
 		CanvasModel canvasModel = new CanvasModel();
-		DrawingController canvasController = new DrawingController(canvasModel);
-		frameView.setupCanvas(canvasModel, canvasController);
-
-		// Setup Toolbar
 		ToolbarModel toolbarModel = new ToolbarModel();
-		ToolbarController toolbarController = new ToolbarController(toolbarModel);
-		frameView.setupToolbar(toolbarModel, toolbarController);
-
-		// Toolbar <-> Canvas cross-references
-		toolbarController.setCanvasViewModel(frameView.getCanvasView(), canvasModel);
-		canvasController.setToolbarModelController(toolbarModel, toolbarController);
-
-		// Setup Tab panels
-		frameView.setupTabPanels(canvasModel);
+		
+		// Setup Controller
+		DrawingController drawingController = new DrawingController(canvasModel, toolbarModel);
+		
+		// Initialize Views
+		frameView.setupCanvas(canvasModel, toolbarModel, drawingController);
 
 		// Start application
 		frameView.setVisible(true);

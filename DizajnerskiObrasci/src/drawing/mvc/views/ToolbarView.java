@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,7 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import drawing.mvc.ToolbarController;
+import drawing.mvc.DrawingController;
 import drawing.mvc.ToolbarModel;
 import drawing.types.ToolAction;
 
@@ -36,7 +37,7 @@ public class ToolbarView extends JPanel {
 	public JToggleButton btnToolbarRectangle;
 	// Command Buttons
 	public JToggleButton btnToolbarSelect;
-	private ToolbarController controller;
+	private DrawingController controller;
 	private ToolbarModel model;
 
 	/**
@@ -195,11 +196,17 @@ public class ToolbarView extends JPanel {
 
 	}
 
-	public void setController(ToolbarController controller) {
+	public void setController(DrawingController controller) {
 		this.controller = controller;
 	}
 
 	public void setModel(ToolbarModel model) {
 		this.model = model;
+		btnToolbarColor.setOpaque(true);
+		btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
+
+		btnToolbarBackground.setOpaque(true);
+		btnToolbarBackground.setBackground(model.getShapeBackground());
+		btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 	}
 }
