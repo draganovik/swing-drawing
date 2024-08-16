@@ -21,7 +21,11 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 		initialSelectedShapesBackgroundColors = new ArrayList<>();
 
 		for (int i = 0; i < shapes.size(); i++) {
-			initialSelectedShapesBackgroundColors.add(((SurfaceShape) shapes.get(i)).getBackgroundColor());
+			if (shapes.get(i) instanceof SurfaceShape) {
+				initialSelectedShapesBackgroundColors.add(((SurfaceShape) shapes.get(i)).getBackgroundColor());
+			} else {
+				initialSelectedShapesBackgroundColors.add(null);
+			}
 		}
 	}
 

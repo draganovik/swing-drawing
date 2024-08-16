@@ -138,19 +138,21 @@ public class CanvasModel {
 		if (shape instanceof SurfaceShape) {
 			Color previousBackgroundColor = ((SurfaceShape) shape).getBackgroundColor();
 			((SurfaceShape) shape).setBackgroundColor(color);
-			propertyChangeSupport.firePropertyChange("SelectionBackgroundColorChange", previousBackgroundColor, color);
+			propertyChangeSupport.firePropertyChange("BackgroundColorChange", previousBackgroundColor, color);
 		}
 	}
 
 	public void updateShapeColor(Shape shape, Color color) {
 		Color previousColor = shape.getColor();
 		shape.setColor(color);
-		propertyChangeSupport.firePropertyChange("SelectionColorChange", previousColor, color);
+		propertyChangeSupport.firePropertyChange("ColorChange", previousColor, color);
 	}
 
 	public void updateBackgroundColorOfSelectedShapes(Color color) {
 		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			updateShapeBackgroundColor(shapes.get(selectedShapesIndexes().get(index)), color);
+			if (shapes.get(selectedShapesIndexes().get(index)) instanceof SurfaceShape) {
+				updateShapeBackgroundColor(shapes.get(selectedShapesIndexes().get(index)), color);
+			}
 		}
 	}
 
