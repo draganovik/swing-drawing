@@ -247,7 +247,7 @@ public class DrawingController {
 			try {
 				int distanceX = workspaceModel.getStartPoint().getX() - mousePoint.getX();
 				int distanceY = workspaceModel.getStartPoint().getY() - mousePoint.getY();
-				if (distanceX + distanceY < 0) {
+				if (distanceX + distanceY == 0) {
 					break;
 				}
 				model.moveSelectedShapesBy(distanceX, distanceY);
