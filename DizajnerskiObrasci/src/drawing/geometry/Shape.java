@@ -8,7 +8,7 @@ public abstract class Shape implements Movable, Comparable<Object>, Cloneable, S
 
 	private static final long serialVersionUID = 5098059299732788753L;
 	private Color color = Color.DARK_GRAY;
-	private boolean selected;
+	private transient boolean selected;
 
 	public Shape() {
 	}

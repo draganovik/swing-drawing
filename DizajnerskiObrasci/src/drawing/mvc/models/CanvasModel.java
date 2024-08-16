@@ -66,6 +66,10 @@ public class CanvasModel {
 		return shapes;
 	}
 
+	public void setDefaultListModel(DefaultListModel<Shape> listModel) {
+		this.shapes = listModel;
+	}
+
 	public ArrayList<Shape> getAllSelectedShapes() {
 		ArrayList<Shape> selectedShapes = new ArrayList<>();
 		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
@@ -139,7 +143,7 @@ public class CanvasModel {
 	}
 
 	public void updateShapeColor(Shape shape, Color color) {
-		Color previousColor = ((SurfaceShape) shape).getBackgroundColor();
+		Color previousColor = shape.getColor();
 		shape.setColor(color);
 		propertyChangeSupport.firePropertyChange("SelectionColorChange", previousColor, color);
 	}
@@ -244,6 +248,10 @@ public class CanvasModel {
 
 	public void removePropertyObserver(PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+	}
+
+	public void removeAllShapes() {
+		shapes.clear();
 	}
 
 }

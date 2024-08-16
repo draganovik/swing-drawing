@@ -7,6 +7,9 @@ import java.util.Stack;
 
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileSystemView;
 
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
@@ -43,6 +46,8 @@ import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
 import drawing.observer.ToolbarPropertyObserver;
+import drawing.strategy.FileManager;
+import drawing.strategy.RawFileOperator;
 import drawing.types.ToolAction;
 
 public class DrawingController {
@@ -79,6 +84,19 @@ public class DrawingController {
 		model.addPropertyObserver(this.toolbarPropertyObserver);
 	}
 
+	private void clearWorkspace() {
+		startPoint = null;
+		endPoint = null;
+		createdShape = null;
+
+		command = null;
+		actionStack.clear();
+		actionStackPopped.clear();
+
+		model.removeAllShapes();
+		view.repaint();
+	}
+
 	private void executeCommand() {
 		try {
 			command.execute();
@@ -102,6 +120,22 @@ public class DrawingController {
 		modal.setVisible(true);
 	}
 
+	private void showAlert(String message) {
+		JOptionPane.showMessageDialog(view, message, "Operation Alert", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private int showConfirm(String message) {
+		return JOptionPane.showConfirmDialog(view, message, "Confirm Operation", JOptionPane.YES_NO_OPTION);
+	}
+
+	private JFileChooser getJFileChooser(String title) {
+		JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		jFileChooser.setDialogTitle(title);
+		jFileChooser.setMultiSelectionEnabled(false);
+		jFileChooser.enableInputMethods(false);
+		return jFileChooser;
+	}
+
 	/*
 	 * Canvas commands
 	 */
@@ -123,6 +157,8 @@ public class DrawingController {
 			createdShape = mousePoint;
 			createdShape.setColor(toolbarModel.getShapeColor());
 			createdShape.setSelected(true);
+			command = new UpdateModelAddShape(model, createdShape);
+			executeCommand();
 			break;
 		case LINE:
 			createdShape = new Line(startPoint);
@@ -238,11 +274,6 @@ public class DrawingController {
 			break;
 		case POINT:
 			createdShape.setEndPoint(endPoint);
-			if (!model.contains(createdShape)) {
-				command = new UpdateModelAddShape(model, createdShape);
-				executeCommand();
-
-			}
 			view.repaint();
 			break;
 		default:
@@ -272,12 +303,7 @@ public class DrawingController {
 			}
 			break;
 		case POINT:
-			if (createdShape instanceof Point) {
-				createdShape.setEndPoint(endPoint);
-				command = new UpdateModelAddShape(model, createdShape);
-				executeCommand();
-
-			}
+			createdShape.setEndPoint(endPoint);
 			break;
 		case LINE:
 			if (initShapeViaDialog) {
@@ -396,6 +422,62 @@ public class DrawingController {
 	public void duplicateSelected() {
 		command = new UpdateModelDuplicateSelectedShape(model);
 		this.executeCommand();
+	}
+
+	public void startNewWorkspace() {
+		int option = this.showConfirm("This will clear your current canvas space, are you sure?");
+		if (option == JOptionPane.YES_OPTION) {
+			this.clearWorkspace();
+		}
+
+	}
+
+	public void saveAsRawFile() {
+		JFileChooser jFileChooser = getJFileChooser("Save Raw File Dialog");
+		jFileChooser.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
+		int response = jFileChooser.showSaveDialog(view);
+
+		if (response != JFileChooser.APPROVE_OPTION) {
+			if (response != JFileChooser.CANCEL_OPTION) {
+				showAlert("There was an error while performing saving of raw file");
+			}
+		}
+
+		try {
+			String filepath = jFileChooser.getSelectedFile().getPath();
+			FileManager file = new FileManager(new RawFileOperator(model));
+			file.saveFile(filepath);
+		} catch (Exception ex) {
+			showAlert(ex.getMessage());
+		}
+
+	}
+
+	public void loadARawFile() {
+		JFileChooser jFileChooser = getJFileChooser("Load Raw File Dialog");
+		int response = jFileChooser.showOpenDialog(view);
+
+		if (response != JFileChooser.APPROVE_OPTION) {
+			if (response != JFileChooser.CANCEL_OPTION) {
+				showAlert("There was an error while performing loading of raw file");
+			}
+		}
+
+		if (jFileChooser.getSelectedFile() == null) {
+			showAlert("No raw file selected");
+		}
+
+		try {
+
+			String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+			FileManager file = new FileManager(new RawFileOperator(model));
+
+			clearWorkspace();
+			file.loadFile(filePath);
+			view.repaint();
+		} catch (Exception ex) {
+			showAlert(ex.getMessage());
+		}
 	}
 
 	/*
