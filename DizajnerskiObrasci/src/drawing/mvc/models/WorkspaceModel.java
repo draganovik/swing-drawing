@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Stack;
 
+import javax.swing.DefaultListModel;
+
 import drawing.command.ICommand;
 import drawing.geometry.Point;
 import drawing.geometry.Shape;
@@ -19,9 +21,13 @@ public class WorkspaceModel {
 	private Color shapeBackground;
 	private Color shapeColor;
 
+	private Integer minDragDistanceForCreatingShape = 10;
+
 	private Shape createdShape;
 
 	private ToolAction toolAction;
+
+	private DefaultListModel<String> commandLogListModel = new DefaultListModel<>();
 
 	private Stack<ICommand> performedCommandStack = new Stack<>();
 	private Stack<ICommand> revertedCommandStack = new Stack<>();
@@ -37,6 +43,7 @@ public class WorkspaceModel {
 		endPoint = null;
 		dragPoint = null;
 		createdShape = null;
+		minDragDistanceForCreatingShape = 10;
 
 		toolAction = ToolAction.SELECT;
 
@@ -48,6 +55,7 @@ public class WorkspaceModel {
 
 		performedCommandStack.clear();
 		revertedCommandStack.clear();
+		commandLogListModel.clear();
 	}
 
 	/*
@@ -65,6 +73,18 @@ public class WorkspaceModel {
 	/*
 	 * Property States
 	 */
+
+	public Integer getMinDragDistanceForCreatingShape() {
+		return this.minDragDistanceForCreatingShape;
+	}
+
+	public Boolean canDragCreateToPoint(Point point) {
+		return this.startPoint.distanceOf(point) > minDragDistanceForCreatingShape;
+	}
+
+	public void setMinDragDistanceForCreatingShape(Integer size) {
+		this.minDragDistanceForCreatingShape = size;
+	}
 
 	public void initCreatedShape(Shape shape) {
 		shape.setColor(this.getShapeColor());
@@ -143,7 +163,7 @@ public class WorkspaceModel {
 		command.execute();
 		performedCommandStack.push(command);
 		revertedCommandStack.clear();
-		System.out.println(performedCommandStack.size() + ". Command: " + command.getClass());
+		commandLogListModel.addElement(command.toString());
 		this.clearCommand(command);
 	}
 
@@ -151,14 +171,14 @@ public class WorkspaceModel {
 		ICommand command = performedCommandStack.pop();
 		command.undo();
 		revertedCommandStack.push(command);
-		System.out.println(performedCommandStack.size() + 1 + ". Undo command: " + command.getClass());
+		commandLogListModel.addElement(command.toString());
 	}
 
 	public void redoCommand() throws Exception {
 		ICommand command = revertedCommandStack.pop();
 		command.redo();
 		performedCommandStack.push(command);
-		System.out.println(performedCommandStack.size() + ". Redo command: " + command.getClass());
+		commandLogListModel.addElement(command.toString());
 	}
 
 	public Boolean canUndo() {
@@ -172,4 +192,28 @@ public class WorkspaceModel {
 	public void clearCommand(ICommand command) {
 		command = null;
 	}
+
+	/*
+	 * Command Log operations
+	 */
+
+	public DefaultListModel<String> getCommandLogListModel() {
+		return commandLogListModel;
+	}
+
+	public String getCommandLogString() {
+		StringBuilder output = new StringBuilder();
+		for (int index = 0; index < commandLogListModel.size(); index++) {
+			output.append(commandLogListModel.get(index));
+			output.append("\n");
+		}
+
+		return output.toString();
+	}
+
+	public void initFromCommandLogListModel(DefaultListModel<String> commandLogListModel) {
+		clearWorkspace();
+		// this.commandLogListModel = commandLogListModel;
+	}
+
 }

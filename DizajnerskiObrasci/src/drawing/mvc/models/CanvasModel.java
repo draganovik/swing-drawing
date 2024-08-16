@@ -112,6 +112,13 @@ public class CanvasModel {
 		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
 	}
 
+	public void deselectShapeAt(Integer index) {
+		int previousSelectionSize = getAllSelectedShapeIndexes().size();
+		shapes.get(index).setSelected(false);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
+	}
+
 	public void deselectAllShapes() {
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
 		ArrayList<Integer> selectedShapesIndexes = selectedShapesIndexes();

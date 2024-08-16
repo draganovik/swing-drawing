@@ -84,6 +84,7 @@ public class MenubarView extends JMenuBar {
 		mntmImportLog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				controller.loadALogFile();
 			}
 		});
 		mntmImportLog.setAccelerator(
@@ -96,6 +97,7 @@ public class MenubarView extends JMenuBar {
 		mntmExportLog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				controller.saveAsLogFile();
 			}
 		});
 

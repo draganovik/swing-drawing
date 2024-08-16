@@ -46,6 +46,7 @@ import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
 import drawing.observer.ToolbarPropertyObserver;
 import drawing.strategy.FileManager;
+import drawing.strategy.LogFileOperator;
 import drawing.strategy.RawFileOperator;
 import drawing.types.ToolAction;
 
@@ -137,37 +138,25 @@ public class DrawingController {
 		switch (workspaceModel.getToolAction()) {
 		case POINT:
 			workspaceModel.initCreatedShape(mousePoint);
-			ICommand addPoint = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addPoint);
 			break;
 		case LINE:
 			workspaceModel.initCreatedShape(new Line(mousePoint));
-			ICommand addLine = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addLine);
 			break;
 		case RECTANGLE:
 			workspaceModel.initCreatedShape(new Rectangle());
 			workspaceModel.getCreatedShape().setStartPoint(mousePoint);
-			ICommand addRectangle = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addRectangle);
 			break;
 		case CIRCLE:
 			workspaceModel.initCreatedShape(new Circle());
 			workspaceModel.getCreatedShape().setStartPoint(mousePoint);
-			ICommand addCircle = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addCircle);
 			break;
 		case DONUT:
 			workspaceModel.initCreatedShape(new Donut());
 			workspaceModel.getCreatedShape().setStartPoint(mousePoint);
-			ICommand addDonut = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addDonut);
 			break;
 		case HEXAGON:
 			workspaceModel.initCreatedShape(new HexagonAdapter());
 			workspaceModel.getCreatedShape().setStartPoint(mousePoint);
-			ICommand addHexagon = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-			executeCommand(addHexagon);
 			break;
 		default:
 		case SELECT:
@@ -236,6 +225,11 @@ public class DrawingController {
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
+			if (this.workspaceModel.canDragCreateToPoint(mousePoint)
+					&& !model.contains(workspaceModel.getCreatedShape())) {
+				ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+				executeCommand(addShape);
+			}
 			workspaceModel.getCreatedShape().setEndPoint(mousePoint);
 			view.repaint();
 			break;
@@ -248,31 +242,27 @@ public class DrawingController {
 		Point mousePoint = new Point(e.getX(), e.getY());
 		this.workspaceModel.setEndPoint(mousePoint);
 
-		double distance = this.workspaceModel.getStartPoint().distanceOf(mousePoint);
-
-		boolean initShapeViaDialog = distance < 10;
-
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
-			if (distance > 1) {
-				try {
-					int distanceX = workspaceModel.getStartPoint().getX() - mousePoint.getX();
-					int distanceY = workspaceModel.getStartPoint().getY() - mousePoint.getY();
-					model.moveSelectedShapesBy(distanceX, distanceY);
-					ICommand moveSelected = new UpdateModelSelectedShapesPosition(model,
-							this.workspaceModel.getStartPoint(), mousePoint);
-					executeCommand(moveSelected);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			try {
+				int distanceX = workspaceModel.getStartPoint().getX() - mousePoint.getX();
+				int distanceY = workspaceModel.getStartPoint().getY() - mousePoint.getY();
+				if (distanceX + distanceY < 0) {
+					break;
 				}
+				model.moveSelectedShapesBy(distanceX, distanceY);
+				ICommand moveSelected = new UpdateModelSelectedShapesPosition(model,
+						this.workspaceModel.getStartPoint(), mousePoint);
+				executeCommand(moveSelected);
+			} catch (Exception ex) {
+				this.showAlert(ex.getMessage());
 			}
 			break;
 		case POINT:
 			workspaceModel.getCreatedShape().setEndPoint(mousePoint);
 			break;
 		case LINE:
-			if (initShapeViaDialog) {
+			if (!this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				DlgManageLine modal = new DlgManageLine((Line) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful) {
@@ -282,7 +272,7 @@ public class DrawingController {
 			}
 			break;
 		case RECTANGLE:
-			if (initShapeViaDialog) {
+			if (!this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				DlgManageRectangle modal = new DlgManageRectangle((Rectangle) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful) {
@@ -292,7 +282,7 @@ public class DrawingController {
 			}
 			break;
 		case CIRCLE:
-			if (initShapeViaDialog) {
+			if (!this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				DlgManageCircle modal = new DlgManageCircle((Circle) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful) {
@@ -302,7 +292,7 @@ public class DrawingController {
 			}
 			break;
 		case DONUT:
-			if (initShapeViaDialog) {
+			if (!this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				DlgManageDonut modal = new DlgManageDonut((Donut) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful) {
@@ -312,7 +302,7 @@ public class DrawingController {
 			}
 			break;
 		case HEXAGON:
-			if (initShapeViaDialog) {
+			if (!this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful) {
@@ -436,6 +426,37 @@ public class DrawingController {
 		}
 	}
 
+	public void saveAsLogFile() {
+		JFileChooser jFileChooser = getJFileChooser("Save Log Dialog");
+		jFileChooser.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
+		int response = jFileChooser.showSaveDialog(view);
+
+		if (response != JFileChooser.APPROVE_OPTION) {
+			if (response != JFileChooser.CANCEL_OPTION) {
+				showAlert("There was an error while performing loading of log file");
+			}
+		}
+
+		try {
+			String filepath = jFileChooser.getSelectedFile().getPath();
+			FileManager file = new FileManager(new LogFileOperator(workspaceModel));
+			file.saveFile(filepath);
+		} catch (Exception ex) {
+			showAlert(ex.getMessage());
+		}
+	}
+
+	public void loadALogFile() {
+		JFileChooser jFileChooser = getJFileChooser("Load Log Dialog");
+		int response = jFileChooser.showOpenDialog(view);
+
+		if (response != JFileChooser.APPROVE_OPTION) {
+			if (response != JFileChooser.CANCEL_OPTION) {
+				showAlert("There was an error while performing loading of log file");
+			}
+		}
+	}
+
 	/*
 	 * Toolbar commands
 	 */
@@ -445,7 +466,7 @@ public class DrawingController {
 			return;
 		}
 
-		if (action != ToolAction.SELECT) {
+		if (action != ToolAction.SELECT && model.getAllSelectedShapeIndexes().size() != 0) {
 			ICommand deselectAll = new UpdateModelShapeDeselectAll(model);
 			executeCommand(deselectAll);
 		}

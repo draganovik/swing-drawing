@@ -13,6 +13,8 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 	final ArrayList<Color> initialSelectedShapesBackgroundColors;
 	final Color updateColor;
 
+	private Boolean isExecuted = false;
+
 	public UpdateModelSelectedShapesBackgroundColor(CanvasModel model, Color updateColor) {
 		this.model = model;
 		this.updateColor = updateColor;
@@ -31,15 +33,38 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 	@Override
 	public void execute() {
+		if (isExecuted) {
+			throw new IllegalStateException("Command is already executed.");
+		}
+		isExecuted = true;
+
 		model.updateBackgroundColorOfSelectedShapes(updateColor);
 	}
 
 	@Override
 	public void undo() {
+		if (!isExecuted) {
+			throw new IllegalStateException("Command is not executed.");
+		}
+		isExecuted = false;
+
 		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
 		for (int i = 0; i < selectedShapes.size(); i++) {
 			model.updateShapeBackgroundColor(selectedShapes.get(i), initialSelectedShapesBackgroundColors.get(i));
 		}
+	}
+
+	@Override
+	public String toString() {
+		String state = isExecuted ? "Execute " : "Unexecute ";
+		String command = this.getClass().getSimpleName();
+
+		StringBuilder output = new StringBuilder();
+		output.append(state).append(command).append(" <").append("updateColor=").append(updateColor.toString())
+				.append(", ").append("initialColors=").append(initialSelectedShapesBackgroundColors.toString())
+				.append(">");
+
+		return output.toString();
 	}
 
 }

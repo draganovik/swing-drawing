@@ -12,9 +12,9 @@ import javax.swing.border.EmptyBorder;
 
 import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.WorkspaceModel;
+import drawing.mvc.views.CanvasShapesPanelView;
 import drawing.mvc.views.CanvasView;
-import drawing.mvc.views.LayersPanelView;
-import drawing.mvc.views.LogPanelView;
+import drawing.mvc.views.CommandLogPanelView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
 
@@ -24,8 +24,8 @@ public class DrawingFrame extends JFrame {
 	// Frame View modules
 	private CanvasView canvasView = new CanvasView();
 	private ToolbarView toolbarView = new ToolbarView();
-	private LayersPanelView layersPanelView = new LayersPanelView();
-	private LogPanelView logPanelView = new LogPanelView();
+	private CanvasShapesPanelView canvasShapesPanelView = new CanvasShapesPanelView();
+	private CommandLogPanelView commandLogPanelView = new CommandLogPanelView();
 	private MenubarView menubarView = new MenubarView();
 
 	// Local components
@@ -62,12 +62,14 @@ public class DrawingFrame extends JFrame {
 		menubarView.setController(controller);
 		setJMenuBar(menubarView);
 
-		layersPanelView.setDLM(canvasModel.getDefaultListModel());
+		canvasShapesPanelView.setDLM(canvasModel.getDefaultListModel());
+		commandLogPanelView.setDLM(workspaceModel.getCommandLogListModel());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setPreferredSize(new Dimension(250, 400));
 		contentPane.add(tabbedPane, BorderLayout.EAST);
-		tabbedPane.addTab("Layers", null, layersPanelView, null);
-		tabbedPane.addTab("History", null, logPanelView, null);
+		tabbedPane.addTab("Commands", null, commandLogPanelView, null);
+		tabbedPane.addTab("Shapes", null, canvasShapesPanelView, null);
+
 	}
 
 }

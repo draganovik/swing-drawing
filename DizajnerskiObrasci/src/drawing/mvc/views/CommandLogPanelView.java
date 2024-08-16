@@ -9,21 +9,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import drawing.command.ICommand;
-
-public class LogPanelView extends JPanel {
+public class CommandLogPanelView extends JPanel {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -5676175567633015715L;
-	private DefaultListModel<ICommand> listModel;
-	private JList<ICommand> list;
+	private DefaultListModel<String> listModel;
+	private JList<String> list;
 
 	/**
 	 * Create the panel.
 	 */
-	public LogPanelView() {
+	public CommandLogPanelView() {
 		super();
 		list = new JList<>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -37,7 +35,7 @@ public class LogPanelView extends JPanel {
 
 	}
 
-	public void setDLM(DefaultListModel<ICommand> dlm) {
+	public void setDLM(DefaultListModel<String> dlm) {
 		this.listModel = dlm;
 		list.setModel(listModel);
 	}
