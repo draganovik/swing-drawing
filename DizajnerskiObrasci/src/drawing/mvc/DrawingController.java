@@ -41,7 +41,7 @@ import drawing.modals.DlgManageLine;
 import drawing.modals.DlgManagePoint;
 import drawing.modals.DlgManageRectangle;
 import drawing.mvc.models.CanvasModel;
-import drawing.mvc.models.ToolbarModel;
+import drawing.mvc.models.WorkspaceModel;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
@@ -57,7 +57,7 @@ public class DrawingController {
 	private Shape createdShape;
 
 	private CanvasModel model;
-	private ToolbarModel toolbarModel;
+	private WorkspaceModel workspaceModel;
 
 	private CanvasView view;
 	private ToolbarView toolbarView;
@@ -70,9 +70,9 @@ public class DrawingController {
 
 	private ICommand command;
 
-	public DrawingController(CanvasModel model, ToolbarModel toolbarModel) {
+	public DrawingController(CanvasModel model, WorkspaceModel workspaceModel) {
 		this.model = model;
-		this.toolbarModel = toolbarModel;
+		this.workspaceModel = workspaceModel;
 	}
 
 	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView) {
@@ -147,49 +147,49 @@ public class DrawingController {
 
 		model.setIsShiftDown(e.isShiftDown());
 
-		if (model.getAllSelectedShapeIndexes().size() > 0 && toolbarModel.getToolAction() != ToolAction.SELECT) {
+		if (model.getAllSelectedShapeIndexes().size() > 0 && workspaceModel.getToolAction() != ToolAction.SELECT) {
 			command = new UpdateModelShapeDeselectAll(model);
 			executeCommand();
 		}
 
-		switch (toolbarModel.getToolAction()) {
+		switch (workspaceModel.getToolAction()) {
 		case POINT:
 			createdShape = mousePoint;
-			createdShape.setColor(toolbarModel.getShapeColor());
+			createdShape.setColor(workspaceModel.getShapeColor());
 			createdShape.setSelected(true);
 			command = new UpdateModelAddShape(model, createdShape);
 			executeCommand();
 			break;
 		case LINE:
 			createdShape = new Line(startPoint);
-			createdShape.setColor(toolbarModel.getShapeColor());
+			createdShape.setColor(workspaceModel.getShapeColor());
 			createdShape.setSelected(true);
 			break;
 		case RECTANGLE:
 			createdShape = new Rectangle();
-			createdShape.setColor(toolbarModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
+			createdShape.setColor(workspaceModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(workspaceModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			createdShape.setSelected(true);
 			break;
 		case CIRCLE:
 			createdShape = new Circle();
-			createdShape.setColor(toolbarModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
+			createdShape.setColor(workspaceModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(workspaceModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			createdShape.setSelected(true);
 			break;
 		case DONUT:
 			createdShape = new Donut();
-			createdShape.setColor(toolbarModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
+			createdShape.setColor(workspaceModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(workspaceModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			createdShape.setSelected(true);
 			break;
 		case HEXAGON:
 			createdShape = new HexagonAdapter();
-			createdShape.setColor(toolbarModel.getShapeColor());
-			((SurfaceShape) createdShape).setBackgroundColor(toolbarModel.getShapeBackground());
+			createdShape.setColor(workspaceModel.getShapeColor());
+			((SurfaceShape) createdShape).setBackgroundColor(workspaceModel.getShapeBackground());
 			createdShape.setStartPoint(startPoint);
 			createdShape.setSelected(true);
 			break;
@@ -238,7 +238,7 @@ public class DrawingController {
 
 		double distance = startPoint.distanceOf(endPoint);
 
-		switch (toolbarModel.getToolAction()) {
+		switch (workspaceModel.getToolAction()) {
 		case SELECT:
 			try {
 				if (command instanceof UpdateModelSelectedShapesPosition) {
@@ -290,7 +290,7 @@ public class DrawingController {
 
 		boolean initShapeViaDialog = distance < 10;
 
-		switch (toolbarModel.getToolAction()) {
+		switch (workspaceModel.getToolAction()) {
 		case SELECT:
 			if (command instanceof UpdateModelSelectedShapesPosition) {
 				try {
@@ -485,18 +485,18 @@ public class DrawingController {
 	 */
 
 	public void setToolAction(ToolAction action) {
-		toolbarModel.setToolAction(action);
-		switch (toolbarModel.getToolAction()) {
+		workspaceModel.setToolAction(action);
+		switch (workspaceModel.getToolAction()) {
 		case POINT:
 		case LINE:
-			toolbarModel.setShapeColor(toolbarModel.getShapeColor());
+			workspaceModel.setShapeColor(workspaceModel.getShapeColor());
 			toolbarView.setEnabledPreviewShapeBackgroundColor(false);
 			break;
 		case RECTANGLE:
 		case CIRCLE:
 		case DONUT:
 		case HEXAGON:
-			toolbarModel.setShapeColor(toolbarModel.getShapeColor());
+			workspaceModel.setShapeColor(workspaceModel.getShapeColor());
 			toolbarView.setEnabledPreviewShapeBackgroundColor(true);
 		default:
 			break;
@@ -511,9 +511,9 @@ public class DrawingController {
 	}
 
 	public void colorPickerPickBackgroundColor() {
-		Color selectedColor = getColorFromColorPicker("Choose Background Color", toolbarModel.getShapeColor());
+		Color selectedColor = getColorFromColorPicker("Choose Background Color", workspaceModel.getShapeColor());
 		if (selectedColor != null) {
-			toolbarModel.setShapeBackground(selectedColor);
+			workspaceModel.setShapeBackground(selectedColor);
 			toolbarView.setPreviewShapeBackgroundColor(selectedColor);
 			if (model.getAllSelectedShapeIndexes().isEmpty()) {
 				return;
@@ -524,9 +524,9 @@ public class DrawingController {
 	}
 
 	public void colorPickerPickOutlineColor() {
-		Color selectedColor = getColorFromColorPicker("Choose Outline Color", toolbarModel.getShapeBackground());
+		Color selectedColor = getColorFromColorPicker("Choose Outline Color", workspaceModel.getShapeBackground());
 		if (selectedColor != null) {
-			toolbarModel.setShapeColor(selectedColor);
+			workspaceModel.setShapeColor(selectedColor);
 			toolbarView.setPreviewShapeColor(selectedColor);
 			if (model.getAllSelectedShapeIndexes().isEmpty()) {
 				return;
@@ -538,7 +538,7 @@ public class DrawingController {
 	}
 
 	public void setColorPickerShapeColor(Color color) {
-		toolbarModel.setShapeColor(color);
+		workspaceModel.setShapeColor(color);
 		toolbarView.setPreviewShapeColor(color);
 	}
 
@@ -547,7 +547,7 @@ public class DrawingController {
 			toolbarView.setEnabledPreviewShapeBackgroundColor(false);
 			return;
 		}
-		toolbarModel.setShapeBackground(color);
+		workspaceModel.setShapeBackground(color);
 		toolbarView.setPreviewShapeBackgroundColor(color);
 	}
 

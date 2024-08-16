@@ -4,12 +4,12 @@ import java.awt.Color;
 
 import drawing.types.ToolAction;
 
-public class ToolbarModel {
+public class WorkspaceModel {
 	private Color shapeBackground;
 	private Color shapeColor;
 	private ToolAction toolAction;
 
-	public ToolbarModel() {
+	public WorkspaceModel() {
 		toolAction = ToolAction.SELECT;
 		shapeBackground = Color.LIGHT_GRAY;
 		shapeColor = Color.DARK_GRAY;

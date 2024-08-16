@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import drawing.mvc.DrawingController;
-import drawing.mvc.models.ToolbarModel;
+import drawing.mvc.models.WorkspaceModel;
 import drawing.types.ToolAction;
 
 public class ToolbarView extends JPanel {
@@ -201,7 +201,7 @@ public class ToolbarView extends JPanel {
 		this.controller = controller;
 	}
 
-	public void setModel(ToolbarModel model) {
+	public void setModel(WorkspaceModel model) {
 		btnToolbarColor.setOpaque(true);
 		btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 

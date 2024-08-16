@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import drawing.mvc.models.CanvasModel;
-import drawing.mvc.models.ToolbarModel;
+import drawing.mvc.models.WorkspaceModel;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.LayersPanelView;
 import drawing.mvc.views.LogPanelView;
@@ -48,14 +48,14 @@ public class DrawingFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(6, 0));
 	}
 
-	public void setupCanvas(CanvasModel canvasModel, ToolbarModel toolbarModel, DrawingController controller) {
+	public void setupCanvas(CanvasModel canvasModel, WorkspaceModel workspaceModel, DrawingController controller) {
 		controller.setViews(canvasView, toolbarView, menubarView);
 
 		canvasView.setModel(canvasModel);
 		canvasView.setController(controller);
 		contentPane.add(canvasView, BorderLayout.CENTER);
 
-		toolbarView.setModel(toolbarModel);
+		toolbarView.setModel(workspaceModel);
 		toolbarView.setController(controller);
 		contentPane.add(toolbarView, BorderLayout.WEST);
 
