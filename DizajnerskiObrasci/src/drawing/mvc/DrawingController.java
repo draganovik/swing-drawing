@@ -25,7 +25,7 @@ import drawing.command.UpdateModelSelectedShapesToFront;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
-import drawing.command.UpdateShapeProperties;
+import drawing.command.UpdateModelSelectedShapeProperties;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -170,7 +170,7 @@ public class DrawingController {
 
 				if (optionalShape.get().isSelected()) {
 					if (model.getIsShiftDown()) {
-						ICommand deselectAll = new UpdateModelShapeDeselect(model, optionalShape.get());
+						ICommand deselectAll = new UpdateModelShapeDeselect(model, model.getShapeIndex(optionalShape.get()));
 						executeCommand(deselectAll);
 					}
 				} else {
@@ -179,7 +179,7 @@ public class DrawingController {
 						executeCommand(deselectAll);
 					}
 
-					ICommand selectShape = new UpdateModelShapeSelect(model, optionalShape.get());
+					ICommand selectShape = new UpdateModelShapeSelect(model, model.getShapeIndex(optionalShape.get()));
 					executeCommand(selectShape);
 				}
 			}
@@ -439,7 +439,7 @@ public class DrawingController {
 
 		try {
 			String filepath = jFileChooser.getSelectedFile().getPath();
-			FileManager file = new FileManager(new LogFileOperator(workspaceModel));
+			FileManager file = new FileManager(new LogFileOperator(workspaceModel, model));
 			file.saveFile(filepath);
 		} catch (Exception ex) {
 			showAlert(ex.getMessage());
@@ -454,6 +454,24 @@ public class DrawingController {
 			if (response != JFileChooser.CANCEL_OPTION) {
 				showAlert("There was an error while performing loading of log file");
 			}
+		}
+		
+		if (jFileChooser.getSelectedFile() == null) {
+			showAlert("No raw file selected");
+		}
+
+		try {
+
+			String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
+			FileManager file = new FileManager(new LogFileOperator(workspaceModel, model));
+
+			clearWorkspace();
+			file.loadFile(filePath);
+			view.repaint();
+			this.menubarView.setEnabledUndo(workspaceModel.canUndo());
+			this.menubarView.setEnabledRedo(workspaceModel.canRedo());
+		} catch (Exception ex) {
+			showAlert(ex.getMessage());
 		}
 	}
 
@@ -543,21 +561,21 @@ public class DrawingController {
 		if (selectedShape instanceof Point) {
 			DlgManagePoint modal = new DlgManagePoint((Point) update);
 			showDialog(modal);
-			ICommand modifyPoint = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyPoint = new UpdateModelSelectedShapeProperties(model, update);
 			executeCommand(modifyPoint);
 			return;
 		}
 		if (selectedShape instanceof Line) {
 			DlgManageLine modal = new DlgManageLine((Line) update);
 			showDialog(modal);
-			ICommand modifyLine = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyLine = new UpdateModelSelectedShapeProperties(model, update);
 			executeCommand(modifyLine);
 			return;
 		}
 		if (selectedShape instanceof Rectangle) {
 			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) update);
 			showDialog(modal);
-			ICommand modifyRectangle = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyRectangle = new UpdateModelSelectedShapeProperties(model, update);
 			this.executeCommand(modifyRectangle);
 			return;
 		}
@@ -565,7 +583,7 @@ public class DrawingController {
 		if (selectedShape instanceof Donut) {
 			DlgManageDonut modal = new DlgManageDonut((Donut) update);
 			showDialog(modal);
-			ICommand modifyDonut = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyDonut = new UpdateModelSelectedShapeProperties(model, update);
 			this.executeCommand(modifyDonut);
 			return;
 		}
@@ -573,7 +591,7 @@ public class DrawingController {
 		if (selectedShape instanceof Circle) {
 			DlgManageCircle modal = new DlgManageCircle((Circle) update);
 			showDialog(modal);
-			ICommand modifyCircle = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyCircle = new UpdateModelSelectedShapeProperties(model, update);
 			this.executeCommand(modifyCircle);
 			return;
 		}
@@ -581,7 +599,7 @@ public class DrawingController {
 		if (selectedShape instanceof HexagonAdapter) {
 			DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) update);
 			showDialog(modal);
-			ICommand modifyHexagon = new UpdateShapeProperties(selectedShape, update);
+			ICommand modifyHexagon = new UpdateModelSelectedShapeProperties(model, update);
 			this.executeCommand(modifyHexagon);
 			return;
 		}

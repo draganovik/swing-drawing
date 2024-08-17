@@ -10,21 +10,16 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelRemoveSelectedShapes implements ICommand {
 
-	final CanvasModel model;
-	final List<SimpleEntry<Integer, Shape>> selectedShapes; // Store deleted index and shape together
+	private final CanvasModel model;
+	private final List<SimpleEntry<Integer, Shape>> selectedShapes; // Store deleted index and shape together
 
 	private Boolean isExecuted = false;
 
 	public UpdateModelRemoveSelectedShapes(CanvasModel model) {
 		this.model = model;
-		ArrayList<Shape> deletedShapes = model.getAllSelectedShapes();
 
 		// Use a List of SimpleEntry to store index and shape pairs
 		this.selectedShapes = new ArrayList<>();
-
-		// Collect shapes and their respective indexes
-		IntStream.range(0, deletedShapes.size()).forEach(i -> selectedShapes
-				.add(new SimpleEntry<>(model.getShapeIndex(deletedShapes.get(i)), deletedShapes.get(i))));
 	}
 
 	@Override
@@ -33,6 +28,11 @@ public class UpdateModelRemoveSelectedShapes implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
+		
+		ArrayList<Shape> deletedShapes = model.getAllSelectedShapes();
+		// Collect shapes and their respective indexes
+		IntStream.range(0, deletedShapes.size()).forEach(i -> selectedShapes
+				.add(new SimpleEntry<>(model.getShapeIndex(deletedShapes.get(i)), deletedShapes.get(i))));
 
 		model.removeSelectedShapes();
 	}

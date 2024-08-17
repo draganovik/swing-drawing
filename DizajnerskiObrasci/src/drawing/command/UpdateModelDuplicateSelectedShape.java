@@ -6,14 +6,13 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelDuplicateSelectedShape implements ICommand {
 
-	final CanvasModel model;
-	final ArrayList<Integer> selectedShapeIndexes;
+	private final CanvasModel model;
+	private ArrayList<Integer> selectedShapeIndexes;
 
 	private Boolean isExecuted = false;
 
 	public UpdateModelDuplicateSelectedShape(CanvasModel model) {
 		this.model = model;
-		this.selectedShapeIndexes = model.getAllSelectedShapeIndexes();
 	}
 
 	@Override
@@ -22,6 +21,8 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
+		
+		this.selectedShapeIndexes = model.getAllSelectedShapeIndexes();
 
 		model.duplicateSelected();
 

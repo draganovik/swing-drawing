@@ -1,6 +1,5 @@
 package drawing.command;
 
-import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelShapeDeselect implements ICommand {
@@ -10,9 +9,9 @@ public class UpdateModelShapeDeselect implements ICommand {
 
 	private Boolean isExecuted = false;
 
-	public UpdateModelShapeDeselect(CanvasModel model, Shape shape) {
+	public UpdateModelShapeDeselect(CanvasModel model, Integer shapeIndex) {
 		this.model = model;
-		this.selectedShapeIndex = model.getShapeIndex(shape);
+		this.selectedShapeIndex = shapeIndex;
 	}
 
 	@Override

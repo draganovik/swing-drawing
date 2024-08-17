@@ -5,8 +5,8 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelAddShape implements ICommand {
 
-	final CanvasModel model;
-	final Shape shape;
+	private final CanvasModel model;
+	private final Shape shape;
 	private Boolean isExecuted = false;
 
 	public UpdateModelAddShape(CanvasModel model, Shape shape) {
@@ -20,7 +20,7 @@ public class UpdateModelAddShape implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-
+		shape.setSelected(true);
 		model.addShape(shape);
 	}
 

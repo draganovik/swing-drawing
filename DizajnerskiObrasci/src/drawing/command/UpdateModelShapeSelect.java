@@ -10,9 +10,9 @@ public class UpdateModelShapeSelect implements ICommand {
 
 	private Boolean isExecuted = false;
 
-	public UpdateModelShapeSelect(CanvasModel model, Shape shape) {
+	public UpdateModelShapeSelect(CanvasModel model, Integer shapeIndex) {
 		this.model = model;
-		this.selectedShapeIndex = model.getShapeIndex(shape);
+		this.selectedShapeIndex = shapeIndex;
 	}
 
 	@Override

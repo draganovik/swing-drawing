@@ -5,9 +5,9 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesPosition implements ICommand {
 
-	final CanvasModel model;
-	final Point startPoint;
-	final Point endPoint;
+	private final CanvasModel model;
+	private final Point startPoint;
+	private final Point endPoint;
 
 	private Boolean isExecuted = false;
 
@@ -49,7 +49,7 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 
 		StringBuilder output = new StringBuilder();
 		output.append(state).append(command).append(" <").append("startPoint=").append(startPoint.toString())
-				.append(", ").append("endPoint=").append(endPoint.toString()).append(">");
+				.append("; ").append("endPoint=").append(endPoint.toString()).append(">");
 
 		return output.toString();
 	}

@@ -3,10 +3,12 @@ package drawing.mvc.models;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 import java.util.Stack;
 
 import javax.swing.DefaultListModel;
 
+import drawing.command.CommandGenerator;
 import drawing.command.ICommand;
 import drawing.geometry.Point;
 import drawing.geometry.Shape;
@@ -211,9 +213,24 @@ public class WorkspaceModel {
 		return output.toString();
 	}
 
-	public void initFromCommandLogListModel(DefaultListModel<String> commandLogListModel) {
+	public void initFromCommandLogList(List<String> commandLogListModel, CanvasModel model) {
 		clearWorkspace();
-		// this.commandLogListModel = commandLogListModel;
+		
+		for(int index = 0; index < commandLogListModel.size(); index++) {
+			String line = commandLogListModel.get(index);
+			ICommand command = CommandGenerator.generate(line, model);
+			try {
+				if(!line.contains("Unexecute")) {
+					executeCommand(command);
+				}
+				else if(line.contains("Unexecute"))  {
+					undoCommand();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
