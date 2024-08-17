@@ -78,8 +78,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarLine);
 
-		btnToolbarRectangle = new JToggleButton(
-				new ImageIcon(getClass().getResource("/images/Rectangle.png")));
+		btnToolbarRectangle = new JToggleButton(new ImageIcon(getClass().getResource("/images/Rectangle.png")));
 		btnToolbarRectangle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

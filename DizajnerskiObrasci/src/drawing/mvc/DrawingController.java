@@ -153,9 +153,9 @@ public class DrawingController {
 
 		model.setIsShiftDown(e.isShiftDown());
 
-		if (model.getAllSelectedShapeIndexes().size() > 0 && workspaceModel.getToolAction() != ToolAction.SELECT) {
+		if (!model.getAllSelectedShapes().isEmpty() && workspaceModel.getToolAction() != ToolAction.SELECT) {
 			ICommand command = new UpdateModelShapeDeselectAll(model);
-			executeCommandNoLog(command);
+			executeCommand(command);
 		}
 
 		switch (workspaceModel.getToolAction()) {

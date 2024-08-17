@@ -8,7 +8,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/heksagon.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/com.jgoodies.common_1.8.1.v20240327-0800.jar" sourcepath="lib/com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/com.jgoodies.forms_1.9.0.v20240327-0800.jar" sourcepath="lib/com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
