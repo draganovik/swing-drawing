@@ -82,8 +82,9 @@ public class DrawingController {
 		workspaceModel.clearWorkspace();
 
 		model.removeAllShapes();
+		toolbarView.setToolToSelect();
+			
 		view.repaint();
-		toolbarView.repaint();
 	}
 
 	private void executeCommand(ICommand command) {

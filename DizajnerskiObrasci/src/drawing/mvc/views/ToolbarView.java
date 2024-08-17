@@ -209,6 +209,10 @@ public class ToolbarView extends JPanel {
 		btnToolbarBackground.setBackground(model.getShapeBackground());
 		btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 	}
+	
+	public void setToolToSelect() {
+		btnToolbarSelect.setSelected(true);
+	}
 
 	public void setEnabledModify(boolean isEnabled) {
 		btnToolbarModify.setEnabled(isEnabled);
