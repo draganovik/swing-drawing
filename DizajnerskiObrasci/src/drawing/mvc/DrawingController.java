@@ -82,8 +82,10 @@ public class DrawingController {
 		workspaceModel.clearWorkspace();
 
 		model.removeAllShapes();
+		toolbarView.setEnabledCommands(true);
 		toolbarView.setToolToSelect();
-			
+		this.workspaceModel.setToolAction(ToolAction.SELECT);
+
 		view.repaint();
 	}
 
@@ -402,6 +404,23 @@ public class DrawingController {
 		this.menubarView.setEnabledRedo(workspaceModel.canRedo());
 	}
 
+	public void loadNextCommand() {
+		try {
+			this.workspaceModel.processLoadedCommand(model);
+			view.repaint();
+		} catch (Exception ex) {
+			this.showAlert(ex.getMessage());
+		}
+
+		if (this.workspaceModel.hasLoadedAllCommands()) {
+			this.workspaceModel.setToolAction(ToolAction.SELECT);
+			this.toolbarView.setEnabledCommands(true);
+			this.menubarView.setEnabledUndo(workspaceModel.canUndo());
+			this.menubarView.setEnabledRedo(workspaceModel.canRedo());
+			this.menubarView.setEnabledLoadNexCommand(false);
+		}
+	}
+
 	public void moveSelectedForward() {
 		ICommand command = new UpdateModelSelectedShapesForward(model);
 		executeCommand(command);
@@ -500,7 +519,7 @@ public class DrawingController {
 
 		try {
 			String filepath = jFileChooser.getSelectedFile().getPath();
-			FileManager file = new FileManager(new LogFileOperator(workspaceModel, model));
+			FileManager file = new FileManager(new LogFileOperator(workspaceModel));
 			file.saveFile(filepath);
 		} catch (Exception ex) {
 			showAlert(ex.getMessage());
@@ -526,13 +545,15 @@ public class DrawingController {
 		try {
 
 			String filePath = jFileChooser.getSelectedFile().getAbsolutePath();
-			FileManager file = new FileManager(new LogFileOperator(workspaceModel, model));
+			FileManager file = new FileManager(new LogFileOperator(workspaceModel));
 
-			clearWorkspace();
+			this.clearWorkspace();
 			file.loadFile(filePath);
 			view.repaint();
 			this.menubarView.setEnabledUndo(workspaceModel.canUndo());
 			this.menubarView.setEnabledRedo(workspaceModel.canRedo());
+			this.menubarView.setEnabledLoadNexCommand(true);
+			this.toolbarView.setEnabledCommands(false);
 		} catch (Exception ex) {
 			showAlert(ex.getMessage());
 		}

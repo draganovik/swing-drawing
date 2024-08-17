@@ -27,6 +27,7 @@ public class MenubarView extends JMenuBar {
 	private JMenuItem mntmSaveDrawing;
 	private JMenuItem mntmRedo;
 	private JMenuItem mntmUndo;
+	private JMenuItem mntmLoadNexCommand;
 
 	/**
 	 * Create the panel.
@@ -40,7 +41,7 @@ public class MenubarView extends JMenuBar {
 		// Build the first menu.
 		menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_A);
-		menuFile.getAccessibleContext().setAccessibleDescription("The only menu in this program that has menu items");
+		menuFile.getAccessibleContext().setAccessibleDescription("The main menu of the program");
 		add(menuFile);
 
 		mntmSaveDrawing = new JMenuItem("Save");
@@ -130,6 +131,20 @@ public class MenubarView extends JMenuBar {
 		mntmRedo.setEnabled(false);
 		menuEdit.add(mntmRedo);
 
+		JSeparator separator = new JSeparator();
+		menuEdit.add(separator);
+
+		mntmLoadNexCommand = new JMenuItem("Load next command");
+		mntmLoadNexCommand.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
+		mntmLoadNexCommand.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadNextCommand();
+			}
+		});
+		mntmLoadNexCommand.setEnabled(false);
+		menuEdit.add(mntmLoadNexCommand);
+
 		JMenu menuObject = new JMenu("Object");
 		add(menuObject);
 
@@ -201,6 +216,10 @@ public class MenubarView extends JMenuBar {
 
 	public void setEnabledRedo(boolean inEnabled) {
 		mntmRedo.setEnabled(inEnabled);
+	}
+
+	public void setEnabledLoadNexCommand(boolean inEnabled) {
+		mntmLoadNexCommand.setEnabled(inEnabled);
 	}
 
 }

@@ -7,18 +7,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.WorkspaceModel;
 
 public class LogFileOperator implements IFileOperator {
 
 	WorkspaceModel workspaceModel;
-	CanvasModel model;
 
-	public LogFileOperator(WorkspaceModel workspaceModel, CanvasModel model) {
+	public LogFileOperator(WorkspaceModel workspaceModel) {
 		super();
 		this.workspaceModel = workspaceModel;
-		this.model = model;
 	}
 
 	@Override
@@ -40,7 +37,7 @@ public class LogFileOperator implements IFileOperator {
 			}
 
 			// Pass the list of strings to your model
-			workspaceModel.initFromCommandLogList(commandLog, model);
+			workspaceModel.initFromCommandLogList(commandLog);
 		} catch (Exception ex) {
 			throw ex;
 		}

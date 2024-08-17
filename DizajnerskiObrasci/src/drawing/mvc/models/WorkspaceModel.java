@@ -3,7 +3,9 @@ package drawing.mvc.models;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 import javax.swing.DefaultListModel;
@@ -33,6 +35,8 @@ public class WorkspaceModel {
 
 	private Stack<ICommand> performedCommandStack = new Stack<>();
 	private Stack<ICommand> revertedCommandStack = new Stack<>();
+
+	private Queue<String> loadedCommands = new LinkedList<>();
 
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -223,22 +227,40 @@ public class WorkspaceModel {
 		return output.toString();
 	}
 
-	public void initFromCommandLogList(List<String> commandLogListModel, CanvasModel model) {
+	public void initFromCommandLogList(List<String> commandLogListModel) {
 		clearWorkspace();
-
-		for (String line : commandLogListModel) {
-			ICommand command = CommandGenerator.generate(line, model);
-			try {
-				if (!line.contains("Unexecute")) {
-					executeCommand(command, true);
-				} else if (line.contains("Unexecute")) {
-					undoCommand();
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		this.setToolAction(ToolAction.LOADER);
+		for (String element : commandLogListModel) {
+			loadedCommands.add(element);
 		}
+
+	}
+
+	public void processLoadedCommand(CanvasModel model) throws Exception {
+
+		if (loadedCommands.isEmpty()) {
+			return;
+		}
+		String line = loadedCommands.poll();
+
+		String commandName = line.split(" ")[1];
+
+		switch (commandName) {
+		case "Undo":
+			this.undoCommand();
+			break;
+		case "Redo":
+			this.redoCommand();
+			break;
+		default:
+			ICommand command = CommandGenerator.generate(line, model);
+			this.executeCommand(command, true);
+			break;
+		}
+	}
+
+	public boolean hasLoadedAllCommands() {
+		return loadedCommands.isEmpty();
 	}
 
 }
