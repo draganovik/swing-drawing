@@ -60,7 +60,7 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmNewWorkspace.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
 		menuFile.add(mntmNewWorkspace);
 
 		// a group of JMenuItems
@@ -164,7 +164,7 @@ public class MenubarView extends JMenuBar {
 				controller.duplicateSelected();
 			}
 		});
-		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
+		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.SHIFT_DOWN_MASK));
 		menuObject.add(mntmDuplicate);
 
 		JSeparator separator_1_1 = new JSeparator();

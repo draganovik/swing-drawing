@@ -110,7 +110,6 @@ public class CommandGenerator {
 		if (commandName.equals(UpdateModelSelectedShapeProperties.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('=') + 1);
-			Shape prev = GeometryGenerator.generate(firstParam);
 			String secondParam = commandParams.split("; ")[1];
 			secondParam = secondParam.substring(secondParam.indexOf('=') + 1);
 			Shape next = GeometryGenerator.generate(secondParam);
