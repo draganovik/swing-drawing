@@ -23,7 +23,7 @@ public class UpdateModelSelectedShapesToBack implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes();
 		Collections.sort(initialSelectedShapesOrder);
 

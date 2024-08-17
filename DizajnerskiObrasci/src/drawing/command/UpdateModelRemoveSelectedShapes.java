@@ -28,7 +28,7 @@ public class UpdateModelRemoveSelectedShapes implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		ArrayList<Shape> deletedShapes = model.getAllSelectedShapes();
 		// Collect shapes and their respective indexes
 		IntStream.range(0, deletedShapes.size()).forEach(i -> selectedShapes

@@ -1,6 +1,5 @@
 package drawing.command;
 
-import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelShapeSelect implements ICommand {

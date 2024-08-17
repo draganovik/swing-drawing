@@ -21,7 +21,7 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		this.selectedShapeIndexes = model.getAllSelectedShapeIndexes();
 
 		model.duplicateSelected();

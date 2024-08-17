@@ -15,6 +15,7 @@ import drawing.command.ICommand;
 import drawing.command.UpdateModelAddShape;
 import drawing.command.UpdateModelDuplicateSelectedShape;
 import drawing.command.UpdateModelRemoveSelectedShapes;
+import drawing.command.UpdateModelSelectedShapeProperties;
 import drawing.command.UpdateModelSelectedShapesBackgroundColor;
 import drawing.command.UpdateModelSelectedShapesBackward;
 import drawing.command.UpdateModelSelectedShapesColor;
@@ -25,7 +26,6 @@ import drawing.command.UpdateModelSelectedShapesToFront;
 import drawing.command.UpdateModelShapeDeselect;
 import drawing.command.UpdateModelShapeDeselectAll;
 import drawing.command.UpdateModelShapeSelect;
-import drawing.command.UpdateModelSelectedShapeProperties;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -172,7 +172,8 @@ public class DrawingController {
 
 				if (optionalShape.get().isSelected()) {
 					if (model.getIsShiftDown()) {
-						ICommand deselectAll = new UpdateModelShapeDeselect(model, model.getShapeIndex(optionalShape.get()));
+						ICommand deselectAll = new UpdateModelShapeDeselect(model,
+								model.getShapeIndex(optionalShape.get()));
 						executeCommand(deselectAll);
 					}
 				} else {
@@ -457,7 +458,7 @@ public class DrawingController {
 				showAlert("There was an error while performing loading of log file");
 			}
 		}
-		
+
 		if (jFileChooser.getSelectedFile() == null) {
 			showAlert("No raw file selected");
 		}

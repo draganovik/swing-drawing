@@ -123,9 +123,17 @@ public class Point extends Shape {
 
 	@Override
 	public String toString() {
+		return this.toString(true);
+	}
+
+	public String toString(Boolean printIsSelected) {
 		StringBuilder output = new StringBuilder();
-		output.append("Point").append("[").append("X=" + this.getX() + ", ").append("X=" + this.getY() + ", ")
-				.append("hashCode=" + this.hashCode()).append("]");
+		output.append("Point").append("[").append("x=" + this.getX() + ", ").append("y=" + this.getY() + ", ")
+				.append("color=" + this.getColor());
+		if (printIsSelected) {
+			output.append(", selected=" + this.isSelected());
+		}
+		output.append("]");
 		return output.toString();
 	}
 

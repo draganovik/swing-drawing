@@ -215,15 +215,13 @@ public class WorkspaceModel {
 
 	public void initFromCommandLogList(List<String> commandLogListModel, CanvasModel model) {
 		clearWorkspace();
-		
-		for(int index = 0; index < commandLogListModel.size(); index++) {
-			String line = commandLogListModel.get(index);
+
+		for (String line : commandLogListModel) {
 			ICommand command = CommandGenerator.generate(line, model);
 			try {
-				if(!line.contains("Unexecute")) {
+				if (!line.contains("Unexecute")) {
 					executeCommand(command);
-				}
-				else if(line.contains("Unexecute"))  {
+				} else if (line.contains("Unexecute")) {
 					undoCommand();
 				}
 			} catch (Exception e) {

@@ -1,15 +1,11 @@
 package drawing.strategy;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.DefaultListModel;
 
 import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.WorkspaceModel;
@@ -34,20 +30,20 @@ public class LogFileOperator implements IFileOperator {
 
 	@Override
 	public void loadFile(String filePath) throws IOException {
-	    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-	        List<String> commandLog = new ArrayList<>();
-	        String line;
-	        
-	        // Read each line and add it to the list
-	        while ((line = reader.readLine()) != null) {
-	            commandLog.add(line);
-	        }
-	        
-	        // Pass the list of strings to your model
-	        workspaceModel.initFromCommandLogList(commandLog, model);
-	    } catch (Exception ex) {
-	        throw ex;
-	    }
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			List<String> commandLog = new ArrayList<>();
+			String line;
+
+			// Read each line and add it to the list
+			while ((line = reader.readLine()) != null) {
+				commandLog.add(line);
+			}
+
+			// Pass the list of strings to your model
+			workspaceModel.initFromCommandLogList(commandLog, model);
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 
 }

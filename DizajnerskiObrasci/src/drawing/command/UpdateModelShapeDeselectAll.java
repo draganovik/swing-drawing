@@ -21,7 +21,7 @@ public class UpdateModelShapeDeselectAll implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		this.selectedIndexList = model.getAllSelectedShapeIndexes();
 
 		model.deselectAllShapes();

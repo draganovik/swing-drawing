@@ -22,9 +22,9 @@ public class UpdateModelSelectedShapeProperties implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		this.prevProperties = model.getAllSelectedShapes().get(0).clone();
-		
+
 		model.getAllSelectedShapes().get(0).updateFrom(this.nextProperties);
 	}
 
@@ -44,8 +44,8 @@ public class UpdateModelSelectedShapeProperties implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command).append(" <").append("prevProperties=").append(prevProperties.toString()).append("; ")
-				.append("nextProperties=").append(nextProperties.toString()).append(">");
+		output.append(state).append(command).append(" <").append("prevProperties=").append(prevProperties.toString())
+				.append("; ").append("nextProperties=").append(nextProperties.toString()).append(">");
 
 		return output.toString();
 	}

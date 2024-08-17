@@ -27,7 +27,7 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
-		
+
 		ArrayList<Shape> shapes = model.getAllSelectedShapes();
 
 		for (int i = 0; i < shapes.size(); i++) {

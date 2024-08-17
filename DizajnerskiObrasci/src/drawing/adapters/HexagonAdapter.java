@@ -137,8 +137,9 @@ public class HexagonAdapter extends SurfaceShape {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Hexagon").append("[").append("center=" + this.getCenter() + ", ")
-				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		output.append("Hexagon").append("[").append("center=" + this.getCenter().toString(false) + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("color=" + this.getColor() + ", ")
+				.append("background=" + this.getColor() + ", ").append("selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}
 
