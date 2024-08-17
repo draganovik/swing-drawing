@@ -120,7 +120,11 @@ public class Rectangle extends SurfaceShape {
 	}
 
 	public void setHeight(int height) {
-		this.height = height;
+		if (height < 6) {
+			throw new NumberFormatException("Height must me at least 6.");
+		} else {
+			this.height = height;
+		}
 	}
 
 	@Override
@@ -134,16 +138,20 @@ public class Rectangle extends SurfaceShape {
 	}
 
 	public void setWidth(int width) {
-		this.width = width;
+		if (width < 6) {
+			throw new NumberFormatException("Width must me at least 6.");
+		} else {
+			this.width = width;
+		}
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
 		output.append("Rectangle").append("[")
-				.append("upperLeftPoint=" + this.getUpperLeftPoint().toString(false) + ", ")
+				.append("upperLeftPoint=" + this.getUpperLeftPoint().toString(true) + ", ")
 				.append("width=" + this.getWidth() + ", ").append("height=" + this.getHeight() + ", ")
-				.append("color=" + this.getColor() + ", ").append("background=" + this.getColor() + ", ")
+				.append("color=" + this.getColor() + ", ").append("background=" + this.getBackgroundColor() + ", ")
 				.append("selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}

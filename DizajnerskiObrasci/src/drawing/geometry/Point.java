@@ -123,17 +123,19 @@ public class Point extends Shape {
 
 	@Override
 	public String toString() {
-		return this.toString(true);
+		return this.toString(false);
 	}
 
-	public String toString(Boolean printIsSelected) {
+	public String toString(Boolean asNested) {
 		StringBuilder output = new StringBuilder();
-		output.append("Point").append("[").append("x=" + this.getX() + ", ").append("y=" + this.getY() + ", ")
-				.append("color=" + this.getColor());
-		if (printIsSelected) {
-			output.append(", selected=" + this.isSelected());
+
+		if (asNested) {
+			output.append("Point").append("[").append("x=" + this.getX() + ",").append("y=" + this.getY());
+			output.append("]");
+			return output.toString();
 		}
-		output.append("]");
+		output.append("Point").append("[").append("x=" + this.getX() + ", ").append("y=" + this.getY())
+				.append(", color=" + this.getColor()).append(", selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}
 

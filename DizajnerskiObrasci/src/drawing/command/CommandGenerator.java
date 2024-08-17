@@ -10,8 +10,11 @@ import drawing.mvc.models.CanvasModel;
 public class CommandGenerator {
 	public static ICommand generate(String line, CanvasModel model) {
 		String commandName = line.split(" ")[1];
+		String commandParams = "";
 
-		String commandParams = line.substring(line.indexOf('<') + 1, line.indexOf('>'));
+		if (line.contains("<")) {
+			commandParams = line.substring(line.indexOf('<') + 1, line.indexOf('>'));
+		}
 
 		if (commandName.equals(UpdateModelAddShape.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];

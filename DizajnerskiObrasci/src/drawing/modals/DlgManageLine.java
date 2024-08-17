@@ -41,15 +41,20 @@ public class DlgManageLine extends JDialog {
 		}
 	}
 
-	JButton btnApply = new JButton("Save");
+	private JButton btnApply = new JButton("Save");
 	private final JPanel contentPanel = new JPanel();
-	public boolean IsSuccessful;
-	public Line line = null;
+	private Line line = null;
 	private JTextField txtEndCoordinateX;
 	private JTextField txtEndCoordinateY;
 	private JTextField txtStartCoordinateX;
 
 	private JTextField txtStartCoordinateY;
+
+	private boolean IsSuccessful;
+
+	public Boolean IsSuccessful() {
+		return this.IsSuccessful;
+	}
 
 	/**
 	 * Create the dialog.
@@ -199,8 +204,8 @@ public class DlgManageLine extends JDialog {
 			line.getEndPoint().setX(Integer.parseInt(this.txtEndCoordinateX.getText()));
 			line.getEndPoint().setY(Integer.parseInt(this.txtEndCoordinateY.getText()));
 			IsSuccessful = true;
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Input values must be integers");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Invalid Value " + ex.getMessage());
 			IsSuccessful = false;
 		}
 	}

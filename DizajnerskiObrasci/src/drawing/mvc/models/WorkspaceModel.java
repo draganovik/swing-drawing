@@ -45,7 +45,7 @@ public class WorkspaceModel {
 		endPoint = null;
 		dragPoint = null;
 		createdShape = null;
-		minDragDistanceForCreatingShape = 10;
+		minDragDistanceForCreatingShape = 8;
 
 		toolAction = ToolAction.SELECT;
 
@@ -81,7 +81,15 @@ public class WorkspaceModel {
 	}
 
 	public Boolean canDragCreateToPoint(Point point) {
-		return this.startPoint.distanceOf(point) > minDragDistanceForCreatingShape;
+		return this.startPoint.distanceOf(point) >= minDragDistanceForCreatingShape;
+	}
+
+	public Boolean canDragCreateXToPoint(Point point) {
+		return this.startPoint.distanceByXOf(point) >= minDragDistanceForCreatingShape;
+	}
+
+	public Boolean canDragCreateYToPoint(Point point) {
+		return this.startPoint.distanceByYOf(point) >= minDragDistanceForCreatingShape;
 	}
 
 	public void setMinDragDistanceForCreatingShape(Integer size) {
@@ -161,26 +169,32 @@ public class WorkspaceModel {
 	 * Commands
 	 */
 
-	public void executeCommand(ICommand command) throws Exception {
+	public void executeCommand(ICommand command, Boolean printLog) throws Exception {
 		command.execute();
 		performedCommandStack.push(command);
 		revertedCommandStack.clear();
+		if (printLog) {
+			commandLogListModel.addElement(command.toString());
+		}
+
+	}
+
+	public void printCommandToLog(ICommand command) {
 		commandLogListModel.addElement(command.toString());
-		this.clearCommand(command);
 	}
 
 	public void undoCommand() throws Exception {
 		ICommand command = performedCommandStack.pop();
 		command.undo();
 		revertedCommandStack.push(command);
-		commandLogListModel.addElement(command.toString());
+		commandLogListModel.addElement("Execute Undo");
 	}
 
 	public void redoCommand() throws Exception {
 		ICommand command = revertedCommandStack.pop();
 		command.redo();
 		performedCommandStack.push(command);
-		commandLogListModel.addElement(command.toString());
+		commandLogListModel.addElement("Execute Redo");
 	}
 
 	public Boolean canUndo() {
@@ -189,10 +203,6 @@ public class WorkspaceModel {
 
 	public Boolean canRedo() {
 		return !revertedCommandStack.isEmpty();
-	}
-
-	public void clearCommand(ICommand command) {
-		command = null;
 	}
 
 	/*
@@ -220,7 +230,7 @@ public class WorkspaceModel {
 			ICommand command = CommandGenerator.generate(line, model);
 			try {
 				if (!line.contains("Unexecute")) {
-					executeCommand(command);
+					executeCommand(command, true);
 				} else if (line.contains("Unexecute")) {
 					undoCommand();
 				}

@@ -41,15 +41,20 @@ public class DlgManageDonut extends JDialog {
 		}
 	}
 
-	JButton btnApply = new JButton("Save");
+	private JButton btnApply = new JButton("Save");
 	private final JPanel contentPanel = new JPanel();
-	public Donut donut = null;
-	public boolean IsSuccessful;
+	private Donut donut = null;
 	private JTextField txtCoordinateX;
 	private JTextField txtCoordinateY;
 	private JTextField txtInnerRadius;
 
 	private JTextField txtRadius;
+
+	private boolean IsSuccessful;
+
+	public Boolean IsSuccessful() {
+		return this.IsSuccessful;
+	}
 
 	/**
 	 * Create the dialog.
@@ -195,8 +200,8 @@ public class DlgManageDonut extends JDialog {
 			donut.setRadius(Integer.parseInt(this.txtRadius.getText()));
 			donut.setInnerRadius(Integer.parseInt(this.txtInnerRadius.getText()));
 			IsSuccessful = true;
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Input values must be integers");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Invalid Value " + ex.getMessage());
 			IsSuccessful = false;
 		}
 	}

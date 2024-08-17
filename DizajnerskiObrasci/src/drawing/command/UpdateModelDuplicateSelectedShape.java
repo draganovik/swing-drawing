@@ -43,7 +43,7 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Unexecute " : "Execute ";
+		String state = isExecuted ? "Execute " : "unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
