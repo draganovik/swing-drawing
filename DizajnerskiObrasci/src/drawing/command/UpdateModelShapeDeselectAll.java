@@ -13,7 +13,6 @@ public class UpdateModelShapeDeselectAll implements ICommand {
 
 	public UpdateModelShapeDeselectAll(CanvasModel model) {
 		this.model = model;
-		this.selectedIndexList = model.getAllSelectedShapeIndexes();
 	}
 
 	@Override
@@ -22,6 +21,8 @@ public class UpdateModelShapeDeselectAll implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
+
+		this.selectedIndexList = model.getAllSelectedShapeIndexes();
 
 		model.deselectAllShapes();
 	}

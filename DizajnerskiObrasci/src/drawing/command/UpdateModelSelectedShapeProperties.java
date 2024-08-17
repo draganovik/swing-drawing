@@ -1,19 +1,19 @@
 package drawing.command;
 
 import drawing.geometry.Shape;
+import drawing.mvc.models.CanvasModel;
 
-public class UpdateShapeProperties implements ICommand {
+public class UpdateModelSelectedShapeProperties implements ICommand {
 
-	final Shape shape;
-	final Shape prevProperties;
-	final Shape nextProperties;
+	private final CanvasModel model;
+	private Shape prevProperties;
+	private final Shape nextProperties;
 
 	private Boolean isExecuted = false;
 
-	public UpdateShapeProperties(Shape shape, Shape update) {
-		this.shape = shape;
+	public UpdateModelSelectedShapeProperties(CanvasModel model, Shape update) {
+		this.model = model;
 		this.nextProperties = update.clone();
-		this.prevProperties = shape.clone();
 	}
 
 	@Override
@@ -23,7 +23,9 @@ public class UpdateShapeProperties implements ICommand {
 		}
 		isExecuted = true;
 
-		this.shape.updateFrom(this.nextProperties);
+		this.prevProperties = model.getAllSelectedShapes().get(0).clone();
+
+		model.getAllSelectedShapes().get(0).updateFrom(this.nextProperties);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class UpdateShapeProperties implements ICommand {
 		}
 		isExecuted = false;
 
-		this.shape.updateFrom(this.prevProperties);
+		model.getAllSelectedShapes().get(0).updateFrom(this.prevProperties);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class UpdateShapeProperties implements ICommand {
 
 		StringBuilder output = new StringBuilder();
 		output.append(state).append(command).append(" <").append("prevProperties=").append(prevProperties.toString())
-				.append("nextProperties=").append(nextProperties.toString()).append(">");
+				.append("; ").append("nextProperties=").append(nextProperties.toString()).append(">");
 
 		return output.toString();
 	}

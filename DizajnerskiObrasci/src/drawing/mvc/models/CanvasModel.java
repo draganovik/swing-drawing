@@ -43,7 +43,7 @@ public class CanvasModel {
 		return shapes.indexOf(shape);
 	}
 
-	private ArrayList<Integer> selectedShapesIndexes() {
+	public ArrayList<Integer> getAllSelectedShapeIndexes() {
 		ArrayList<Integer> indexes = new ArrayList<>();
 		for (int index = shapes.size(); --index >= 0;) {
 			if (shapes.get(index).isSelected()) {
@@ -55,8 +55,8 @@ public class CanvasModel {
 
 	public void removeSelectedShapes() {
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			shapes.remove(selectedShapesIndexes().get(index));
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			shapes.remove(getAllSelectedShapeIndexes().get(index));
 		}
 		int nextSelectionSize = getAllSelectedShapeIndexes().size();
 		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
@@ -72,14 +72,10 @@ public class CanvasModel {
 
 	public ArrayList<Shape> getAllSelectedShapes() {
 		ArrayList<Shape> selectedShapes = new ArrayList<>();
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			selectedShapes.add(shapes.get(selectedShapesIndexes().get(index)));
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			selectedShapes.add(shapes.get(getAllSelectedShapeIndexes().get(index)));
 		}
 		return selectedShapes;
-	}
-
-	public ArrayList<Integer> getAllSelectedShapeIndexes() {
-		return this.selectedShapesIndexes();
 	}
 
 	public Optional<Shape> getShapeAt(Point point) {
@@ -121,7 +117,7 @@ public class CanvasModel {
 
 	public void deselectAllShapes() {
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
-		ArrayList<Integer> selectedShapesIndexes = selectedShapesIndexes();
+		ArrayList<Integer> selectedShapesIndexes = getAllSelectedShapeIndexes();
 		for (int index = selectedShapesIndexes.size(); --index >= 0;) {
 			shapes.get(selectedShapesIndexes.get(index)).setSelected(false);
 		}
@@ -130,14 +126,14 @@ public class CanvasModel {
 	}
 
 	public void moveSelectedShapesBy(double x, double y) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			shapes.get(selectedShapesIndexes().get(index)).moveBy((int) x, (int) y);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			getAllSelectedShapes().get(index).moveBy((int) x, (int) y);
 		}
 	}
 
 	public void updateColorOfSelectedShapes(Color color) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			updateShapeColor(shapes.get(selectedShapesIndexes().get(index)), color);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			updateShapeColor(getAllSelectedShapes().get(index), color);
 		}
 	}
 
@@ -156,9 +152,10 @@ public class CanvasModel {
 	}
 
 	public void updateBackgroundColorOfSelectedShapes(Color color) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			if (shapes.get(selectedShapesIndexes().get(index)) instanceof SurfaceShape) {
-				updateShapeBackgroundColor(shapes.get(selectedShapesIndexes().get(index)), color);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			Shape shape = getAllSelectedShapes().get(index);
+			if (shape instanceof SurfaceShape) {
+				updateShapeBackgroundColor(shape, color);
 			}
 		}
 	}
@@ -241,7 +238,7 @@ public class CanvasModel {
 	}
 
 	public void duplicateSelected() {
-		int initSelectSize = selectedShapesIndexes().size();
+		int initSelectSize = getAllSelectedShapeIndexes().size();
 		for (int index = 0; index < initSelectSize; index++) {
 			Shape clone = this.getAllSelectedShapes().get(0).clone();
 			this.deselectShape(this.getAllSelectedShapes().get(0));

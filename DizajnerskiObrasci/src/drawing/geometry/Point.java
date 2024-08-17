@@ -123,9 +123,19 @@ public class Point extends Shape {
 
 	@Override
 	public String toString() {
+		return this.toString(false);
+	}
+
+	public String toString(Boolean asNested) {
 		StringBuilder output = new StringBuilder();
-		output.append("Point").append("[").append("X=" + this.getX() + ", ").append("X=" + this.getY() + ", ")
-				.append("hashCode=" + this.hashCode()).append("]");
+
+		if (asNested) {
+			output.append("Point").append("[").append("x=" + this.getX() + ",").append("y=" + this.getY());
+			output.append("]");
+			return output.toString();
+		}
+		output.append("Point").append("[").append("x=" + this.getX() + ", ").append("y=" + this.getY())
+				.append(", color=" + this.getColor()).append(", selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}
 

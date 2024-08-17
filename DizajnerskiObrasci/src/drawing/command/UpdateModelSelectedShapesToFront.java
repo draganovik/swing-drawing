@@ -8,15 +8,13 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesToFront implements ICommand {
 
-	final CanvasModel model;
-	final ArrayList<Integer> initialSelectedShapesOrder;
+	private final CanvasModel model;
+	private ArrayList<Integer> initialSelectedShapesOrder;
 
 	private Boolean isExecuted = false;
 
 	public UpdateModelSelectedShapesToFront(CanvasModel model) {
 		this.model = model;
-		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes();
-		Collections.sort(initialSelectedShapesOrder);
 	}
 
 	@Override
@@ -25,6 +23,9 @@ public class UpdateModelSelectedShapesToFront implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
+
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes();
+		Collections.sort(initialSelectedShapesOrder);
 
 		model.moveSelectedShapesToFront();
 	}

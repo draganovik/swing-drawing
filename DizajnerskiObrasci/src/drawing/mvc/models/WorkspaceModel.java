@@ -3,10 +3,14 @@ package drawing.mvc.models;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 import javax.swing.DefaultListModel;
 
+import drawing.command.CommandGenerator;
 import drawing.command.ICommand;
 import drawing.geometry.Point;
 import drawing.geometry.Shape;
@@ -32,6 +36,8 @@ public class WorkspaceModel {
 	private Stack<ICommand> performedCommandStack = new Stack<>();
 	private Stack<ICommand> revertedCommandStack = new Stack<>();
 
+	private Queue<String> loadedCommands = new LinkedList<>();
+
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public WorkspaceModel() {
@@ -43,7 +49,7 @@ public class WorkspaceModel {
 		endPoint = null;
 		dragPoint = null;
 		createdShape = null;
-		minDragDistanceForCreatingShape = 10;
+		minDragDistanceForCreatingShape = 8;
 
 		toolAction = ToolAction.SELECT;
 
@@ -79,7 +85,15 @@ public class WorkspaceModel {
 	}
 
 	public Boolean canDragCreateToPoint(Point point) {
-		return this.startPoint.distanceOf(point) > minDragDistanceForCreatingShape;
+		return this.startPoint.distanceOf(point) >= minDragDistanceForCreatingShape;
+	}
+
+	public Boolean canDragCreateXToPoint(Point point) {
+		return this.startPoint.distanceByXOf(point) >= minDragDistanceForCreatingShape;
+	}
+
+	public Boolean canDragCreateYToPoint(Point point) {
+		return this.startPoint.distanceByYOf(point) >= minDragDistanceForCreatingShape;
 	}
 
 	public void setMinDragDistanceForCreatingShape(Integer size) {
@@ -159,26 +173,32 @@ public class WorkspaceModel {
 	 * Commands
 	 */
 
-	public void executeCommand(ICommand command) throws Exception {
+	public void executeCommand(ICommand command, Boolean printLog) throws Exception {
 		command.execute();
 		performedCommandStack.push(command);
 		revertedCommandStack.clear();
+		if (printLog) {
+			commandLogListModel.addElement(command.toString());
+		}
+
+	}
+
+	public void printCommandToLog(ICommand command) {
 		commandLogListModel.addElement(command.toString());
-		this.clearCommand(command);
 	}
 
 	public void undoCommand() throws Exception {
 		ICommand command = performedCommandStack.pop();
 		command.undo();
 		revertedCommandStack.push(command);
-		commandLogListModel.addElement(command.toString());
+		commandLogListModel.addElement("Execute Undo");
 	}
 
 	public void redoCommand() throws Exception {
 		ICommand command = revertedCommandStack.pop();
 		command.redo();
 		performedCommandStack.push(command);
-		commandLogListModel.addElement(command.toString());
+		commandLogListModel.addElement("Execute Redo");
 	}
 
 	public Boolean canUndo() {
@@ -187,10 +207,6 @@ public class WorkspaceModel {
 
 	public Boolean canRedo() {
 		return !revertedCommandStack.isEmpty();
-	}
-
-	public void clearCommand(ICommand command) {
-		command = null;
 	}
 
 	/*
@@ -211,9 +227,40 @@ public class WorkspaceModel {
 		return output.toString();
 	}
 
-	public void initFromCommandLogListModel(DefaultListModel<String> commandLogListModel) {
+	public void initFromCommandLogList(List<String> commandLogListModel) {
 		clearWorkspace();
-		// this.commandLogListModel = commandLogListModel;
+		this.setToolAction(ToolAction.LOADER);
+		for (String element : commandLogListModel) {
+			loadedCommands.add(element);
+		}
+
+	}
+
+	public void processLoadedCommand(CanvasModel model) throws Exception {
+
+		if (loadedCommands.isEmpty()) {
+			return;
+		}
+		String line = loadedCommands.poll();
+
+		String commandName = line.split(" ")[1];
+
+		switch (commandName) {
+		case "Undo":
+			this.undoCommand();
+			break;
+		case "Redo":
+			this.redoCommand();
+			break;
+		default:
+			ICommand command = CommandGenerator.generate(line, model);
+			this.executeCommand(command, true);
+			break;
+		}
+	}
+
+	public boolean hasLoadedAllCommands() {
+		return loadedCommands.isEmpty();
 	}
 
 }

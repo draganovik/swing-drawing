@@ -30,6 +30,13 @@ public class HexagonAdapter extends SurfaceShape {
 		this.setBackgroundColor(backgroundColor);
 	}
 
+	public HexagonAdapter(Point center, int radius, boolean selected, Color color, Color backgroundColor) {
+		this(new Hexagon(center.getX(), center.getY(), radius));
+		this.setSelected(selected);
+		this.setColor(color);
+		this.setBackgroundColor(backgroundColor);
+	}
+
 	@Override
 	public int compareTo(Object o) {
 		if (o instanceof HexagonAdapter) {
@@ -114,18 +121,16 @@ public class HexagonAdapter extends SurfaceShape {
 		try {
 			this.setRadius(radius);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void setRadius(int radius) throws Exception {
-		if (radius >= 0) {
+		if (radius > 3) {
 			hexagon.setR(radius);
-			return;
+		} else {
+			throw new NumberFormatException("Radius has to be a value grater than 3");
 		}
-
-		throw new NumberFormatException("Radius has to be a value grater than 0");
 
 	}
 
@@ -137,8 +142,10 @@ public class HexagonAdapter extends SurfaceShape {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Hexagon").append("[").append("center=" + this.getCenter() + ", ")
-				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		output.append("Hexagon").append("[").append("center=" + this.getCenter().toString(true) + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("color=" + this.getColor() + ", ")
+				.append("background=" + this.getBackgroundColor() + ", ").append("selected=" + this.isSelected())
+				.append("]");
 		return output.toString();
 	}
 

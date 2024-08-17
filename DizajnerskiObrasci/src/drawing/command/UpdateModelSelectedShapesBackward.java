@@ -4,7 +4,7 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesBackward implements ICommand {
 
-	final CanvasModel model;
+	private final CanvasModel model;
 
 	private Boolean isExecuted = false;
 

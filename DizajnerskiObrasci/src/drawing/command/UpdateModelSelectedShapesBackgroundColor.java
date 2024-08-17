@@ -9,26 +9,16 @@ import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
-	final CanvasModel model;
-	final ArrayList<Color> initialSelectedShapesBackgroundColors;
-	final Color updateColor;
+	private final CanvasModel model;
+	private final ArrayList<Color> initialSelectedShapesBackgroundColors;
+	private final Color updateColor;
 
 	private Boolean isExecuted = false;
 
 	public UpdateModelSelectedShapesBackgroundColor(CanvasModel model, Color updateColor) {
 		this.model = model;
 		this.updateColor = updateColor;
-		ArrayList<Shape> shapes = model.getAllSelectedShapes();
-
-		initialSelectedShapesBackgroundColors = new ArrayList<>();
-
-		for (int i = 0; i < shapes.size(); i++) {
-			if (shapes.get(i) instanceof SurfaceShape) {
-				initialSelectedShapesBackgroundColors.add(((SurfaceShape) shapes.get(i)).getBackgroundColor());
-			} else {
-				initialSelectedShapesBackgroundColors.add(null);
-			}
-		}
+		this.initialSelectedShapesBackgroundColors = new ArrayList<>();
 	}
 
 	@Override
@@ -37,6 +27,16 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		isExecuted = true;
+
+		ArrayList<Shape> shapes = model.getAllSelectedShapes();
+
+		for (int i = 0; i < shapes.size(); i++) {
+			if (shapes.get(i) instanceof SurfaceShape) {
+				initialSelectedShapesBackgroundColors.add(((SurfaceShape) shapes.get(i)).getBackgroundColor());
+			} else {
+				initialSelectedShapesBackgroundColors.add(null);
+			}
+		}
 
 		model.updateBackgroundColorOfSelectedShapes(updateColor);
 	}
@@ -61,7 +61,7 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 		StringBuilder output = new StringBuilder();
 		output.append(state).append(command).append(" <").append("updateColor=").append(updateColor.toString())
-				.append(", ").append("initialColors=").append(initialSelectedShapesBackgroundColors.toString())
+				.append("; ").append("initialColors=").append(initialSelectedShapesBackgroundColors.toString())
 				.append(">");
 
 		return output.toString();
