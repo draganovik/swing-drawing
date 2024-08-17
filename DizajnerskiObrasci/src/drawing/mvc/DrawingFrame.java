@@ -36,40 +36,51 @@ public class DrawingFrame extends JFrame {
 		return canvasView;
 	}
 
+	public ToolbarView getToolbarView() {
+		return this.toolbarView;
+	}
+
+	public MenubarView getMenubarView() {
+		return this.menubarView;
+	}
+
 	public DrawingFrame() {
 		super();
 
 		setTitle("Draganović Mladen - IT68/2019");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
+		setMinimumSize(new Dimension(500, 440));
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		toolbarView.setBorder(new EmptyBorder(0, 0, 0, 3));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(6, 0));
-	}
+		contentPane.setLayout(new BorderLayout(0, 0));
 
-	public void setupCanvas(CanvasModel canvasModel, WorkspaceModel workspaceModel, DrawingController controller) {
-		controller.setViews(canvasView, toolbarView, menubarView);
-
-		canvasView.setModel(canvasModel);
-		canvasView.setController(controller);
-		contentPane.add(canvasView, BorderLayout.CENTER);
-
-		toolbarView.setModel(workspaceModel);
-		toolbarView.setController(controller);
-		contentPane.add(toolbarView, BorderLayout.WEST);
-
-		menubarView.setController(controller);
 		setJMenuBar(menubarView);
 
-		canvasShapesPanelView.setDLM(canvasModel.getDefaultListModel());
-		commandLogPanelView.setDLM(workspaceModel.getCommandLogListModel());
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
-		tabbedPane.setPreferredSize(new Dimension(250, 400));
-		contentPane.add(tabbedPane, BorderLayout.EAST);
+
 		tabbedPane.addTab("Commands", null, commandLogPanelView, null);
 		tabbedPane.addTab("Shapes", null, canvasShapesPanelView, null);
 
+		tabbedPane.setPreferredSize(new Dimension(260, 440));
+
+		contentPane.add(canvasView, BorderLayout.CENTER);
+		contentPane.add(toolbarView, BorderLayout.WEST);
+		contentPane.add(tabbedPane, BorderLayout.EAST);
+	}
+
+	public void setupViews(CanvasModel canvasModel, WorkspaceModel workspaceModel, DrawingController controller) {
+		canvasView.setModel(canvasModel);
+		canvasView.setController(controller);
+
+		toolbarView.setModel(workspaceModel);
+		toolbarView.setController(controller);
+
+		menubarView.setController(controller);
+
+		canvasShapesPanelView.setDLM(canvasModel.getDefaultListModel());
+		commandLogPanelView.setDLM(workspaceModel.getCommandLogListModel());
 	}
 
 }
