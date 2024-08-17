@@ -101,8 +101,8 @@ public class Donut extends Circle {
 	}
 
 	public void setInnerRadius(int innerRadius) {
-		if (super.getRadius() - innerRadius < 3) {
-			throw new NumberFormatException("Inner radius must be less than radius by at least 3.");
+		if ((super.getRadius() - innerRadius) < 2 || innerRadius < 2) {
+			throw new NumberFormatException("Inner radius must be more than 2, and maximum radius-2");
 		} else {
 			this.innerRadius = innerRadius;
 		}
@@ -110,8 +110,8 @@ public class Donut extends Circle {
 
 	@Override
 	public void setRadius(int radius) throws Exception {
-		if (radius - innerRadius < 3) {
-			throw new NumberFormatException("Radius must be larger than inner radius by at least 3.");
+		if ((radius - innerRadius) < 2) {
+			throw new NumberFormatException("Radius must be larger than inner radius by at least 2.");
 		} else {
 			super.setRadius(radius);
 		}
@@ -120,9 +120,10 @@ public class Donut extends Circle {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Donut").append("[").append("center=" + this.getCenter() + ", ")
-				.append("radius=" + this.getRadius() + ", ").append("inner_radius=" + this.getInnerRadius() + ", ")
-				.append("hashCode=" + this.hashCode()).append("]");
+		output.append("Donut").append("[").append("center=" + this.getCenter().toString(true) + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("innerRadius=" + this.getInnerRadius() + ", ")
+				.append("color=" + this.getColor() + ", ").append("background=" + this.getBackgroundColor() + ", ")
+				.append("selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}
 

@@ -42,14 +42,19 @@ public class DlgManageHexagon extends JDialog {
 		}
 	}
 
-	JButton btnApply = new JButton("Save");
-	public HexagonAdapter hexagon = null;
+	private JButton btnApply = new JButton("Save");
+	private HexagonAdapter hexagon = null;
 	private final JPanel contentPanel = new JPanel();
-	public boolean IsSuccessful;
 	private JTextField txtCoordinateX;
 	private JTextField txtCoordinateY;
 
 	private JTextField txtRadius;
+
+	private boolean IsSuccessful;
+
+	public Boolean IsSuccessful() {
+		return this.IsSuccessful;
+	}
 
 	/**
 	 * Create the dialog.
@@ -179,8 +184,8 @@ public class DlgManageHexagon extends JDialog {
 			hexagon.setCenter(hexagonCentar);
 			hexagon.setRadius(Integer.parseInt(this.txtRadius.getText()));
 			IsSuccessful = true;
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Input values must be integers");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Invalid Value " + ex.getMessage());
 			IsSuccessful = false;
 		}
 	}

@@ -95,19 +95,29 @@ public class Line extends Shape {
 
 	@Override
 	public void setEndPoint(Point endPoint) {
-		this.endPoint = endPoint;
+		if ((endPoint.distanceOf(this.getStartPoint())) < 4) {
+			throw new NumberFormatException("Line length must me at least 4.");
+		} else {
+			this.endPoint = endPoint;
+		}
 	}
 
 	@Override
 	public void setStartPoint(Point startPoint) {
-		this.startPoint = startPoint;
+		if ((this.getEndPoint().distanceOf(this.startPoint)) < 4) {
+			throw new NumberFormatException("Line length must me at least 4.");
+		} else {
+			this.startPoint = startPoint;
+		}
+
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Line").append("[").append("start=" + this.getStartPoint() + ", ")
-				.append("end=" + this.getEndPoint() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		output.append("Line").append("[").append("startPoint=" + this.getStartPoint().toString(true) + ", ")
+				.append("endPoint=" + this.getEndPoint().toString(true) + ", ")
+				.append("color=" + this.getColor() + ", ").append("selected=" + this.isSelected()).append("]");
 		return output.toString();
 	}
 

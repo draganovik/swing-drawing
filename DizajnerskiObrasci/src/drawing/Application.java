@@ -3,7 +3,7 @@ package drawing;
 import drawing.mvc.DrawingController;
 import drawing.mvc.DrawingFrame;
 import drawing.mvc.models.CanvasModel;
-import drawing.mvc.models.ToolbarModel;
+import drawing.mvc.models.WorkspaceModel;
 
 public class Application {
 
@@ -13,13 +13,13 @@ public class Application {
 
 		// Initialize Models
 		CanvasModel canvasModel = new CanvasModel();
-		ToolbarModel toolbarModel = new ToolbarModel();
+		WorkspaceModel workspaceModel = new WorkspaceModel();
 
 		// Setup Controller
-		DrawingController drawingController = new DrawingController(canvasModel, toolbarModel);
+		DrawingController drawingController = new DrawingController(canvasModel, workspaceModel);
 
 		// Initialize Views
-		drawingFrame.setupCanvas(canvasModel, toolbarModel, drawingController);
+		drawingFrame.setupCanvas(canvasModel, workspaceModel, drawingController);
 
 		// Show Frame
 		drawingFrame.setVisible(true);

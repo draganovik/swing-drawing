@@ -43,7 +43,7 @@ public class CanvasModel {
 		return shapes.indexOf(shape);
 	}
 
-	private ArrayList<Integer> selectedShapesIndexes() {
+	public ArrayList<Integer> getAllSelectedShapeIndexes() {
 		ArrayList<Integer> indexes = new ArrayList<>();
 		for (int index = shapes.size(); --index >= 0;) {
 			if (shapes.get(index).isSelected()) {
@@ -55,8 +55,8 @@ public class CanvasModel {
 
 	public void removeSelectedShapes() {
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			shapes.remove(selectedShapesIndexes().get(index));
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			shapes.remove(getAllSelectedShapeIndexes().get(index));
 		}
 		int nextSelectionSize = getAllSelectedShapeIndexes().size();
 		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
@@ -66,16 +66,16 @@ public class CanvasModel {
 		return shapes;
 	}
 
-	public ArrayList<Shape> getAllSelectedShapes() {
-		ArrayList<Shape> selectedShapes = new ArrayList<>();
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			selectedShapes.add(shapes.get(selectedShapesIndexes().get(index)));
-		}
-		return selectedShapes;
+	public void setDefaultListModel(DefaultListModel<Shape> listModel) {
+		this.shapes = listModel;
 	}
 
-	public ArrayList<Integer> getAllSelectedShapeIndexes() {
-		return this.selectedShapesIndexes();
+	public ArrayList<Shape> getAllSelectedShapes() {
+		ArrayList<Shape> selectedShapes = new ArrayList<>();
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			selectedShapes.add(shapes.get(getAllSelectedShapeIndexes().get(index)));
+		}
+		return selectedShapes;
 	}
 
 	public Optional<Shape> getShapeAt(Point point) {
@@ -108,9 +108,16 @@ public class CanvasModel {
 		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
 	}
 
+	public void deselectShapeAt(Integer index) {
+		int previousSelectionSize = getAllSelectedShapeIndexes().size();
+		shapes.get(index).setSelected(false);
+		int nextSelectionSize = getAllSelectedShapeIndexes().size();
+		propertyChangeSupport.firePropertyChange("SelectionSizeChange", previousSelectionSize, nextSelectionSize);
+	}
+
 	public void deselectAllShapes() {
 		int previousSelectionSize = getAllSelectedShapeIndexes().size();
-		ArrayList<Integer> selectedShapesIndexes = selectedShapesIndexes();
+		ArrayList<Integer> selectedShapesIndexes = getAllSelectedShapeIndexes();
 		for (int index = selectedShapesIndexes.size(); --index >= 0;) {
 			shapes.get(selectedShapesIndexes.get(index)).setSelected(false);
 		}
@@ -119,14 +126,14 @@ public class CanvasModel {
 	}
 
 	public void moveSelectedShapesBy(double x, double y) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			shapes.get(selectedShapesIndexes().get(index)).moveBy((int) x, (int) y);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			getAllSelectedShapes().get(index).moveBy((int) x, (int) y);
 		}
 	}
 
 	public void updateColorOfSelectedShapes(Color color) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			updateShapeColor(shapes.get(selectedShapesIndexes().get(index)), color);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			updateShapeColor(getAllSelectedShapes().get(index), color);
 		}
 	}
 
@@ -134,19 +141,22 @@ public class CanvasModel {
 		if (shape instanceof SurfaceShape) {
 			Color previousBackgroundColor = ((SurfaceShape) shape).getBackgroundColor();
 			((SurfaceShape) shape).setBackgroundColor(color);
-			propertyChangeSupport.firePropertyChange("SelectionBackgroundColorChange", previousBackgroundColor, color);
+			propertyChangeSupport.firePropertyChange("BackgroundColorChange", previousBackgroundColor, color);
 		}
 	}
 
 	public void updateShapeColor(Shape shape, Color color) {
-		Color previousColor = ((SurfaceShape) shape).getBackgroundColor();
+		Color previousColor = shape.getColor();
 		shape.setColor(color);
-		propertyChangeSupport.firePropertyChange("SelectionColorChange", previousColor, color);
+		propertyChangeSupport.firePropertyChange("ColorChange", previousColor, color);
 	}
 
 	public void updateBackgroundColorOfSelectedShapes(Color color) {
-		for (int index = selectedShapesIndexes().size(); --index >= 0;) {
-			updateShapeBackgroundColor(shapes.get(selectedShapesIndexes().get(index)), color);
+		for (int index = getAllSelectedShapeIndexes().size(); --index >= 0;) {
+			Shape shape = getAllSelectedShapes().get(index);
+			if (shape instanceof SurfaceShape) {
+				updateShapeBackgroundColor(shape, color);
+			}
 		}
 	}
 
@@ -228,7 +238,7 @@ public class CanvasModel {
 	}
 
 	public void duplicateSelected() {
-		int initSelectSize = selectedShapesIndexes().size();
+		int initSelectSize = getAllSelectedShapeIndexes().size();
 		for (int index = 0; index < initSelectSize; index++) {
 			Shape clone = this.getAllSelectedShapes().get(0).clone();
 			this.deselectShape(this.getAllSelectedShapes().get(0));
@@ -244,6 +254,10 @@ public class CanvasModel {
 
 	public void removePropertyObserver(PropertyChangeListener propertyChangeListener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+	}
+
+	public void removeAllShapes() {
+		shapes.clear();
 	}
 
 }

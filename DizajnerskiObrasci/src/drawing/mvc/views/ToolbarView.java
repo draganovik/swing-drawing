@@ -5,18 +5,23 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+
 import drawing.mvc.DrawingController;
-import drawing.mvc.models.ToolbarModel;
+import drawing.mvc.models.WorkspaceModel;
 import drawing.types.ToolAction;
 
 public class ToolbarView extends JPanel {
@@ -38,6 +43,7 @@ public class ToolbarView extends JPanel {
 	// Command Buttons
 	private JToggleButton btnToolbarSelect;
 	private DrawingController controller;
+	private JButton btnToolbarLoadNext;
 
 	/**
 	 * Create the panel.
@@ -118,7 +124,7 @@ public class ToolbarView extends JPanel {
 				controller.modifySelected();
 			}
 		});
-		btnToolbarModify.setForeground(new Color(100, 149, 237));
+		btnToolbarModify.setForeground(new Color(83, 194, 52));
 		btnToolbarModify.setBackground(new Color(224, 255, 255));
 		btnToolbarModify.setEnabled(false);
 		btnToolbarDelete = new JButton("Delete");
@@ -128,48 +134,20 @@ public class ToolbarView extends JPanel {
 				controller.deleteSelected();
 			}
 		});
-		btnToolbarDelete.setForeground(new Color(128, 0, 0));
+		btnToolbarDelete.setForeground(new Color(167, 22, 0));
 		btnToolbarDelete.setBackground(new Color(255, 182, 193));
 		btnToolbarDelete.setEnabled(false);
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(1)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnToolbarPoint, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarSelect, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarLine, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarRectangle, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarCircle, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarDonut, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarHexagon, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(panel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarModify, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnToolbarDelete, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(2)
-				.addComponent(btnToolbarSelect, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarPoint, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarLine, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarRectangle, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarCircle, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarDonut, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(btnToolbarHexagon, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE).addGap(2)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addGap(2).addComponent(btnToolbarModify, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-				.addGap(2).addComponent(btnToolbarDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(128, Short.MAX_VALUE)));
+
+		btnToolbarLoadNext = new JButton("Load next");
+		btnToolbarLoadNext.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadNextCommand();
+			}
+		});
+		btnToolbarLoadNext.setForeground(new Color(26, 18, 228));
+		btnToolbarLoadNext.setBackground(new Color(224, 255, 255));
+		btnToolbarLoadNext.setVisible(false);
 
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Center alignment
 
@@ -192,8 +170,29 @@ public class ToolbarView extends JPanel {
 			}
 		});
 		panel.add(btnToolbarColor);
-
-		setLayout(groupLayout);
+		setLayout(new FormLayout(new ColumnSpec[] { FormSpecs.LABEL_COMPONENT_GAP_COLSPEC, ColumnSpec.decode("90px"), },
+				new RowSpec[] { FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("42px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"),
+						FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC, RowSpec.decode("32px"), }));
+		add(btnToolbarPoint, "2, 4, fill, fill");
+		add(btnToolbarSelect, "2, 2, fill, fill");
+		add(btnToolbarLine, "2, 6, fill, fill");
+		add(btnToolbarRectangle, "2, 8, fill, fill");
+		add(btnToolbarCircle, "2, 10, fill, fill");
+		add(btnToolbarDonut, "2, 12, fill, fill");
+		add(btnToolbarHexagon, "2, 14, fill, fill");
+		add(panel, "2, 16, fill, top");
+		add(btnToolbarModify, "2, 18, fill, fill");
+		add(btnToolbarDelete, "2, 20, fill, fill");
+		add(btnToolbarLoadNext, "2, 22, fill, fill");
 
 	}
 
@@ -201,13 +200,17 @@ public class ToolbarView extends JPanel {
 		this.controller = controller;
 	}
 
-	public void setModel(ToolbarModel model) {
+	public void setModel(WorkspaceModel model) {
 		btnToolbarColor.setOpaque(true);
 		btnToolbarColor.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, model.getShapeColor()));
 
 		btnToolbarBackground.setOpaque(true);
 		btnToolbarBackground.setBackground(model.getShapeBackground());
 		btnToolbarBackground.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+	}
+
+	public void setToolToSelect() {
+		btnToolbarSelect.setSelected(true);
 	}
 
 	public void setEnabledModify(boolean isEnabled) {
@@ -228,5 +231,21 @@ public class ToolbarView extends JPanel {
 
 	public void setEnabledPreviewShapeBackgroundColor(boolean isEnabled) {
 		btnToolbarBackground.setEnabled(isEnabled);
+	}
+
+	public void setEnabledCommands(Boolean enabled) {
+		Enumeration<AbstractButton> buttons = actionsButtonGroup.getElements();
+		while (buttons.hasMoreElements()) {
+			buttons.nextElement().setEnabled(enabled);
+		}
+		btnToolbarModify.setVisible(enabled);
+		btnToolbarDelete.setVisible(enabled);
+
+		btnToolbarBackground.setVisible(enabled);
+
+		btnToolbarColor.setVisible(enabled);
+
+		btnToolbarLoadNext.setVisible(!enabled);
+
 	}
 }

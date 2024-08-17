@@ -42,15 +42,20 @@ public class DlgManageRectangle extends JDialog {
 		}
 	}
 
-	JButton btnApply = new JButton("Save");
+	private JButton btnApply = new JButton("Save");
 	private final JPanel contentPanel = new JPanel();
-	public boolean IsSuccessful;
-	public Rectangle rectangle = null;
+	private Rectangle rectangle = null;
 	private JTextField txtCoordinateX;
 	private JTextField txtCoordinateY;
 	private JTextField txtHeight;
 
 	private JTextField txtWidth;
+
+	private boolean IsSuccessful;
+
+	public Boolean IsSuccessful() {
+		return this.IsSuccessful;
+	}
 
 	/**
 	 * Create the dialog.
@@ -203,8 +208,8 @@ public class DlgManageRectangle extends JDialog {
 			rectangle.setWidth(Integer.parseInt(this.txtWidth.getText()));
 			rectangle.setHeight(Integer.parseInt(this.txtHeight.getText()));
 			IsSuccessful = true;
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Input values must be integers");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Invalid Value " + ex.getMessage());
 			IsSuccessful = false;
 		}
 	}

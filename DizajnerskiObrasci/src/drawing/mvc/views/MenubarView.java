@@ -5,12 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
@@ -23,13 +20,14 @@ public class MenubarView extends JMenuBar {
 	 */
 	private static final long serialVersionUID = -4578066578067109451L;
 	private DrawingController controller;
-	private JMenu menu_1;
-	private JMenuItem mntmExport;
-	private JMenuItem mntmImport;
-	private JMenuItem mntmLoad;
-	private JMenuItem mntmSave;
+	private JMenu menuEdit;
+	private JMenuItem mntmExportLog;
+	private JMenuItem mntmImportLog;
+	private JMenuItem mntmLoadDrawing;
+	private JMenuItem mntmSaveDrawing;
 	private JMenuItem mntmRedo;
 	private JMenuItem mntmUndo;
+	private JMenuItem mntmLoadNexCommand;
 
 	/**
 	 * Create the panel.
@@ -37,69 +35,78 @@ public class MenubarView extends JMenuBar {
 	public MenubarView() {
 		super();
 		// Where the GUI is created:
-		JMenu menu, submenu;
-		JRadioButtonMenuItem rbMenuItem;
-		JCheckBoxMenuItem cbMenuItem;
+		JMenu menuFile;
 		JMenuItem mntmMoveForward;
 
 		// Build the first menu.
-		menu = new JMenu("File");
-		menu.setMnemonic(KeyEvent.VK_A);
-		menu.getAccessibleContext().setAccessibleDescription("The only menu in this program that has menu items");
-		add(menu);
+		menuFile = new JMenu("File");
+		menuFile.setMnemonic(KeyEvent.VK_A);
+		menuFile.getAccessibleContext().setAccessibleDescription("The main menu of the program");
+		add(menuFile);
+
+		mntmSaveDrawing = new JMenuItem("Save");
+		mntmSaveDrawing.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveAsRawFile();
+			}
+		});
+
+		JMenuItem mntmNewWorkspace = new JMenuItem("New Workspace");
+		mntmNewWorkspace.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.startNewWorkspace();
+			}
+		});
+		mntmNewWorkspace.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
+		menuFile.add(mntmNewWorkspace);
 
 		// a group of JMenuItems
-		mntmLoad = new JMenuItem("Open", KeyEvent.VK_T);
-		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.ALT_MASK));
-		mntmLoad.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
-		menu.add(mntmLoad);
+		mntmLoadDrawing = new JMenuItem("Open", KeyEvent.VK_T);
+		mntmLoadDrawing.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadARawFile();
+			}
+		});
+		mntmLoadDrawing.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_DOWN_MASK));
+		mntmLoadDrawing.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
+		menuFile.add(mntmLoadDrawing);
+		mntmSaveDrawing.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_DOWN_MASK));
+		mntmSaveDrawing.setMnemonic(KeyEvent.VK_B);
+		menuFile.add(mntmSaveDrawing);
 
-		mntmSave = new JMenuItem("Save");
-		mntmSave.setMnemonic(KeyEvent.VK_B);
-		menu.add(mntmSave);
+		menuFile.addSeparator();
 
-		// a group of radio button menu items
-		menu.addSeparator();
-		ButtonGroup group = new ButtonGroup();
-		submenu = new JMenu("Log file");
-		submenu.setMnemonic(KeyEvent.VK_S);
+		mntmImportLog = new JMenuItem("Load a Log File");
+		menuFile.add(mntmImportLog);
+		mntmImportLog.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadALogFile();
+			}
+		});
+		mntmImportLog.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
 
-		mntmImport = new JMenuItem("Import");
-		mntmImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.ALT_MASK));
-		submenu.add(mntmImport);
-
-		mntmExport = new JMenuItem("Export");
-		submenu.add(mntmExport);
-		menu.add(submenu);
-
-		// a submenu
-		menu.addSeparator();
-		rbMenuItem = new JRadioButtonMenuItem("A radio button menu item");
-		rbMenuItem.setSelected(true);
-		rbMenuItem.setMnemonic(KeyEvent.VK_R);
-		group.add(rbMenuItem);
-		menu.add(rbMenuItem);
-
-		rbMenuItem = new JRadioButtonMenuItem("Another one");
-		rbMenuItem.setMnemonic(KeyEvent.VK_O);
-		group.add(rbMenuItem);
-		menu.add(rbMenuItem);
-
-		// a group of check box menu items
-		menu.addSeparator();
-		cbMenuItem = new JCheckBoxMenuItem("A check box menu item");
-		cbMenuItem.setMnemonic(KeyEvent.VK_C);
-		menu.add(cbMenuItem);
-
-		cbMenuItem = new JCheckBoxMenuItem("Another one");
-		cbMenuItem.setMnemonic(KeyEvent.VK_H);
-		menu.add(cbMenuItem);
+		mntmExportLog = new JMenuItem("Save as Log File");
+		menuFile.add(mntmExportLog);
+		mntmExportLog.setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK));
+		mntmExportLog.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveAsLogFile();
+			}
+		});
 
 		// Build second menu in the menu bar.
-		menu_1 = new JMenu("Edit");
-		menu_1.setMnemonic(KeyEvent.VK_N);
-		menu_1.getAccessibleContext().setAccessibleDescription("This menu does nothing");
-		add(menu_1);
+		menuEdit = new JMenu("Edit");
+		menuEdit.setMnemonic(KeyEvent.VK_N);
+		menuEdit.getAccessibleContext().setAccessibleDescription("This menu does nothing");
+		add(menuEdit);
 
 		mntmUndo = new JMenuItem("Undo");
 		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.META_DOWN_MASK));
@@ -110,7 +117,7 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmUndo.setEnabled(false);
-		menu_1.add(mntmUndo);
+		menuEdit.add(mntmUndo);
 
 		mntmRedo = new JMenuItem("Redo");
 		mntmRedo.setAccelerator(
@@ -122,16 +129,24 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmRedo.setEnabled(false);
-		menu_1.add(mntmRedo);
+		menuEdit.add(mntmRedo);
 
 		JSeparator separator = new JSeparator();
-		menu_1.add(separator);
+		menuEdit.add(separator);
 
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Clear canvas");
-		menu_1.add(mntmNewMenuItem_2);
+		mntmLoadNexCommand = new JMenuItem("Load next command");
+		mntmLoadNexCommand.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
+		mntmLoadNexCommand.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadNextCommand();
+			}
+		});
+		mntmLoadNexCommand.setEnabled(false);
+		menuEdit.add(mntmLoadNexCommand);
 
-		JMenu mnNewMenu = new JMenu("Object");
-		add(mnNewMenu);
+		JMenu menuObject = new JMenu("Object");
+		add(menuObject);
 
 		mntmMoveForward = new JMenuItem("Move forward");
 		mntmMoveForward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0));
@@ -150,11 +165,11 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmDuplicate.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_DOWN_MASK));
-		mnNewMenu.add(mntmDuplicate);
+		menuObject.add(mntmDuplicate);
 
 		JSeparator separator_1_1 = new JSeparator();
-		mnNewMenu.add(separator_1_1);
-		mnNewMenu.add(mntmMoveForward);
+		menuObject.add(separator_1_1);
+		menuObject.add(mntmMoveForward);
 
 		JMenuItem mntmMoveBackward = new JMenuItem("Move backward");
 		mntmMoveBackward.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
@@ -164,10 +179,10 @@ public class MenubarView extends JMenuBar {
 				controller.moveSelectedBackward();
 			}
 		});
-		mnNewMenu.add(mntmMoveBackward);
+		menuObject.add(mntmMoveBackward);
 
 		JSeparator separator_1 = new JSeparator();
-		mnNewMenu.add(separator_1);
+		menuObject.add(separator_1);
 
 		JMenuItem mntmToFront = new JMenuItem("Bring to front");
 		mntmToFront.addActionListener(new ActionListener() {
@@ -177,7 +192,7 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmToFront.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.SHIFT_DOWN_MASK));
-		mnNewMenu.add(mntmToFront);
+		menuObject.add(mntmToFront);
 
 		JMenuItem mntmToBack = new JMenuItem("Move to back");
 		mntmToBack.addActionListener(new ActionListener() {
@@ -187,7 +202,7 @@ public class MenubarView extends JMenuBar {
 			}
 		});
 		mntmToBack.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK));
-		mnNewMenu.add(mntmToBack);
+		menuObject.add(mntmToBack);
 
 	}
 
@@ -201,6 +216,10 @@ public class MenubarView extends JMenuBar {
 
 	public void setEnabledRedo(boolean inEnabled) {
 		mntmRedo.setEnabled(inEnabled);
+	}
+
+	public void setEnabledLoadNexCommand(boolean inEnabled) {
+		mntmLoadNexCommand.setEnabled(inEnabled);
 	}
 
 }

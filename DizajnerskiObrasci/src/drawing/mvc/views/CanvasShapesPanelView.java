@@ -11,7 +11,7 @@ import javax.swing.ListSelectionModel;
 
 import drawing.geometry.Shape;
 
-public class LayersPanelView extends JPanel {
+public class CanvasShapesPanelView extends JPanel {
 
 	/**
 	 *
@@ -23,7 +23,7 @@ public class LayersPanelView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LayersPanelView() {
+	public CanvasShapesPanelView() {
 		super();
 		list = new JList<>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -122,11 +122,11 @@ public class Circle extends SurfaceShape {
 	}
 
 	public void setRadius(int radius) throws Exception {
-		if (radius > 0) {
+		if (radius > 3) {
 			this.radius = radius;
 		} else {
 
-			throw new NumberFormatException("Radius has to be a value grater than 0");
+			throw new NumberFormatException("Radius has to be a value grater than 3");
 		}
 	}
 
@@ -139,8 +139,10 @@ public class Circle extends SurfaceShape {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("Circle").append("[").append("center=" + this.getCenter() + ", ")
-				.append("radius=" + this.getRadius() + ", ").append("hashCode=" + this.hashCode()).append("]");
+		output.append("Circle").append("[").append("center=" + this.getCenter().toString(true) + ", ")
+				.append("radius=" + this.getRadius() + ", ").append("color=" + this.getColor() + ", ")
+				.append("background=" + this.getBackgroundColor() + ", ").append("selected=" + this.isSelected())
+				.append("]");
 		return output.toString();
 	}
 
