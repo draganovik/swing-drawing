@@ -138,6 +138,8 @@ public class DrawingController {
 		switch (workspaceModel.getToolAction()) {
 		case POINT:
 			workspaceModel.initCreatedShape(mousePoint);
+			ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+			executeCommand(addShape);
 			break;
 		case LINE:
 			workspaceModel.initCreatedShape(new Line(mousePoint));
