@@ -1,7 +1,5 @@
 package drawing;
 
-import javax.swing.UIManager;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 import drawing.mvc.DrawingController;
@@ -14,11 +12,7 @@ public class Application {
 	public static void main(String[] args) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 
-		try {
-			UIManager.setLookAndFeel(new FlatLightLaf());
-		} catch (Exception ex) {
-			System.err.println("Failed to initialize LaF");
-		}
+		FlatLightLaf.setup();
 
 		DrawingFrame drawingFrame = new DrawingFrame();
 
