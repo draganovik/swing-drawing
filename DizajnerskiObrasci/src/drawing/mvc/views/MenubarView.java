@@ -21,13 +21,14 @@ public class MenubarView extends JMenuBar {
 	private static final long serialVersionUID = -4578066578067109451L;
 	private DrawingController controller;
 	private JMenu menuEdit;
+	private JMenu menuObject;
 	private JMenuItem mntmExportLog;
 	private JMenuItem mntmImportLog;
 	private JMenuItem mntmLoadDrawing;
 	private JMenuItem mntmSaveDrawing;
 	private JMenuItem mntmRedo;
 	private JMenuItem mntmUndo;
-	private JMenuItem mntmLoadNexCommand;
+	private JMenuItem mntmLoadNextCommand;
 
 	/**
 	 * Create the panel.
@@ -134,18 +135,19 @@ public class MenubarView extends JMenuBar {
 		JSeparator separator = new JSeparator();
 		menuEdit.add(separator);
 
-		mntmLoadNexCommand = new JMenuItem("Load next command");
-		mntmLoadNexCommand.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
-		mntmLoadNexCommand.addActionListener(new ActionListener() {
+		mntmLoadNextCommand = new JMenuItem("Load next command");
+		mntmLoadNextCommand.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK));
+		mntmLoadNextCommand.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.loadNextCommand();
 			}
 		});
-		mntmLoadNexCommand.setEnabled(false);
-		menuEdit.add(mntmLoadNexCommand);
+		mntmLoadNextCommand.setEnabled(false);
+		menuEdit.add(mntmLoadNextCommand);
 
-		JMenu menuObject = new JMenu("Object");
+		menuObject = new JMenu("Object");
+		menuObject.setVisible(false);
 		add(menuObject);
 
 		mntmMoveForward = new JMenuItem("Move forward");
@@ -218,8 +220,12 @@ public class MenubarView extends JMenuBar {
 		mntmRedo.setEnabled(inEnabled);
 	}
 
-	public void setEnabledLoadNexCommand(boolean inEnabled) {
-		mntmLoadNexCommand.setEnabled(inEnabled);
+	public void isInLoaderMode(boolean inEnabled) {
+		mntmLoadNextCommand.setEnabled(inEnabled);
+	}
+
+	public void setVisibleObjectOptions(boolean isEnabled) {
+		menuObject.setVisible(mntmLoadNextCommand.isEnabled() ? false : isEnabled);
 	}
 
 }
