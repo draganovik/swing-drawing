@@ -212,40 +212,31 @@ public class CanvasModel {
 	}
 
 	public void moveSelectedShapesToBack() {
-		boolean isValid = false;
+		
+		ArrayList<Integer> selectedShapeIndexes = getAllSelectedShapeIndexes();
 
-		if (getAllSelectedShapes().isEmpty()) {
+		if (selectedShapeIndexes.isEmpty()) {
 			throw new IllegalArgumentException("There are no selected shapes.");
 		}
-
-		if (shapes.size() == getAllSelectedShapes().size()) {
-			throw new IllegalArgumentException("Shapes are already at the back.");
+		
+		int firstIndex = getAllSelectedShapeIndexes().getFirst();
+		System.out.println(firstIndex);
+		
+		if(firstIndex == selectedShapeIndexes.size()-1){
+			throw new IllegalArgumentException("Shapes are already at the back. 1");
 		}
-
+		
 		int movedShapes = 0;
 
-		for (int index = shapes.size(); --index > movedShapes;) {
-			if (!shapes.get(index).isSelected()) {
+		for (int index = shapes.size(); --index >= 0;) {
+			if (!shapes.get(index + movedShapes).isSelected()) {
 				continue;
 			}
-			for (int check = index - 1; check >= movedShapes; check--) {
-				if (!shapes.get(check).isSelected()) {
-					isValid = true;
-				}
-			}
 
-			if (!isValid) {
-				break;
-			}
-
-			Shape selectedShape = shapes.get(index);
+			Shape selectedShape = shapes.get(index + movedShapes);
 			shapes.removeElement(selectedShape);
 			shapes.insertElementAt(selectedShape, 0);
 			movedShapes++;
-		}
-
-		if (!isValid) {
-			throw new IllegalArgumentException("Shapes are already at the back.");
 		}
 	}
 
@@ -285,7 +276,6 @@ public class CanvasModel {
 
 	public void setIsShiftDown(boolean shiftDown) {
 		this.shiftDown = shiftDown;
-
 	}
 
 	public Boolean getIsShiftDown() {
