@@ -12,21 +12,21 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 
 import drawing.adapters.HexagonAdapter;
-import drawing.command.ICommand;
 import drawing.command.AddShape;
+import drawing.command.DeselectAllShapes;
+import drawing.command.DeselectShape;
 import drawing.command.DuplicateSelected;
-import drawing.command.RemoveSelected;
-import drawing.command.UpdateShape;
-import drawing.command.UpdateSelectedShapeBackground;
-import drawing.command.MoveSelectedBackward;
-import drawing.command.UpdateSelectedShapeColor;
-import drawing.command.MoveSelectedForward;
+import drawing.command.ICommand;
 import drawing.command.MoveSelected;
+import drawing.command.MoveSelectedBackward;
+import drawing.command.MoveSelectedForward;
 import drawing.command.MoveSelectedToBack;
 import drawing.command.MoveSelectedToFront;
-import drawing.command.DeselectShape;
-import drawing.command.DeselectAllShapes;
+import drawing.command.RemoveSelected;
 import drawing.command.SelectShape;
+import drawing.command.UpdateSelectedShapeBackground;
+import drawing.command.UpdateSelectedShapeColor;
+import drawing.command.UpdateShape;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -206,8 +206,7 @@ public class DrawingController {
 
 				if (optionalShape.get().isSelected()) {
 					if (model.getIsShiftDown()) {
-						ICommand deselectAll = new DeselectShape(model,
-								model.getShapeIndex(optionalShape.get()));
+						ICommand deselectAll = new DeselectShape(model, model.getShapeIndex(optionalShape.get()));
 						executeCommand(deselectAll);
 					}
 				} else {
@@ -319,8 +318,7 @@ public class DrawingController {
 					break;
 				}
 				model.moveSelectedShapesBy(distanceX, distanceY);
-				ICommand moveSelected = new MoveSelected(model,
-						this.workspaceModel.getStartPoint(), mousePoint);
+				ICommand moveSelected = new MoveSelected(model, this.workspaceModel.getStartPoint(), mousePoint);
 				executeCommand(moveSelected);
 			} catch (Exception ex) {
 				this.showAlert(ex.getMessage());
