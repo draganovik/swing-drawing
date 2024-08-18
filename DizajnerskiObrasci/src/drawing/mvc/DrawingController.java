@@ -247,7 +247,7 @@ public class DrawingController {
 
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
-			if (model.getAllSelectedShapes().size() == 0) {
+			if (model.getAllSelectedShapes().isEmpty()) {
 				break;
 			}
 			int distanceX = mousePoint.getX() - workspaceModel.getDragPoint().getX();
@@ -273,30 +273,27 @@ public class DrawingController {
 			break;
 		case RECTANGLE:
 			int limit = workspaceModel.getMinDragDistanceForCreatingShape();
-			if (this.workspaceModel.canDragCreateXToPoint(mousePoint)) {
-				if (this.workspaceModel.canDragCreateYToPoint(mousePoint)) {
-					if (!model.contains(workspaceModel.getCreatedShape())) {
-						ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-						executeCommandNoLog(addShape);
-						break;
-					}
-					workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-					view.repaint();
-					break;
-				}
-				mousePoint.setY(workspaceModel.getStartPoint().getY()
-						+ (mousePoint.getY() > workspaceModel.getStartPoint().getY() ? limit : -limit));
-				workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-				view.repaint();
+			Boolean canUpdateX = this.workspaceModel.canDragCreateXToPoint(mousePoint);
+			Boolean canUpdateY = this.workspaceModel.canDragCreateYToPoint(mousePoint);
+			Point update = mousePoint.clone();
+			if (!canUpdateX) {
+				update.setX(workspaceModel.getStartPoint().getX()
+						+ (update.getX() > workspaceModel.getStartPoint().getX() ? limit : -limit));
+			}
+			if (!canUpdateY) {
+				update.setY(workspaceModel.getStartPoint().getY()
+						+ (update.getY() > workspaceModel.getStartPoint().getY() ? limit : -limit));
+			}
+			if (!canUpdateX && !canUpdateY) {
 				break;
 			}
-			if (this.workspaceModel.canDragCreateYToPoint(mousePoint)) {
-				mousePoint.setX(workspaceModel.getStartPoint().getX()
-						+ (mousePoint.getX() > workspaceModel.getStartPoint().getX() ? limit : -limit));
-				workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-				view.repaint();
+			if (!model.contains(workspaceModel.getCreatedShape())) {
+				ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+				executeCommandNoLog(addShape);
 				break;
 			}
+			workspaceModel.getCreatedShape().setEndPoint(update);
+			view.repaint();
 			break;
 		default:
 			break;
