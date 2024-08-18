@@ -295,9 +295,9 @@ public class CanvasModel {
 		if (getAllSelectedShapes().isEmpty()) {
 			throw new IllegalArgumentException("There are no selected shapes.");
 		}
-		
+
 		ArrayList<Shape> pendindShapes = getAllSelectedShapes();
-		while(!pendindShapes.isEmpty()) {
+		while (!pendindShapes.isEmpty()) {
 			Shape shape = pendindShapes.getFirst();
 			Shape clone = pendindShapes.getFirst().clone();
 			shape.setSelected(false);

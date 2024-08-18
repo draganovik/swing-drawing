@@ -44,6 +44,10 @@ public class DrawingFrame extends JFrame {
 		return this.menubarView;
 	}
 
+	public CanvasShapesPanelView getCanvasShapesPanelView() {
+		return this.canvasShapesPanelView;
+	}
+
 	public DrawingFrame() {
 		super();
 

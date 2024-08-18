@@ -26,7 +26,7 @@ public class Application {
 		// Initialize Views
 		drawingFrame.setupViews(canvasModel, workspaceModel, drawingController);
 		drawingController.setViews(drawingFrame.getCanvasView(), drawingFrame.getToolbarView(),
-				drawingFrame.getMenubarView());
+				drawingFrame.getMenubarView(), drawingFrame.getCanvasShapesPanelView());
 
 		// Show Frame
 		drawingFrame.setVisible(true);

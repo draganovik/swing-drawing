@@ -41,6 +41,7 @@ import drawing.modals.DlgManagePoint;
 import drawing.modals.DlgManageRectangle;
 import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.WorkspaceModel;
+import drawing.mvc.views.CanvasShapesPanelView;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
@@ -58,6 +59,7 @@ public class DrawingController {
 	private CanvasView view;
 	private ToolbarView toolbarView;
 	private MenubarView menubarView;
+	private CanvasShapesPanelView shapesPanelView;
 
 	CanvasModelPropertyObserver canvasModelPropertyObserver;
 
@@ -72,10 +74,12 @@ public class DrawingController {
 		workspaceModel.addPropertyObserver(this.canvasModelPropertyObserver);
 	}
 
-	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView) {
+	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView,
+			CanvasShapesPanelView shapesPanelView) {
 		this.view = view;
 		this.toolbarView = toolbarView;
 		this.menubarView = menubarView;
+		this.shapesPanelView = shapesPanelView;
 	}
 
 	private void clearWorkspace() {
@@ -96,6 +100,7 @@ public class DrawingController {
 		try {
 			workspaceModel.executeCommand(command, true);
 			view.repaint();
+			shapesPanelView.repaint();
 		} catch (Exception ex) {
 			this.showAlert(ex.getMessage());
 		}
@@ -417,6 +422,7 @@ public class DrawingController {
 		try {
 			this.workspaceModel.processLoadedCommand(model);
 			view.repaint();
+			shapesPanelView.repaint();
 		} catch (Exception ex) {
 			this.showAlert(ex.getMessage());
 		}
