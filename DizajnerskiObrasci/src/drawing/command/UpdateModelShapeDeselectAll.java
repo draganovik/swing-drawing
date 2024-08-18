@@ -35,7 +35,6 @@ public class UpdateModelShapeDeselectAll implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		model.deselectAllShapes();
 		for (Integer element : selectedIndexList) {
 			model.selectShapeAt(element);
 		}

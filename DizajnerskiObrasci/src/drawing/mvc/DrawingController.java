@@ -41,6 +41,7 @@ import drawing.modals.DlgManagePoint;
 import drawing.modals.DlgManageRectangle;
 import drawing.mvc.models.CanvasModel;
 import drawing.mvc.models.WorkspaceModel;
+import drawing.mvc.views.CanvasShapesPanelView;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
@@ -58,6 +59,7 @@ public class DrawingController {
 	private CanvasView view;
 	private ToolbarView toolbarView;
 	private MenubarView menubarView;
+	private CanvasShapesPanelView shapesPanelView;
 
 	CanvasModelPropertyObserver canvasModelPropertyObserver;
 
@@ -72,19 +74,23 @@ public class DrawingController {
 		workspaceModel.addPropertyObserver(this.canvasModelPropertyObserver);
 	}
 
-	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView) {
+	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView,
+			CanvasShapesPanelView shapesPanelView) {
 		this.view = view;
 		this.toolbarView = toolbarView;
 		this.menubarView = menubarView;
+		this.shapesPanelView = shapesPanelView;
 	}
 
 	private void clearWorkspace() {
-		workspaceModel.clearWorkspace();
-
 		model.removeAllShapes();
+
+		menubarView.setVisibleObjectOptions(false);
+
 		toolbarView.setEnabledCommands(true);
 		toolbarView.setToolToSelect();
-		menubarView.setVisibleObjectOptions(false);
+
+		workspaceModel.clearWorkspace();
 		workspaceModel.setToolAction(ToolAction.SELECT);
 
 		view.repaint();
@@ -94,6 +100,7 @@ public class DrawingController {
 		try {
 			workspaceModel.executeCommand(command, true);
 			view.repaint();
+			shapesPanelView.repaint();
 		} catch (Exception ex) {
 			this.showAlert(ex.getMessage());
 		}
@@ -240,6 +247,9 @@ public class DrawingController {
 
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
+			if (model.getAllSelectedShapes().isEmpty()) {
+				break;
+			}
 			int distanceX = mousePoint.getX() - workspaceModel.getDragPoint().getX();
 			int distanceY = mousePoint.getY() - workspaceModel.getDragPoint().getY();
 			model.moveSelectedShapesBy(distanceX, distanceY);
@@ -263,30 +273,27 @@ public class DrawingController {
 			break;
 		case RECTANGLE:
 			int limit = workspaceModel.getMinDragDistanceForCreatingShape();
-			if (this.workspaceModel.canDragCreateXToPoint(mousePoint)) {
-				if (this.workspaceModel.canDragCreateYToPoint(mousePoint)) {
-					if (!model.contains(workspaceModel.getCreatedShape())) {
-						ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
-						executeCommandNoLog(addShape);
-						break;
-					}
-					workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-					view.repaint();
-					break;
-				}
-				mousePoint.setY(workspaceModel.getStartPoint().getY()
-						+ (mousePoint.getY() > workspaceModel.getStartPoint().getY() ? limit : -limit));
-				workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-				view.repaint();
+			Boolean canUpdateX = this.workspaceModel.canDragCreateXToPoint(mousePoint);
+			Boolean canUpdateY = this.workspaceModel.canDragCreateYToPoint(mousePoint);
+			Point update = mousePoint.clone();
+			if (!canUpdateX) {
+				update.setX(workspaceModel.getStartPoint().getX()
+						+ (update.getX() > workspaceModel.getStartPoint().getX() ? limit : -limit));
+			}
+			if (!canUpdateY) {
+				update.setY(workspaceModel.getStartPoint().getY()
+						+ (update.getY() > workspaceModel.getStartPoint().getY() ? limit : -limit));
+			}
+			if (!canUpdateX && !canUpdateY) {
 				break;
 			}
-			if (this.workspaceModel.canDragCreateYToPoint(mousePoint)) {
-				mousePoint.setX(workspaceModel.getStartPoint().getX()
-						+ (mousePoint.getX() > workspaceModel.getStartPoint().getX() ? limit : -limit));
-				workspaceModel.getCreatedShape().setEndPoint(mousePoint);
-				view.repaint();
+			if (!model.contains(workspaceModel.getCreatedShape())) {
+				ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+				executeCommandNoLog(addShape);
 				break;
 			}
+			workspaceModel.getCreatedShape().setEndPoint(update);
+			view.repaint();
 			break;
 		default:
 			break;
@@ -300,6 +307,9 @@ public class DrawingController {
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
 			try {
+				if (model.getAllSelectedShapes().size() == 0) {
+					break;
+				}
 				int distanceX = workspaceModel.getStartPoint().getX() - mousePoint.getX();
 				int distanceY = workspaceModel.getStartPoint().getY() - mousePoint.getY();
 				if (distanceX + distanceY == 0) {
@@ -409,6 +419,7 @@ public class DrawingController {
 		try {
 			this.workspaceModel.processLoadedCommand(model);
 			view.repaint();
+			shapesPanelView.repaint();
 		} catch (Exception ex) {
 			this.showAlert(ex.getMessage());
 		}

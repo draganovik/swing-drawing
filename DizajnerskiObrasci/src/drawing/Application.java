@@ -1,5 +1,7 @@
 package drawing;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import drawing.mvc.DrawingController;
 import drawing.mvc.DrawingFrame;
 import drawing.mvc.models.CanvasModel;
@@ -9,6 +11,9 @@ public class Application {
 
 	public static void main(String[] args) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+		FlatLightLaf.setup();
+
 		DrawingFrame drawingFrame = new DrawingFrame();
 
 		// Initialize Models
@@ -21,7 +26,7 @@ public class Application {
 		// Initialize Views
 		drawingFrame.setupViews(canvasModel, workspaceModel, drawingController);
 		drawingController.setViews(drawingFrame.getCanvasView(), drawingFrame.getToolbarView(),
-				drawingFrame.getMenubarView());
+				drawingFrame.getMenubarView(), drawingFrame.getCanvasShapesPanelView());
 
 		// Show Frame
 		drawingFrame.setVisible(true);

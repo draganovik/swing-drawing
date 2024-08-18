@@ -44,6 +44,10 @@ public class DrawingFrame extends JFrame {
 		return this.menubarView;
 	}
 
+	public CanvasShapesPanelView getCanvasShapesPanelView() {
+		return this.canvasShapesPanelView;
+	}
+
 	public DrawingFrame() {
 		super();
 
@@ -63,7 +67,7 @@ public class DrawingFrame extends JFrame {
 		tabbedPane.addTab("Commands", null, commandLogPanelView, null);
 		tabbedPane.addTab("Shapes", null, canvasShapesPanelView, null);
 
-		tabbedPane.setPreferredSize(new Dimension(260, 440));
+		tabbedPane.setPreferredSize(new Dimension(300, 0));
 
 		contentPane.add(canvasView, BorderLayout.CENTER);
 		contentPane.add(toolbarView, BorderLayout.WEST);
