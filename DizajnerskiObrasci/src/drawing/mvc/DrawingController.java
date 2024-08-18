@@ -79,12 +79,14 @@ public class DrawingController {
 	}
 
 	private void clearWorkspace() {
-		workspaceModel.clearWorkspace();
-
 		model.removeAllShapes();
+
+		menubarView.setVisibleObjectOptions(false);
+
 		toolbarView.setEnabledCommands(true);
 		toolbarView.setToolToSelect();
-		menubarView.setVisibleObjectOptions(false);
+
+		workspaceModel.clearWorkspace();
 		workspaceModel.setToolAction(ToolAction.SELECT);
 
 		view.repaint();
@@ -240,6 +242,9 @@ public class DrawingController {
 
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
+			if (model.getAllSelectedShapes().size() == 0) {
+				break;
+			}
 			int distanceX = mousePoint.getX() - workspaceModel.getDragPoint().getX();
 			int distanceY = mousePoint.getY() - workspaceModel.getDragPoint().getY();
 			model.moveSelectedShapesBy(distanceX, distanceY);
@@ -300,6 +305,9 @@ public class DrawingController {
 		switch (workspaceModel.getToolAction()) {
 		case SELECT:
 			try {
+				if (model.getAllSelectedShapes().size() == 0) {
+					break;
+				}
 				int distanceX = workspaceModel.getStartPoint().getX() - mousePoint.getX();
 				int distanceY = workspaceModel.getStartPoint().getY() - mousePoint.getY();
 				if (distanceX + distanceY == 0) {

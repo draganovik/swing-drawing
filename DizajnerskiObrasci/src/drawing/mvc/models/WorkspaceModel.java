@@ -63,6 +63,7 @@ public class WorkspaceModel {
 		performedCommandStack.clear();
 		revertedCommandStack.clear();
 		commandLogListModel.clear();
+		loadedCommands.clear();
 	}
 
 	/*
