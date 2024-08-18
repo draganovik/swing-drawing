@@ -38,7 +38,7 @@ public class UpdateModelSelectedShapesToFront implements ICommand {
 		isExecuted = false;
 
 		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
-		for (int i = selectedShapes.size(); --i >= 0;) {
+		for (int i = 0; i < selectedShapes.size(); i++) {
 			model.removeShape(selectedShapes.get(i));
 			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
 		}

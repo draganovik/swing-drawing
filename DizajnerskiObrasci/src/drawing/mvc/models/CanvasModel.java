@@ -212,20 +212,19 @@ public class CanvasModel {
 	}
 
 	public void moveSelectedShapesToBack() {
-		
+
 		ArrayList<Integer> selectedShapeIndexes = getAllSelectedShapeIndexes();
 
 		if (selectedShapeIndexes.isEmpty()) {
 			throw new IllegalArgumentException("There are no selected shapes.");
 		}
-		
+
 		int firstIndex = getAllSelectedShapeIndexes().getFirst();
-		System.out.println(firstIndex);
-		
-		if(firstIndex == selectedShapeIndexes.size()-1){
-			throw new IllegalArgumentException("Shapes are already at the back. 1");
+
+		if (firstIndex == selectedShapeIndexes.size() - 1) {
+			throw new IllegalArgumentException("Shapes are already at the back.");
 		}
-		
+
 		int movedShapes = 0;
 
 		for (int index = shapes.size(); --index >= 0;) {
@@ -241,36 +240,30 @@ public class CanvasModel {
 	}
 
 	public void moveSelectedShapesToFront() {
-		boolean isValid = false;
 
-		if (getAllSelectedShapes().isEmpty()) {
+		ArrayList<Integer> selectedShapeIndexes = getAllSelectedShapeIndexes();
+
+		if (selectedShapeIndexes.isEmpty()) {
 			throw new IllegalArgumentException("There are no selected shapes.");
+		}
+
+		int lastIndex = getAllSelectedShapeIndexes().getLast();
+
+		if (lastIndex == shapes.size() - selectedShapeIndexes.size()) {
+			throw new IllegalArgumentException("Shapes are already at the front.");
 		}
 
 		int movedShapes = 0;
 
-		for (int index = 0; index < shapes.size() - movedShapes; index++) {
-			if (!shapes.get(index).isSelected()) {
+		for (int index = 0; index < shapes.size(); index++) {
+			if (!shapes.get(index - movedShapes).isSelected()) {
 				continue;
 			}
-			for (int check = index; check < shapes.size() - movedShapes; check++) {
-				if (!shapes.get(check).isSelected()) {
-					isValid = true;
-				}
-			}
 
-			if (!isValid) {
-				break;
-			}
-
-			Shape selectedShape = shapes.get(index);
+			Shape selectedShape = shapes.get(index - movedShapes);
 			shapes.removeElement(selectedShape);
 			shapes.addElement(selectedShape);
 			movedShapes++;
-		}
-
-		if (!isValid) {
-			throw new IllegalArgumentException("Shapes are already at the front.");
 		}
 	}
 
