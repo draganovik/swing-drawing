@@ -4,7 +4,7 @@ import drawing.geometry.Point;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapesPosition implements ICommand {
+public class MoveSelected implements ICommand {
 
 	private final CanvasModel model;
 	private final Point startPoint;
@@ -12,7 +12,7 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapesPosition(CanvasModel model, Point startPoint, Point endPoint) {
+	public MoveSelected(CanvasModel model, Point startPoint, Point endPoint) {
 		this.model = model;
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;

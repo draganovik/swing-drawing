@@ -1,18 +1,19 @@
 package drawing.command;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelDuplicateSelectedShape implements ICommand {
+public class MoveSelectedToFront implements ICommand {
 
 	private final CanvasModel model;
-	private ArrayList<Integer> selectedShapeIndexes;
+	private List<Integer> initialSelectedShapesOrder;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelDuplicateSelectedShape(CanvasModel model) {
+	public MoveSelectedToFront(CanvasModel model) {
 		this.model = model;
 	}
 
@@ -23,10 +24,9 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.selectedShapeIndexes = model.getAllSelectedShapeIndexes();
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
 
-		model.duplicateSelected();
-
+		model.moveSelectedShapesToFront();
 	}
 
 	@Override
@@ -36,9 +36,10 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		model.removeSelectedShapes();
-		for (int index = 0; index < this.selectedShapeIndexes.size(); index++) {
-			model.selectShapeAt(selectedShapeIndexes.get(index));
+		List<Shape> selectedShapes = model.getAllSelectedShapes();
+		for (int i = 0; i < selectedShapes.size(); i++) {
+			model.removeShape(selectedShapes.get(i));
+			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
 		}
 	}
 
@@ -47,8 +48,8 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapeIndexes=")
-				.append(selectedShapeIndexes.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("initialSelectedShapesOrder=")
+				.append(initialSelectedShapesOrder.toString()).append(">");
 
 		return output.toString();
 	}

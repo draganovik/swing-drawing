@@ -1,20 +1,23 @@
 package drawing.command;
 
-import java.util.List;
+import java.awt.Color;
+import java.util.ArrayList;
 
 import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapesToFront implements ICommand {
+public class UpdateSelectedShapeColor implements ICommand {
 
 	private final CanvasModel model;
-	private List<Integer> initialSelectedShapesOrder;
+	private final ArrayList<Color> initialSelectedShapesColors = new ArrayList<>();
+	private final Color updateColor;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapesToFront(CanvasModel model) {
+	public UpdateSelectedShapeColor(CanvasModel model, Color updateColor) {
 		this.model = model;
+		this.updateColor = updateColor;
 	}
 
 	@Override
@@ -24,9 +27,13 @@ public class UpdateModelSelectedShapesToFront implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
+		ArrayList<Shape> shapes = model.getAllSelectedShapes();
 
-		model.moveSelectedShapesToFront();
+		for (int i = 0; i < shapes.size(); i++) {
+			initialSelectedShapesColors.add(shapes.get(i).getColor());
+		}
+
+		model.updateColorOfSelectedShapes(updateColor);
 	}
 
 	@Override
@@ -36,10 +43,9 @@ public class UpdateModelSelectedShapesToFront implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		List<Shape> selectedShapes = model.getAllSelectedShapes();
+		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
 		for (int i = 0; i < selectedShapes.size(); i++) {
-			model.removeShape(selectedShapes.get(i));
-			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
+			model.updateShapeColor(selectedShapes.get(i), initialSelectedShapesColors.get(i));
 		}
 	}
 
@@ -48,8 +54,9 @@ public class UpdateModelSelectedShapesToFront implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("initialSelectedShapesOrder=")
-				.append(initialSelectedShapesOrder.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("updateColor=")
+				.append(updateColor.toString()).append("; ").append("initialColors=")
+				.append(initialSelectedShapesColors.toString()).append(">");
 
 		return output.toString();
 	}

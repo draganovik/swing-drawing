@@ -1,20 +1,18 @@
 package drawing.command;
 
-import java.util.List;
-
-import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapesBackward implements ICommand {
+public class SelectShape implements ICommand {
 
 	private final CanvasModel model;
-	private List<Integer> initialSelectedShapesOrder;
+	private final Integer selectedShapeIndex;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapesBackward(CanvasModel model) {
+	public SelectShape(CanvasModel model, Integer shapeIndex) {
 		this.model = model;
+		this.selectedShapeIndex = shapeIndex;
 	}
 
 	@Override
@@ -24,9 +22,7 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
-
-		model.moveSelectedShapesBackward();
+		model.selectShapeAt(selectedShapeIndex);
 	}
 
 	@Override
@@ -36,11 +32,7 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		List<Shape> selectedShapes = model.getAllSelectedShapes();
-		for (int i = selectedShapes.size(); --i >= 0;) {
-			model.removeShape(selectedShapes.get(i));
-			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
-		}
+		model.deselectShapeAt(selectedShapeIndex);
 	}
 
 	@Override
@@ -48,7 +40,8 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command);
+		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapeIndex=")
+				.append(selectedShapeIndex.toString()).append(">");
 
 		return output.toString();
 	}

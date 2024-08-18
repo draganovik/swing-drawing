@@ -1,18 +1,18 @@
 package drawing.command;
 
+import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelShapeSelect implements ICommand {
+public class AddShape implements ICommand {
 
 	private final CanvasModel model;
-	private final Integer selectedShapeIndex;
-
+	private final Shape shape;
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelShapeSelect(CanvasModel model, Integer shapeIndex) {
+	public AddShape(CanvasModel model, Shape shape) {
 		this.model = model;
-		this.selectedShapeIndex = shapeIndex;
+		this.shape = shape;
 	}
 
 	@Override
@@ -22,7 +22,8 @@ public class UpdateModelShapeSelect implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		model.selectShapeAt(selectedShapeIndex);
+		shape.setSelected(true);
+		model.addShape(shape);
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class UpdateModelShapeSelect implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		model.deselectShapeAt(selectedShapeIndex);
+		model.removeShape(shape);
 	}
 
 	@Override
@@ -40,8 +41,8 @@ public class UpdateModelShapeSelect implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapeIndex=")
-				.append(selectedShapeIndex.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("shape=")
+				.append(shape.toString()).append(">");
 
 		return output.toString();
 	}

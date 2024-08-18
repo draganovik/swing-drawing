@@ -13,20 +13,20 @@ import javax.swing.filechooser.FileSystemView;
 
 import drawing.adapters.HexagonAdapter;
 import drawing.command.ICommand;
-import drawing.command.UpdateModelAddShape;
-import drawing.command.UpdateModelDuplicateSelectedShape;
-import drawing.command.UpdateModelRemoveSelectedShapes;
-import drawing.command.UpdateModelSelectedShapeProperties;
-import drawing.command.UpdateModelSelectedShapesBackgroundColor;
-import drawing.command.UpdateModelSelectedShapesBackward;
-import drawing.command.UpdateModelSelectedShapesColor;
-import drawing.command.UpdateModelSelectedShapesForward;
-import drawing.command.UpdateModelSelectedShapesPosition;
-import drawing.command.UpdateModelSelectedShapesToBack;
-import drawing.command.UpdateModelSelectedShapesToFront;
-import drawing.command.UpdateModelShapeDeselect;
-import drawing.command.UpdateModelShapeDeselectAll;
-import drawing.command.UpdateModelShapeSelect;
+import drawing.command.AddShape;
+import drawing.command.DuplicateSelected;
+import drawing.command.RemoveSelected;
+import drawing.command.UpdateShape;
+import drawing.command.UpdateSelectedShapeBackground;
+import drawing.command.MoveSelectedBackward;
+import drawing.command.UpdateSelectedShapeColor;
+import drawing.command.MoveSelectedForward;
+import drawing.command.MoveSelected;
+import drawing.command.MoveSelectedToBack;
+import drawing.command.MoveSelectedToFront;
+import drawing.command.DeselectShape;
+import drawing.command.DeselectAllShapes;
+import drawing.command.SelectShape;
 import drawing.geometry.Circle;
 import drawing.geometry.Donut;
 import drawing.geometry.Line;
@@ -165,14 +165,14 @@ public class DrawingController {
 		model.setIsShiftDown(e.isShiftDown());
 
 		if (!model.getAllSelectedShapes().isEmpty() && workspaceModel.getToolAction() != ToolAction.SELECT) {
-			ICommand command = new UpdateModelShapeDeselectAll(model);
+			ICommand command = new DeselectAllShapes(model);
 			executeCommand(command);
 		}
 
 		switch (workspaceModel.getToolAction()) {
 		case POINT:
 			workspaceModel.initCreatedShape(mousePoint);
-			ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+			ICommand addShape = new AddShape(model, workspaceModel.getCreatedShape());
 			executeCommandNoLog(addShape);
 			break;
 		case LINE:
@@ -199,24 +199,24 @@ public class DrawingController {
 			Optional<Shape> optionalShape = model.getShapeAt(mousePoint);
 			if (optionalShape.isEmpty()) {
 				if (!model.getAllSelectedShapes().isEmpty()) {
-					ICommand deselectAll = new UpdateModelShapeDeselectAll(model);
+					ICommand deselectAll = new DeselectAllShapes(model);
 					executeCommand(deselectAll);
 				}
 			} else {
 
 				if (optionalShape.get().isSelected()) {
 					if (model.getIsShiftDown()) {
-						ICommand deselectAll = new UpdateModelShapeDeselect(model,
+						ICommand deselectAll = new DeselectShape(model,
 								model.getShapeIndex(optionalShape.get()));
 						executeCommand(deselectAll);
 					}
 				} else {
 					if (!model.getIsShiftDown() && !model.getAllSelectedShapes().isEmpty()) {
-						ICommand deselectAll = new UpdateModelShapeDeselectAll(model);
+						ICommand deselectAll = new DeselectAllShapes(model);
 						executeCommand(deselectAll);
 					}
 
-					ICommand selectShape = new UpdateModelShapeSelect(model, model.getShapeIndex(optionalShape.get()));
+					ICommand selectShape = new SelectShape(model, model.getShapeIndex(optionalShape.get()));
 					executeCommand(selectShape);
 				}
 			}
@@ -266,7 +266,7 @@ public class DrawingController {
 		case HEXAGON:
 			if (this.workspaceModel.canDragCreateToPoint(mousePoint)) {
 				if (!model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addShape = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommandNoLog(addShape);
 					break;
 				}
@@ -291,7 +291,7 @@ public class DrawingController {
 				break;
 			}
 			if (!model.contains(workspaceModel.getCreatedShape())) {
-				ICommand addShape = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+				ICommand addShape = new AddShape(model, workspaceModel.getCreatedShape());
 				executeCommandNoLog(addShape);
 				break;
 			}
@@ -319,7 +319,7 @@ public class DrawingController {
 					break;
 				}
 				model.moveSelectedShapesBy(distanceX, distanceY);
-				ICommand moveSelected = new UpdateModelSelectedShapesPosition(model,
+				ICommand moveSelected = new MoveSelected(model,
 						this.workspaceModel.getStartPoint(), mousePoint);
 				executeCommand(moveSelected);
 			} catch (Exception ex) {
@@ -334,7 +334,7 @@ public class DrawingController {
 				DlgManageLine modal = new DlgManageLine((Line) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful() && !model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addLine = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addLine = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommand(addLine);
 				}
 			}
@@ -344,7 +344,7 @@ public class DrawingController {
 				DlgManageRectangle modal = new DlgManageRectangle((Rectangle) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful() && !model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addRectangle = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addRectangle = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommand(addRectangle);
 				}
 			}
@@ -354,7 +354,7 @@ public class DrawingController {
 				DlgManageCircle modal = new DlgManageCircle((Circle) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful() && !model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addCircle = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addCircle = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommand(addCircle);
 				}
 			}
@@ -364,7 +364,7 @@ public class DrawingController {
 				DlgManageDonut modal = new DlgManageDonut((Donut) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful() && !model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addDonut = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addDonut = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommand(addDonut);
 				}
 			}
@@ -374,7 +374,7 @@ public class DrawingController {
 				DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) workspaceModel.getCreatedShape());
 				showDialog(modal);
 				if (modal.IsSuccessful() && !model.contains(workspaceModel.getCreatedShape())) {
-					ICommand addHexagon = new UpdateModelAddShape(model, workspaceModel.getCreatedShape());
+					ICommand addHexagon = new AddShape(model, workspaceModel.getCreatedShape());
 					executeCommand(addHexagon);
 				}
 			}
@@ -438,27 +438,27 @@ public class DrawingController {
 	}
 
 	public void moveSelectedForward() {
-		ICommand command = new UpdateModelSelectedShapesForward(model);
+		ICommand command = new MoveSelectedForward(model);
 		executeCommand(command);
 	}
 
 	public void moveSelectedBackward() {
-		ICommand command = new UpdateModelSelectedShapesBackward(model);
+		ICommand command = new MoveSelectedBackward(model);
 		executeCommand(command);
 	}
 
 	public void moveSelectedToFront() {
-		ICommand command = new UpdateModelSelectedShapesToFront(model);
+		ICommand command = new MoveSelectedToFront(model);
 		executeCommand(command);
 	}
 
 	public void moveSelectedToBack() {
-		ICommand command = new UpdateModelSelectedShapesToBack(model);
+		ICommand command = new MoveSelectedToBack(model);
 		executeCommand(command);
 	}
 
 	public void duplicateSelected() {
-		ICommand command = new UpdateModelDuplicateSelectedShape(model);
+		ICommand command = new DuplicateSelected(model);
 		this.executeCommand(command);
 	}
 
@@ -585,7 +585,7 @@ public class DrawingController {
 		}
 
 		if (action != ToolAction.SELECT && model.getAllSelectedShapeIndexes().size() != 0) {
-			ICommand deselectAll = new UpdateModelShapeDeselectAll(model);
+			ICommand deselectAll = new DeselectAllShapes(model);
 			executeCommand(deselectAll);
 		}
 
@@ -615,7 +615,7 @@ public class DrawingController {
 				}
 			}
 			if (hasSurfaceShape) {
-				ICommand command = new UpdateModelSelectedShapesBackgroundColor(model, selectedColor);
+				ICommand command = new UpdateSelectedShapeBackground(model, selectedColor);
 				this.executeCommand(command);
 			}
 		}
@@ -629,7 +629,7 @@ public class DrawingController {
 			if (model.getAllSelectedShapeIndexes().isEmpty()) {
 				return;
 			}
-			ICommand command = new UpdateModelSelectedShapesColor(model, selectedColor);
+			ICommand command = new UpdateSelectedShapeColor(model, selectedColor);
 			this.executeCommand(command);
 
 		}
@@ -653,7 +653,7 @@ public class DrawingController {
 	public void deleteSelected() {
 		int option = this.showConfirm("Are you sure you want to delete selection?");
 		if (option == JOptionPane.YES_OPTION) {
-			ICommand command = new UpdateModelRemoveSelectedShapes(model);
+			ICommand command = new RemoveSelected(model);
 			this.executeCommand(command);
 		}
 	}
@@ -665,7 +665,7 @@ public class DrawingController {
 			DlgManagePoint modal = new DlgManagePoint((Point) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyPoint = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyPoint = new UpdateShape(model, update);
 				executeCommand(modifyPoint);
 			}
 			return;
@@ -674,7 +674,7 @@ public class DrawingController {
 			DlgManageLine modal = new DlgManageLine((Line) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyLine = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyLine = new UpdateShape(model, update);
 				executeCommand(modifyLine);
 			}
 			return;
@@ -683,7 +683,7 @@ public class DrawingController {
 			DlgManageRectangle modal = new DlgManageRectangle((Rectangle) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyRectangle = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyRectangle = new UpdateShape(model, update);
 				this.executeCommand(modifyRectangle);
 			}
 			return;
@@ -693,7 +693,7 @@ public class DrawingController {
 			DlgManageDonut modal = new DlgManageDonut((Donut) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyDonut = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyDonut = new UpdateShape(model, update);
 				this.executeCommand(modifyDonut);
 			}
 			return;
@@ -703,7 +703,7 @@ public class DrawingController {
 			DlgManageCircle modal = new DlgManageCircle((Circle) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyCircle = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyCircle = new UpdateShape(model, update);
 				this.executeCommand(modifyCircle);
 			}
 			return;
@@ -713,7 +713,7 @@ public class DrawingController {
 			DlgManageHexagon modal = new DlgManageHexagon((HexagonAdapter) update);
 			showDialog(modal);
 			if (modal.IsSuccessful()) {
-				ICommand modifyHexagon = new UpdateModelSelectedShapeProperties(model, update);
+				ICommand modifyHexagon = new UpdateShape(model, update);
 				this.executeCommand(modifyHexagon);
 			}
 			return;

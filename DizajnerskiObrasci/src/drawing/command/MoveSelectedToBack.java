@@ -1,42 +1,46 @@
 package drawing.command;
 
+import java.util.List;
+
 import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapeProperties implements ICommand {
+public class MoveSelectedToBack implements ICommand {
 
 	private final CanvasModel model;
-	private Shape prevProperties;
-	private final Shape nextProperties;
+	private List<Integer> initialSelectedShapesOrder;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapeProperties(CanvasModel model, Shape update) {
+	public MoveSelectedToBack(CanvasModel model) {
 		this.model = model;
-		this.nextProperties = update.clone();
 	}
 
 	@Override
-	public void execute() throws Exception {
+	public void execute() {
 		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.prevProperties = model.getAllSelectedShapes().get(0).clone();
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
 
-		model.getAllSelectedShapes().get(0).updateFrom(this.nextProperties);
+		model.moveSelectedShapesToBack();
 	}
 
 	@Override
-	public void undo() throws Exception {
+	public void undo() {
 		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
 		state = CommandState.UNDO;
 
-		model.getAllSelectedShapes().get(0).updateFrom(this.prevProperties);
+		List<Shape> selectedShapes = model.getAllSelectedShapes();
+		for (int i = selectedShapes.size(); --i >= 0;) {
+			model.removeShape(selectedShapes.get(i));
+			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
+		}
 	}
 
 	@Override
@@ -44,9 +48,8 @@ public class UpdateModelSelectedShapeProperties implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("prevProperties=")
-				.append(prevProperties.toString()).append("; ").append("nextProperties=")
-				.append(nextProperties.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("initialSelectedShapesOrder=")
+				.append(initialSelectedShapesOrder.toString()).append(">");
 
 		return output.toString();
 	}

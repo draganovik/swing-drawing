@@ -8,7 +8,7 @@ import drawing.geometry.SurfaceShape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
+public class UpdateSelectedShapeBackground implements ICommand {
 
 	private final CanvasModel model;
 	private final ArrayList<Color> initialSelectedShapesBackgroundColors = new ArrayList<>();
@@ -16,7 +16,7 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapesBackgroundColor(CanvasModel model, Color updateColor) {
+	public UpdateSelectedShapeBackground(CanvasModel model, Color updateColor) {
 		this.model = model;
 		this.updateColor = updateColor;
 	}

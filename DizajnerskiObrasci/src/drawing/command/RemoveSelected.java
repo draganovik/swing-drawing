@@ -9,7 +9,7 @@ import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelRemoveSelectedShapes implements ICommand {
+public class RemoveSelected implements ICommand {
 
 	private final CanvasModel model;
 	private final List<SimpleEntry<Integer, Shape>> selectedShapes = new ArrayList<>(); // Store deleted index and shape
@@ -17,7 +17,7 @@ public class UpdateModelRemoveSelectedShapes implements ICommand {
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelRemoveSelectedShapes(CanvasModel model) {
+	public RemoveSelected(CanvasModel model) {
 		this.model = model;
 	}
 

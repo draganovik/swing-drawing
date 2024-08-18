@@ -1,19 +1,18 @@
 package drawing.command;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelSelectedShapesToBack implements ICommand {
+public class DeselectAllShapes implements ICommand {
 
 	private final CanvasModel model;
-	private List<Integer> initialSelectedShapesOrder;
+	private ArrayList<Integer> selectedIndexList;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelSelectedShapesToBack(CanvasModel model) {
+	public DeselectAllShapes(CanvasModel model) {
 		this.model = model;
 	}
 
@@ -24,9 +23,9 @@ public class UpdateModelSelectedShapesToBack implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
+		this.selectedIndexList = model.getAllSelectedShapeIndexes();
 
-		model.moveSelectedShapesToBack();
+		model.deselectAllShapes();
 	}
 
 	@Override
@@ -36,10 +35,8 @@ public class UpdateModelSelectedShapesToBack implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		List<Shape> selectedShapes = model.getAllSelectedShapes();
-		for (int i = selectedShapes.size(); --i >= 0;) {
-			model.removeShape(selectedShapes.get(i));
-			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
+		for (Integer element : selectedIndexList) {
+			model.selectShapeAt(element);
 		}
 	}
 
@@ -48,8 +45,8 @@ public class UpdateModelSelectedShapesToBack implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("initialSelectedShapesOrder=")
-				.append(initialSelectedShapesOrder.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedIndexList=")
+				.append(selectedIndexList.toString()).append(">");
 
 		return output.toString();
 	}

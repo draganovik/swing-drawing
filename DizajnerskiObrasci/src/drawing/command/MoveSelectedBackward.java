@@ -1,18 +1,20 @@
 package drawing.command;
 
+import java.util.List;
+
+import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 import drawing.types.CommandState;
 
-public class UpdateModelShapeDeselect implements ICommand {
+public class MoveSelectedBackward implements ICommand {
 
 	private final CanvasModel model;
-	private final Integer selectedShapeIndex;
+	private List<Integer> initialSelectedShapesOrder;
 
 	private CommandState state = CommandState.INITIALIZED;
 
-	public UpdateModelShapeDeselect(CanvasModel model, Integer shapeIndex) {
+	public MoveSelectedBackward(CanvasModel model) {
 		this.model = model;
-		this.selectedShapeIndex = shapeIndex;
 	}
 
 	@Override
@@ -22,7 +24,9 @@ public class UpdateModelShapeDeselect implements ICommand {
 		}
 		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		model.deselectShapeAt(selectedShapeIndex);
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
+
+		model.moveSelectedShapesBackward();
 	}
 
 	@Override
@@ -32,7 +36,11 @@ public class UpdateModelShapeDeselect implements ICommand {
 		}
 		state = CommandState.UNDO;
 
-		model.selectShapeAt(selectedShapeIndex);
+		List<Shape> selectedShapes = model.getAllSelectedShapes();
+		for (int i = selectedShapes.size(); --i >= 0;) {
+			model.removeShape(selectedShapes.get(i));
+			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
+		}
 	}
 
 	@Override
@@ -40,8 +48,7 @@ public class UpdateModelShapeDeselect implements ICommand {
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapeIndex=")
-				.append(selectedShapeIndex.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command);
 
 		return output.toString();
 	}

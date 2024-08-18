@@ -16,55 +16,55 @@ public class CommandGenerator {
 			commandParams = line.substring(line.indexOf('<') + 1, line.indexOf('>'));
 		}
 
-		if (commandName.equals(UpdateModelAddShape.class.getSimpleName())) {
+		if (commandName.equals(AddShape.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('=') + 1);
 			Shape shape = GeometryGenerator.generate(firstParam);
-			ICommand command = new UpdateModelAddShape(model, shape);
+			ICommand command = new AddShape(model, shape);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelDuplicateSelectedShape.class.getSimpleName())) {
-			ICommand command = new UpdateModelDuplicateSelectedShape(model);
+		if (commandName.equals(DuplicateSelected.class.getSimpleName())) {
+			ICommand command = new DuplicateSelected(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelRemoveSelectedShapes.class.getSimpleName())) {
-			ICommand command = new UpdateModelRemoveSelectedShapes(model);
+		if (commandName.equals(RemoveSelected.class.getSimpleName())) {
+			ICommand command = new RemoveSelected(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesBackgroundColor.class.getSimpleName())) {
+		if (commandName.equals(UpdateSelectedShapeBackground.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('[') + 1, firstParam.indexOf(']'));
 			Color color = new Color(Integer.parseInt(firstParam.split(",")[0].substring(2)),
 					Integer.parseInt(firstParam.split(",")[1].substring(2)),
 					Integer.parseInt(firstParam.split(",")[2].substring(2)));
-			ICommand command = new UpdateModelSelectedShapesBackgroundColor(model, color);
+			ICommand command = new UpdateSelectedShapeBackground(model, color);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesBackward.class.getSimpleName())) {
-			ICommand command = new UpdateModelSelectedShapesBackward(model);
+		if (commandName.equals(MoveSelectedBackward.class.getSimpleName())) {
+			ICommand command = new MoveSelectedBackward(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesColor.class.getSimpleName())) {
+		if (commandName.equals(UpdateSelectedShapeColor.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('[') + 1, firstParam.indexOf(']'));
 			Color color = new Color(Integer.parseInt(firstParam.split(",")[0].substring(2)),
 					Integer.parseInt(firstParam.split(",")[1].substring(2)),
 					Integer.parseInt(firstParam.split(",")[2].substring(2)));
-			ICommand command = new UpdateModelSelectedShapesColor(model, color);
+			ICommand command = new UpdateSelectedShapeColor(model, color);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesForward.class.getSimpleName())) {
-			ICommand command = new UpdateModelSelectedShapesForward(model);
+		if (commandName.equals(MoveSelectedForward.class.getSimpleName())) {
+			ICommand command = new MoveSelectedForward(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesPosition.class.getSimpleName())) {
+		if (commandName.equals(MoveSelected.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('[') + 1, firstParam.indexOf(']'));
 			String aX = firstParam.split(",")[0].substring(firstParam.split(",")[0].indexOf("=") + 1);
@@ -76,44 +76,44 @@ public class CommandGenerator {
 			String bX = secondParam.split(",")[0].substring(secondParam.split(",")[0].indexOf("=") + 1);
 			String bY = secondParam.split(",")[1].substring(secondParam.split(",")[1].indexOf("=") + 1);
 			Point pointB = new Point(Integer.parseInt(bX), Integer.parseInt(bY));
-			ICommand command = new UpdateModelSelectedShapesPosition(model, pointA, pointB);
+			ICommand command = new MoveSelected(model, pointA, pointB);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesToBack.class.getSimpleName())) {
-			ICommand command = new UpdateModelSelectedShapesToBack(model);
+		if (commandName.equals(MoveSelectedToBack.class.getSimpleName())) {
+			ICommand command = new MoveSelectedToBack(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapesToFront.class.getSimpleName())) {
-			ICommand command = new UpdateModelSelectedShapesToFront(model);
+		if (commandName.equals(MoveSelectedToFront.class.getSimpleName())) {
+			ICommand command = new MoveSelectedToFront(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelShapeDeselect.class.getSimpleName())) {
+		if (commandName.equals(DeselectShape.class.getSimpleName())) {
 			Integer shapeIndex = Integer.parseInt(commandParams.substring(commandParams.indexOf('=') + 1));
-			ICommand command = new UpdateModelShapeDeselect(model, shapeIndex);
+			ICommand command = new DeselectShape(model, shapeIndex);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelShapeDeselectAll.class.getSimpleName())) {
-			ICommand command = new UpdateModelShapeDeselectAll(model);
+		if (commandName.equals(DeselectAllShapes.class.getSimpleName())) {
+			ICommand command = new DeselectAllShapes(model);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelShapeSelect.class.getSimpleName())) {
+		if (commandName.equals(SelectShape.class.getSimpleName())) {
 			Integer shapeIndex = Integer.parseInt(commandParams.substring(commandParams.indexOf('=') + 1));
-			ICommand command = new UpdateModelShapeSelect(model, shapeIndex);
+			ICommand command = new SelectShape(model, shapeIndex);
 			return command;
 		}
 
-		if (commandName.equals(UpdateModelSelectedShapeProperties.class.getSimpleName())) {
+		if (commandName.equals(UpdateShape.class.getSimpleName())) {
 			String firstParam = commandParams.split("; ")[0];
 			firstParam = firstParam.substring(firstParam.indexOf('=') + 1);
 			String secondParam = commandParams.split("; ")[1];
 			secondParam = secondParam.substring(secondParam.indexOf('=') + 1);
 			Shape next = GeometryGenerator.generate(secondParam);
-			ICommand command = new UpdateModelSelectedShapeProperties(model, next);
+			ICommand command = new UpdateShape(model, next);
 			return command;
 		}
 
