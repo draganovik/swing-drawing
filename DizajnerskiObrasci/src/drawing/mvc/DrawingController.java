@@ -516,6 +516,7 @@ public class DrawingController {
 			clearWorkspace();
 			file.loadFile(filePath);
 			view.repaint();
+			shapesPanelView.setDLM(model.getDefaultListModel());
 		} catch (Exception ex) {
 			showAlert(ex.getMessage());
 		}
