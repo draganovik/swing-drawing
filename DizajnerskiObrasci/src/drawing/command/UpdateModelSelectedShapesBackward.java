@@ -1,10 +1,15 @@
 package drawing.command;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
 
 public class UpdateModelSelectedShapesBackward implements ICommand {
 
 	private final CanvasModel model;
+	private ArrayList<Integer> initialSelectedShapesOrder;
 
 	private Boolean isExecuted = false;
 
@@ -19,6 +24,9 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 		}
 		isExecuted = true;
 
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes();
+		Collections.sort(initialSelectedShapesOrder);
+
 		model.moveSelectedShapesBackward();
 	}
 
@@ -29,7 +37,11 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 		}
 		isExecuted = false;
 
-		model.moveSelectedShapesForward();
+		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
+		for (int i = selectedShapes.size(); --i >= 0;) {
+			model.removeShape(selectedShapes.get(i));
+			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
+		}
 	}
 
 	@Override
