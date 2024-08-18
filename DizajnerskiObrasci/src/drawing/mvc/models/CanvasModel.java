@@ -39,7 +39,7 @@ public class CanvasModel {
 	}
 
 	public int getShapeIndex(Shape shape) {
-		return shapes.indexOf(shape);
+		return shapes.lastIndexOf(shape);
 	}
 
 	public ArrayList<Integer> getAllSelectedShapeIndexes() {
@@ -295,14 +295,15 @@ public class CanvasModel {
 		if (getAllSelectedShapes().isEmpty()) {
 			throw new IllegalArgumentException("There are no selected shapes.");
 		}
-		int initSelectSize = getAllSelectedShapeIndexes().size();
-		for (int index = 0; index < initSelectSize; index++) {
-			Shape clone = this.getAllSelectedShapes().get(0).clone();
-			this.deselectShape(this.getAllSelectedShapes().get(0));
-			this.addShape(clone);
-			this.selectShape(clone);
+		
+		ArrayList<Shape> pendindShapes = getAllSelectedShapes();
+		while(!pendindShapes.isEmpty()) {
+			Shape shape = pendindShapes.getFirst();
+			Shape clone = pendindShapes.getFirst().clone();
+			shape.setSelected(false);
+			shapes.addElement(clone);
+			pendindShapes.removeFirst();
 		}
-
 	}
 
 	public void addPropertyObserver(PropertyChangeListener propertyChangeListener) {
