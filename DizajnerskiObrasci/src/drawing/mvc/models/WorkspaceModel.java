@@ -15,6 +15,7 @@ import drawing.command.ICommand;
 import drawing.geometry.Point;
 import drawing.geometry.Shape;
 import drawing.geometry.SurfaceShape;
+import drawing.types.CommandState;
 import drawing.types.ToolAction;
 
 public class WorkspaceModel {
@@ -191,14 +192,14 @@ public class WorkspaceModel {
 		ICommand command = performedCommandStack.pop();
 		command.undo();
 		revertedCommandStack.push(command);
-		commandLogListModel.addElement("Execute Undo");
+		commandLogListModel.addElement(command.toString());
 	}
 
 	public void redoCommand() throws Exception {
 		ICommand command = revertedCommandStack.pop();
 		command.redo();
 		performedCommandStack.push(command);
-		commandLogListModel.addElement("Execute Redo");
+		commandLogListModel.addElement(command.toString());
 	}
 
 	public Boolean canUndo() {
@@ -243,18 +244,20 @@ public class WorkspaceModel {
 		}
 		String line = loadedCommands.poll();
 
-		String commandName = line.split(" ")[1];
+		String commandState = line.split(" ")[0];
 
-		switch (commandName) {
-		case "Undo":
+		switch (CommandState.valueOf(commandState)) {
+		case UNDO:
 			this.undoCommand();
 			break;
-		case "Redo":
+		case REDO:
 			this.redoCommand();
 			break;
-		default:
+		case EXECUTE:
 			ICommand command = CommandGenerator.generate(line, model);
 			this.executeCommand(command, true);
+			break;
+		default:
 			break;
 		}
 	}

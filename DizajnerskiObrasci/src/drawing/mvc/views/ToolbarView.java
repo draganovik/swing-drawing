@@ -49,9 +49,8 @@ public class ToolbarView extends JPanel {
 	 * Create the panel.
 	 */
 	public ToolbarView() {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-		btnToolbarSelect = new JToggleButton(new ImageIcon(classLoader.getResource("Select.png").getPath()));
+		btnToolbarSelect = new JToggleButton(new ImageIcon(getClass().getResource("/images/Select.png")));
 		btnToolbarSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -61,7 +60,7 @@ public class ToolbarView extends JPanel {
 		btnToolbarSelect.setSelected(true);
 		actionsButtonGroup.add(btnToolbarSelect);
 
-		btnToolbarPoint = new JToggleButton(new ImageIcon(classLoader.getResource("Point.png").getPath()));
+		btnToolbarPoint = new JToggleButton(new ImageIcon(getClass().getResource("/images/Point.png")));
 		btnToolbarPoint.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -70,7 +69,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarPoint);
 
-		btnToolbarLine = new JToggleButton(new ImageIcon(classLoader.getResource("Line.png").getPath()));
+		btnToolbarLine = new JToggleButton(new ImageIcon(getClass().getResource("/images/Line.png")));
 		btnToolbarLine.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -79,7 +78,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarLine);
 
-		btnToolbarRectangle = new JToggleButton(new ImageIcon(classLoader.getResource("Rectangle.png").getPath()));
+		btnToolbarRectangle = new JToggleButton(new ImageIcon(getClass().getResource("/images/Rectangle.png")));
 		btnToolbarRectangle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -88,7 +87,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarRectangle);
 
-		btnToolbarCircle = new JToggleButton(new ImageIcon(classLoader.getResource("Circle.png").getPath()));
+		btnToolbarCircle = new JToggleButton(new ImageIcon(getClass().getResource("/images/Circle.png")));
 		btnToolbarCircle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +96,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarCircle);
 
-		btnToolbarDonut = new JToggleButton(new ImageIcon(classLoader.getResource("Donut.png").getPath()));
+		btnToolbarDonut = new JToggleButton(new ImageIcon(getClass().getResource("/images/Donut.png")));
 		btnToolbarDonut.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -106,7 +105,7 @@ public class ToolbarView extends JPanel {
 		});
 		actionsButtonGroup.add(btnToolbarDonut);
 
-		btnToolbarHexagon = new JToggleButton(new ImageIcon(classLoader.getResource("Hexagon.png").getPath()));
+		btnToolbarHexagon = new JToggleButton(new ImageIcon(getClass().getResource("/images/Hexagon.png")));
 		btnToolbarHexagon.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -6,27 +6,27 @@ import java.util.ArrayList;
 import drawing.geometry.Shape;
 import drawing.geometry.SurfaceShape;
 import drawing.mvc.models.CanvasModel;
+import drawing.types.CommandState;
 
 public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 	private final CanvasModel model;
-	private final ArrayList<Color> initialSelectedShapesBackgroundColors;
+	private final ArrayList<Color> initialSelectedShapesBackgroundColors = new ArrayList<>();
 	private final Color updateColor;
 
-	private Boolean isExecuted = false;
+	private CommandState state = CommandState.INITIALIZED;
 
 	public UpdateModelSelectedShapesBackgroundColor(CanvasModel model, Color updateColor) {
 		this.model = model;
 		this.updateColor = updateColor;
-		this.initialSelectedShapesBackgroundColors = new ArrayList<>();
 	}
 
 	@Override
 	public void execute() {
-		if (isExecuted) {
+		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
-		isExecuted = true;
+		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
 		ArrayList<Shape> shapes = model.getAllSelectedShapes();
 
@@ -43,10 +43,10 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 	@Override
 	public void undo() {
-		if (!isExecuted) {
+		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
-		isExecuted = false;
+		state = CommandState.UNDO;
 
 		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
 		for (int i = 0; i < selectedShapes.size(); i++) {
@@ -56,13 +56,12 @@ public class UpdateModelSelectedShapesBackgroundColor implements ICommand {
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Execute " : "Unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command).append(" <").append("updateColor=").append(updateColor.toString())
-				.append("; ").append("initialColors=").append(initialSelectedShapesBackgroundColors.toString())
-				.append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("updateColor=")
+				.append(updateColor.toString()).append("; ").append("initialColors=")
+				.append(initialSelectedShapesBackgroundColors.toString()).append(">");
 
 		return output.toString();
 	}

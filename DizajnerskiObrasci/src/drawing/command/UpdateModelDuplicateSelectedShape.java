@@ -3,13 +3,14 @@ package drawing.command;
 import java.util.ArrayList;
 
 import drawing.mvc.models.CanvasModel;
+import drawing.types.CommandState;
 
 public class UpdateModelDuplicateSelectedShape implements ICommand {
 
 	private final CanvasModel model;
 	private ArrayList<Integer> selectedShapeIndexes;
 
-	private Boolean isExecuted = false;
+	private CommandState state = CommandState.INITIALIZED;
 
 	public UpdateModelDuplicateSelectedShape(CanvasModel model) {
 		this.model = model;
@@ -17,10 +18,10 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 
 	@Override
 	public void execute() {
-		if (isExecuted) {
+		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
-		isExecuted = true;
+		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
 		this.selectedShapeIndexes = model.getAllSelectedShapeIndexes();
 
@@ -30,10 +31,10 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 
 	@Override
 	public void undo() {
-		if (!isExecuted) {
+		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
-		isExecuted = false;
+		state = CommandState.UNDO;
 
 		model.removeSelectedShapes();
 		for (int index = 0; index < this.selectedShapeIndexes.size(); index++) {
@@ -43,11 +44,10 @@ public class UpdateModelDuplicateSelectedShape implements ICommand {
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Execute " : "unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command).append(" <").append("selectedShapeIndexes=")
+		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapeIndexes=")
 				.append(selectedShapeIndexes.toString()).append(">");
 
 		return output.toString();

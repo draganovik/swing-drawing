@@ -2,6 +2,7 @@ package drawing.command;
 
 import drawing.geometry.Point;
 import drawing.mvc.models.CanvasModel;
+import drawing.types.CommandState;
 
 public class UpdateModelSelectedShapesPosition implements ICommand {
 
@@ -9,7 +10,7 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 	private final Point startPoint;
 	private final Point endPoint;
 
-	private Boolean isExecuted = false;
+	private CommandState state = CommandState.INITIALIZED;
 
 	public UpdateModelSelectedShapesPosition(CanvasModel model, Point startPoint, Point endPoint) {
 		this.model = model;
@@ -19,10 +20,10 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 
 	@Override
 	public void execute() {
-		if (isExecuted) {
+		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
-		isExecuted = true;
+		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
 		int moveByX = endPoint.getX() - startPoint.getX();
 		int moveByY = endPoint.getY() - startPoint.getY();
@@ -32,10 +33,10 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 
 	@Override
 	public void undo() {
-		if (!isExecuted) {
+		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
-		isExecuted = false;
+		state = CommandState.UNDO;
 
 		int moveByX = startPoint.getX() - endPoint.getX();
 		int moveByY = startPoint.getY() - endPoint.getY();
@@ -44,12 +45,11 @@ public class UpdateModelSelectedShapesPosition implements ICommand {
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Execute " : "Unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command).append(" <").append("startPoint=").append(startPoint.toString())
-				.append("; ").append("endPoint=").append(endPoint.toString()).append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("startPoint=")
+				.append(startPoint.toString()).append("; ").append("endPoint=").append(endPoint.toString()).append(">");
 
 		return output.toString();
 	}

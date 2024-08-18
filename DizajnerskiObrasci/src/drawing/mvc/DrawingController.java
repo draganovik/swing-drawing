@@ -44,7 +44,7 @@ import drawing.mvc.models.WorkspaceModel;
 import drawing.mvc.views.CanvasView;
 import drawing.mvc.views.MenubarView;
 import drawing.mvc.views.ToolbarView;
-import drawing.observer.ToolbarPropertyObserver;
+import drawing.observer.CanvasModelPropertyObserver;
 import drawing.strategy.FileManager;
 import drawing.strategy.LogFileOperator;
 import drawing.strategy.RawFileOperator;
@@ -59,7 +59,7 @@ public class DrawingController {
 	private ToolbarView toolbarView;
 	private MenubarView menubarView;
 
-	ToolbarPropertyObserver toolbarPropertyObserver;
+	CanvasModelPropertyObserver canvasModelPropertyObserver;
 
 	ICommand tempCommand;
 
@@ -67,9 +67,9 @@ public class DrawingController {
 		this.model = model;
 		this.workspaceModel = workspaceModel;
 
-		this.toolbarPropertyObserver = new ToolbarPropertyObserver(this);
-		model.addPropertyObserver(this.toolbarPropertyObserver);
-		workspaceModel.addPropertyObserver(this.toolbarPropertyObserver);
+		this.canvasModelPropertyObserver = new CanvasModelPropertyObserver(this);
+		model.addPropertyObserver(this.canvasModelPropertyObserver);
+		workspaceModel.addPropertyObserver(this.canvasModelPropertyObserver);
 	}
 
 	public void setViews(CanvasView view, ToolbarView toolbarView, MenubarView menubarView) {
@@ -84,7 +84,8 @@ public class DrawingController {
 		model.removeAllShapes();
 		toolbarView.setEnabledCommands(true);
 		toolbarView.setToolToSelect();
-		this.workspaceModel.setToolAction(ToolAction.SELECT);
+		menubarView.setVisibleObjectOptions(false);
+		workspaceModel.setToolAction(ToolAction.SELECT);
 
 		view.repaint();
 	}
@@ -153,9 +154,9 @@ public class DrawingController {
 
 		model.setIsShiftDown(e.isShiftDown());
 
-		if (model.getAllSelectedShapeIndexes().size() > 0 && workspaceModel.getToolAction() != ToolAction.SELECT) {
+		if (!model.getAllSelectedShapes().isEmpty() && workspaceModel.getToolAction() != ToolAction.SELECT) {
 			ICommand command = new UpdateModelShapeDeselectAll(model);
-			executeCommandNoLog(command);
+			executeCommand(command);
 		}
 
 		switch (workspaceModel.getToolAction()) {
@@ -415,9 +416,10 @@ public class DrawingController {
 		if (this.workspaceModel.hasLoadedAllCommands()) {
 			this.workspaceModel.setToolAction(ToolAction.SELECT);
 			this.toolbarView.setEnabledCommands(true);
+			this.menubarView.isInLoaderMode(false);
 			this.menubarView.setEnabledUndo(workspaceModel.canUndo());
 			this.menubarView.setEnabledRedo(workspaceModel.canRedo());
-			this.menubarView.setEnabledLoadNexCommand(false);
+			this.menubarView.setVisibleObjectOptions(this.model.getAllSelectedShapeIndexes().size() > 0);
 		}
 	}
 
@@ -552,7 +554,7 @@ public class DrawingController {
 			view.repaint();
 			this.menubarView.setEnabledUndo(workspaceModel.canUndo());
 			this.menubarView.setEnabledRedo(workspaceModel.canRedo());
-			this.menubarView.setEnabledLoadNexCommand(true);
+			this.menubarView.isInLoaderMode(true);
 			this.toolbarView.setEnabledCommands(false);
 		} catch (Exception ex) {
 			showAlert(ex.getMessage());
@@ -711,6 +713,10 @@ public class DrawingController {
 
 	public void setEnabledToolbarModify(boolean isEnabled) {
 		toolbarView.setEnabledModify(isEnabled);
+	}
+
+	public void setEnabledMenubarObjectOptions(boolean isEnabled) {
+		menubarView.setVisibleObjectOptions(isEnabled);
 	}
 
 }

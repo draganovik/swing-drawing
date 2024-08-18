@@ -6,11 +6,11 @@ import java.beans.PropertyChangeListener;
 
 import drawing.mvc.DrawingController;
 
-public class ToolbarPropertyObserver implements PropertyChangeListener {
+public class CanvasModelPropertyObserver implements PropertyChangeListener {
 
 	final DrawingController drawingController;
 
-	public ToolbarPropertyObserver(DrawingController drawingController) {
+	public CanvasModelPropertyObserver(DrawingController drawingController) {
 		this.drawingController = drawingController;
 	}
 
@@ -19,7 +19,8 @@ public class ToolbarPropertyObserver implements PropertyChangeListener {
 		if (evt.getPropertyName().equals("SelectionSizeChange")) {
 			int newSelectionSize = (int) evt.getNewValue();
 			drawingController.setEnabledToolbarDelete(newSelectionSize > 0 ? true : false);
-			drawingController.setEnabledToolbarModify(newSelectionSize > 0 ? true : false);
+			drawingController.setEnabledToolbarModify(newSelectionSize == 1 ? true : false);
+			drawingController.setEnabledMenubarObjectOptions(newSelectionSize > 0 ? true : false);
 		}
 		if (evt.getPropertyName().equals("BackgroundColorChange")) {
 			Color newColor = (Color) evt.getNewValue();
