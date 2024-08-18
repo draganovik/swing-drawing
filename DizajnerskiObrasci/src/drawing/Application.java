@@ -1,7 +1,8 @@
 package drawing;
 
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
+import com.formdev.flatlaf.FlatLightLaf;
 
 import drawing.mvc.DrawingController;
 import drawing.mvc.DrawingFrame;
@@ -14,19 +15,9 @@ public class Application {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			UIManager.setLookAndFeel(new FlatLightLaf());
+		} catch (Exception ex) {
+			System.err.println("Failed to initialize LaF");
 		}
 
 		DrawingFrame drawingFrame = new DrawingFrame();

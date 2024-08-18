@@ -29,7 +29,8 @@ public class MenubarView extends JMenuBar {
 	private JMenuItem mntmRedo;
 	private JMenuItem mntmUndo;
 	private JMenuItem mntmLoadNextCommand;
-	private Integer MetaKay = System.getProperty("os.name").toLowerCase().contains("mac") ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK;
+	private Integer MetaKay = System.getProperty("os.name").toLowerCase().contains("mac") ? InputEvent.META_DOWN_MASK
+			: InputEvent.CTRL_DOWN_MASK;
 
 	/**
 	 * Create the panel.
@@ -61,8 +62,7 @@ public class MenubarView extends JMenuBar {
 				controller.startNewWorkspace();
 			}
 		});
-		mntmNewWorkspace.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.SHIFT_DOWN_MASK | MetaKay));
+		mntmNewWorkspace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.SHIFT_DOWN_MASK | MetaKay));
 		menuFile.add(mntmNewWorkspace);
 
 		// a group of JMenuItems
@@ -89,13 +89,11 @@ public class MenubarView extends JMenuBar {
 				controller.loadALogFile();
 			}
 		});
-		mntmImportLog.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_DOWN_MASK | MetaKay));
+		mntmImportLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.SHIFT_DOWN_MASK | MetaKay));
 
 		mntmExportLog = new JMenuItem("Save as Log File");
 		menuFile.add(mntmExportLog);
-		mntmExportLog.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK | MetaKay));
+		mntmExportLog.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_DOWN_MASK | MetaKay));
 		mntmExportLog.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -120,8 +118,7 @@ public class MenubarView extends JMenuBar {
 		menuEdit.add(mntmUndo);
 
 		mntmRedo = new JMenuItem("Redo");
-		mntmRedo.setAccelerator(
-				KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.SHIFT_DOWN_MASK | MetaKay));
+		mntmRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.SHIFT_DOWN_MASK | MetaKay));
 		mntmRedo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
