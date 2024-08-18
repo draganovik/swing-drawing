@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Optional;
 
+import javax.swing.Action;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -146,6 +147,8 @@ public class DrawingController {
 		jFileChooser.setDialogTitle(title);
 		jFileChooser.setMultiSelectionEnabled(false);
 		jFileChooser.enableInputMethods(false);
+		Action details = jFileChooser.getActionMap().get("viewTypeDetails");
+		details.actionPerformed(null);
 		return jFileChooser;
 	}
 
