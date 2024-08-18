@@ -280,6 +280,9 @@ public class CanvasModel {
 	}
 
 	public void duplicateSelected() {
+		if (getAllSelectedShapes().isEmpty()) {
+			throw new IllegalArgumentException("There are no selected shapes.");
+		}
 		int initSelectSize = getAllSelectedShapeIndexes().size();
 		for (int index = 0; index < initSelectSize; index++) {
 			Shape clone = this.getAllSelectedShapes().get(0).clone();

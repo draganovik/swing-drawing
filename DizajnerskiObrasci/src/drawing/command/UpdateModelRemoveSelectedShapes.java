@@ -7,29 +7,29 @@ import java.util.stream.IntStream;
 
 import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
+import drawing.types.CommandState;
 
 public class UpdateModelRemoveSelectedShapes implements ICommand {
 
 	private final CanvasModel model;
-	private final List<SimpleEntry<Integer, Shape>> selectedShapes; // Store deleted index and shape together
+	private final List<SimpleEntry<Integer, Shape>> selectedShapes = new ArrayList<>(); // Store deleted index and shape
+																						// together
 
-	private Boolean isExecuted = false;
+	private CommandState state = CommandState.INITIALIZED;
 
 	public UpdateModelRemoveSelectedShapes(CanvasModel model) {
 		this.model = model;
-
-		// Use a List of SimpleEntry to store index and shape pairs
-		this.selectedShapes = new ArrayList<>();
 	}
 
 	@Override
 	public void execute() {
-		if (isExecuted) {
+		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
-		isExecuted = true;
+		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
 		ArrayList<Shape> deletedShapes = model.getAllSelectedShapes();
+
 		// Collect shapes and their respective indexes
 		IntStream.range(0, deletedShapes.size()).forEach(i -> selectedShapes
 				.add(new SimpleEntry<>(model.getShapeIndex(deletedShapes.get(i)), deletedShapes.get(i))));
@@ -39,22 +39,21 @@ public class UpdateModelRemoveSelectedShapes implements ICommand {
 
 	@Override
 	public void undo() {
-		if (!isExecuted) {
+		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
-		isExecuted = false;
+		state = CommandState.UNDO;
 
 		selectedShapes.forEach(entry -> model.insertShape(entry.getValue(), entry.getKey()));
 	}
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Execute " : "Unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command).append(" <").append("selectedShapes=").append(selectedShapes.toString())
-				.append(">");
+		output.append(state.toString()).append(" ").append(command).append(" <").append("selectedShapes=")
+				.append(selectedShapes.toString()).append(">");
 
 		return output.toString();
 	}

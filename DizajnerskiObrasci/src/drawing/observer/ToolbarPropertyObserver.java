@@ -19,7 +19,7 @@ public class ToolbarPropertyObserver implements PropertyChangeListener {
 		if (evt.getPropertyName().equals("SelectionSizeChange")) {
 			int newSelectionSize = (int) evt.getNewValue();
 			drawingController.setEnabledToolbarDelete(newSelectionSize > 0 ? true : false);
-			drawingController.setEnabledToolbarModify(newSelectionSize > 0 ? true : false);
+			drawingController.setEnabledToolbarModify(newSelectionSize == 1 ? true : false);
 		}
 		if (evt.getPropertyName().equals("BackgroundColorChange")) {
 			Color newColor = (Color) evt.getNewValue();

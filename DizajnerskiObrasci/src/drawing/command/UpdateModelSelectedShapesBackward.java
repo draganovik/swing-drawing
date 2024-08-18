@@ -1,17 +1,17 @@
 package drawing.command;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 import drawing.geometry.Shape;
 import drawing.mvc.models.CanvasModel;
+import drawing.types.CommandState;
 
 public class UpdateModelSelectedShapesBackward implements ICommand {
 
 	private final CanvasModel model;
-	private ArrayList<Integer> initialSelectedShapesOrder;
+	private List<Integer> initialSelectedShapesOrder;
 
-	private Boolean isExecuted = false;
+	private CommandState state = CommandState.INITIALIZED;
 
 	public UpdateModelSelectedShapesBackward(CanvasModel model) {
 		this.model = model;
@@ -19,25 +19,24 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 
 	@Override
 	public void execute() {
-		if (isExecuted) {
+		if (state != CommandState.INITIALIZED && state != CommandState.UNDO) {
 			throw new IllegalStateException("Command is already executed.");
 		}
-		isExecuted = true;
+		state = state == CommandState.INITIALIZED ? CommandState.EXECUTE : CommandState.REDO;
 
-		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes();
-		Collections.sort(initialSelectedShapesOrder);
+		this.initialSelectedShapesOrder = model.getAllSelectedShapeIndexes().reversed();
 
 		model.moveSelectedShapesBackward();
 	}
 
 	@Override
 	public void undo() {
-		if (!isExecuted) {
+		if (state != CommandState.EXECUTE && state != CommandState.REDO) {
 			throw new IllegalStateException("Command is not executed.");
 		}
-		isExecuted = false;
+		state = CommandState.UNDO;
 
-		ArrayList<Shape> selectedShapes = model.getAllSelectedShapes();
+		List<Shape> selectedShapes = model.getAllSelectedShapes();
 		for (int i = selectedShapes.size(); --i >= 0;) {
 			model.removeShape(selectedShapes.get(i));
 			model.insertShape(selectedShapes.get(i), this.initialSelectedShapesOrder.get(i));
@@ -46,11 +45,10 @@ public class UpdateModelSelectedShapesBackward implements ICommand {
 
 	@Override
 	public String toString() {
-		String state = isExecuted ? "Execute " : "Unexecute ";
 		String command = this.getClass().getSimpleName();
 
 		StringBuilder output = new StringBuilder();
-		output.append(state).append(command);
+		output.append(state.toString()).append(" ").append(command);
 
 		return output.toString();
 	}
