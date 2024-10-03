@@ -1,6 +1,6 @@
 # Swing Drawing - Design Patterns
 
-## Project Requirements for the Course "Design Patterns"
+### Project Requirements for the Course "Design Patterns"
 
 This project involves implementing a desktop application for working with 2D graphics using **Java Swing**. The application should support functionalities developed during the "Object-Oriented Information Technologies" course, with additional requirements and enhancements outlined below.
 
