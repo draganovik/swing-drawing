@@ -4,6 +4,12 @@
 
 This project involves implementing a desktop application for working with 2D graphics using **Java Swing**. The application should support functionalities developed during the "Object-Oriented Information Technologies" course, with additional requirements and enhancements outlined below.
 
+### Image Previews:
+
+|Create Shapes|Send to Back|Objects Pane|
+|----:|----:|----:|
+| <img width="400" alt="Create Shapes Screenshot" src="https://github.com/user-attachments/assets/8968502f-2a1e-44c8-bfc6-dcefad06ee34"> | <img width="400" alt="Send to Back Screenshot" src="https://github.com/user-attachments/assets/5f50da3d-e196-4d27-92ed-83bab467dbc7"> | <img width="400" alt="Objects Pane Screenshot" src="https://github.com/user-attachments/assets/affa1027-e47a-46d0-b876-901255c2be19"> |
+
 ### Key Features:
 
 - **Shape Drawing with Custom Colors**
@@ -76,12 +82,6 @@ This project involves implementing a desktop application for working with 2D gra
 
 - The log should capture all user actions, including selections and shape movements along the Z-axis.
 - Undo/redo operations should be logged, and after modifying a selected shape, it should remain selected.
-
----
-
-### Image Previews:
-
-...coming soon...
 
 ---
 
