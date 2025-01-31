@@ -14,7 +14,7 @@ public class Donut extends Circle {
     }
 
     public Donut(Point center, int radius, int innerRadius) {
-        super(center, radius); // mora biti prva linija koda
+        super(center, radius);
         this.setInnerRadius(innerRadius);
 
     }
@@ -56,8 +56,8 @@ public class Donut extends Circle {
     public void draw(Graphics g) {
         super.draw(g);
         g.setColor(getColor());
-        g.drawOval(getCenter().getX() - innerRadius + 1, getCenter().getY() - innerRadius + 1,
-                (this.innerRadius - 1) * 2, (this.innerRadius - 1) * 2);
+        g.drawOval(getCenter().getX() - innerRadius, getCenter().getY() - innerRadius,
+                this.innerRadius * 2, this.innerRadius * 2);
         if (isSelected()) {
             g.setColor(Color.BLUE);
             g.drawRect(getCenter().getX() - innerRadius - 3, getCenter().getY() - 3, 6, 6);
@@ -78,15 +78,6 @@ public class Donut extends Circle {
             return false;
         }
         return false;
-    }
-
-    @Override
-    public void fill(Graphics g) {
-        g.setColor(new Color(255, 255, 255));
-        Area aInnerCircle = new Area(new Ellipse2D.Double(getCenter().getX() - innerRadius + 1,
-                getCenter().getY() - innerRadius + 1, (innerRadius - 1) * 2, (innerRadius - 1) * 2));
-        super.fill(g, aInnerCircle);
-
     }
 
     public int getInnerRadius() {
@@ -114,6 +105,16 @@ public class Donut extends Circle {
         } else {
             super.setRadius(radius);
         }
+    }
+    
+    @Override
+    protected Area getGraphicsArea() {
+    	 Area innerGraphicsArea = new Area(new Ellipse2D.Double(getCenter().getX() - innerRadius,
+                 getCenter().getY() - innerRadius, innerRadius * 2, innerRadius * 2));
+    	 
+    	 Area graphicsArea = super.getGraphicsArea();
+         graphicsArea.subtract(innerGraphicsArea);
+        return graphicsArea;
     }
 
     @Override

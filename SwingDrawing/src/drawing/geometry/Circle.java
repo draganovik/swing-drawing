@@ -52,9 +52,9 @@ public class Circle extends SurfaceShape {
 
     @Override
     public void draw(Graphics g) {
+        this.fill(g);
         g.setColor(getColor());
         g.drawOval(center.getX() - radius, center.getY() - radius, radius * 2, radius * 2);
-        this.fill(g);
         if (isSelected()) {
             g.setColor(Color.BLUE);
             g.drawRect(center.getX() - 3, center.getY() - 3, 6, 6);
@@ -84,21 +84,13 @@ public class Circle extends SurfaceShape {
 
     }
 
-    public void fill(Graphics g, Area Shape) {
-        g.setColor(getBackgroundColor());
-        Area areaCircle = getGraphicsArea();
-        areaCircle.subtract(Shape);
-        ((Graphics2D) g).fill(areaCircle);
-
-    }
-
     public Point getCenter() {
         return center;
     }
 
     protected Area getGraphicsArea() {
-        return new Area(new Ellipse2D.Double(center.getX() - radius + 1, center.getY() - radius + 1, (radius - 1) * 2,
-                (radius - 1) * 2));
+        return new Area(new Ellipse2D.Double(center.getX() - radius, center.getY() - radius, radius * 2,
+                radius * 2));
     }
 
     public int getRadius() {

@@ -22,7 +22,6 @@ public class CanvasView extends JPanel {
 
     public CanvasView() {
         setBackground(Color.WHITE);
-
     }
 
     @Override
